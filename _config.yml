@@ -1,5 +1,6 @@
 # Permalinks
 permalink:           pretty
+relative_permalinks: false
 
 # Setup
 title:               Poole
