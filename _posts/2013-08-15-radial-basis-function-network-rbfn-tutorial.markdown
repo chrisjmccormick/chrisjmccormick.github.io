@@ -2,6 +2,7 @@
 layout: post
 title:  "Radial Basis Function Network (RBFN) Tutorial"
 date:   2013-08-15 22:00:00 -0800
+comments: true
 categories: tutorials
 tags: Classification, Gradient Descent, K-Means Clustering, Machine Learning, Neural Networks, Radial Basis Function Netowrk, RBF Network, RBF Network Tutorial, RBFN
 ---
