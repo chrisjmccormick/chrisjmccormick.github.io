@@ -1,30 +1,28 @@
 ---
 layout: page
 title: About
+permalink: /about/
 ---
 
-<p class="message">
-  Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
-</p>
+![Profile picture][profile_pic]
 
-In the novel, *The Strange Case of Dr. Jekyll and Mr. Hyde*, Mr. Poole is Dr. Jekyll's virtuous and loyal butler. Similarly, Poole is an upstanding and effective butler that helps you build Jekyll themes. It's made by [@mdo](https://twitter.com/mdo).
+Hi! I’m a software engineer currently working at CogniMem Technologies, Inc. As an engineer, my passions lie in machine learning and computer vision, and in particular, the hardware acceleration of machine learning.
 
-There are currently two themes built on Poole:
+At CogniMem, I work as an applications engineer developing proof of concepts for our customers. CogniMem sells a chip which provides a fully parallel and scalable implementation of two machine learning algorithms, RBF Network and KNN. In my role at CogniMem, I also research the latest machine learning and computer vision techniques to apply to customer problems, and share much of what I learn here on my site.
 
-* [Hyde](http://hyde.getpoole.com)
-* [Lanyon](http://lanyon.getpoole.com)
+Education & Experience
+======================
 
-Learn more and contribute on [GitHub](https://github.com/poole).
+<table>
+  <tr><td>2006</td><td>B.S. Electrical Engineering, Stanford University</td></tr>
+  <tr><td>2006 – 2011</td><td>Embedded Software Engineer, Texas Instruments</td></tr>
+  <tr><td>2012 - Present</td><td>Applications & Development Engineer, CogniMem</td></tr>
+</table>
 
-## Setup
+Contact
+=======
 
-Some fun facts about the setup of this project include:
+I am always eager to talk with other people who share an interest in machine learning; feel free to contact me at chris dot mccormick at cognimem dot com.
 
-* Built for [Jekyll](http://jekyllrb.com)
-* Developed on GitHub and hosted for free on [GitHub Pages](https://pages.github.com)
-* Coded with [Sublime Text 2](http://sublimetext.com), an amazing code editor
-* Designed and developed while listening to music like [Blood Bros Trilogy](https://soundcloud.com/maddecent/sets/blood-bros-series)
 
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/poole/poole/issues/new) or [ask me on Twitter](https://twitter.com/mdo).
-
-Thanks for reading!
+[profile_pic]: https://chrisjmccormick.files.wordpress.com/2012/12/chrisprofile_portrait_300px.jpg?w=470
