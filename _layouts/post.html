@@ -7,33 +7,33 @@ layout: default
   <time datetime="{{ page.date | date_to_xmlschema }}" class="post-date">{{ page.date | date_to_string }}</time>
   {{ content }}
   
-  <p>Testing Testing Testing</p>
+  <p>Testing 1 2 3</p>
+  
+  {% if page.comments %}
+  <div id="disqus_thread"></div>
+  <script>
+  
+      var disqus_config = function () {
+          this.page.url = {{ site.url }}{{ page.url }}
+          this.page.identifier = "{{ page.url }}"
+      };
+      
+      var disqus_shortname = 'mccormickml';
+      // var disqus_developer = 1; // Comment out when the site is live
+      var disqus_title      = '{{ page.title }}';
+      
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  {% endif %}
+  
 </article>
-
-{% if page.comments %}
-<div id="disqus_thread"></div>
-<script>
-
-    var disqus_config = function () {
-        this.page.url = {{ site.url }}{{ page.url }}
-        this.page.identifier = "{{ page.url }}"
-    };
-    
-    var disqus_shortname = 'mccormickml';
-    // var disqus_developer = 1; // Comment out when the site is live
-    var disqus_title      = '{{ page.title }}';
-    
-    (function() {  // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        
-        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';        
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-{% endif %}
-
 
 {% if site.related_posts != empty %}
 <aside class="related">
