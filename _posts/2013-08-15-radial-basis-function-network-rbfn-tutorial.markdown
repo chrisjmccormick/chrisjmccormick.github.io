@@ -17,7 +17,7 @@ RBFN Network Architecture
 =========================
 
 <figure>
-  <img src="https://chrisjmccormick.files.wordpress.com/2013/08/architecture_simple2.png" alt="Architecture of a Radial Basis Function Network">
+  <img src="{{ site.url }}/assets/architecture_simple2.png" alt="Architecture of a Radial Basis Function Network">
   <figcaption>Architecture of a Radial Basis Function Network</figcaption>
 </figure>
 
@@ -150,7 +150,6 @@ When applying k-means, we first want to separate the training examples by catego
 Here again is the example data set with the selected prototypes. I ran k-means clustering with a k of 10 twice, once for the first class, and again for the second class, giving me a total of 20 clusters. Again, the cluster centers are marked with a black asterisk ‘*’.
 
 
-[Architecture_Simple]: {{ site.url }}/assets/architecture_simple2.png
 [Eq_Gaussian]: https://chrisjmccormick.files.wordpress.com/2013/08/gaussian.png
 [Plot_bell_curve]: https://chrisjmccormick.files.wordpress.com/2013/08/bell_curve.png
 [Eq_Gaussian_activation]: https://chrisjmccormick.files.wordpress.com/2013/08/activation_equation.png?w=211&h=45
