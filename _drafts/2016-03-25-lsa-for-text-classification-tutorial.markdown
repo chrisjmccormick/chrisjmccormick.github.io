@@ -32,3 +32,4 @@ http://scikit-learn.org/stable/modules/neighbors.html#classification
 
 http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html
 
+http://scikit-learn.org/stable/auto_examples/applications/plot_out_of_core_classification.html

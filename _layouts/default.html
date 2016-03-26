@@ -10,25 +10,26 @@
         <h3 class="masthead-title">
           <a href="{{ site.baseurl }}/" title="Home">{{ site.title }}</a>
 
+          <!--- Display the About, Archive, etc. pages in the header --->
           {% for page in site.pages_list %}
               &nbsp;&nbsp;&nbsp;<small><a href="{{ page[1]  }}">{{ page[0] }}</a></small>
           {% endfor %}
-		
+
         </h3>
-	<!---- I could use this to include the tag line, but it looks cluttered...
-	<h3 class="masthead-title">
-         <small>{{ site.tagline }}</small>
-	</h3>
-	----->
+        <!---- I could use this to include the tag line, but it looks cluttered...
+        <h3 class="masthead-title">
+             <small>{{ site.tagline }}</small>
+        </h3>
+        ----->
 
       </header>
 
       <main>
         {{ content }}
-
-	{% include comments.html %}
       </main>
 
+      {% include comments.html %}
+      
       <footer class="footer">
         <small>
           &copy; <time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: '%Y' }}</time>. All rights reserved.
