@@ -149,11 +149,58 @@ When applying k-means, we first want to separate the training examples by catego
 
 Here again is the example data set with the selected prototypes. I ran k-means clustering with a k of 10 twice, once for the first class, and again for the second class, giving me a total of 20 clusters. Again, the cluster centers are marked with a black asterisk ‘*’.
 
+![Clusters][Cluster_Centers]
 
-[Eq_Gaussian]: https://chrisjmccormick.files.wordpress.com/2013/08/gaussian.png
-[Plot_bell_curve]: https://chrisjmccormick.files.wordpress.com/2013/08/bell_curve.png
+I’ve been claiming that the prototypes are just examples from the training set-–here you can see that’s not technically true. The cluster centers are computed as the average of all of the points in the cluster.
+
+How many clusters to pick per class has to be determined “heuristically”. Higher values of k mean more prototypes, which enables a more complex decision boundary but also means more computations to evaluate the network.
+
+Selecting Beta Values
+---------------------
+
+If you use k-means clustering to select your prototypes, then one simple method for specifying the beta coefficients is to set sigma equal to the average distance between all points in the cluster and the cluster center.
+
+![Equation for variance][variance_eq]
+
+Here, mu is the cluster centroid, m is the number of training samples belonging to this cluster, and x_i is the ith training sample in the cluster.
+
+Once we have the sigma value for the cluster, we compute beta as:
+
+Output Weights
+--------------
+
+The final set of parameters to train are the output weights. These can be trained using gradient descent (also known as least mean squares).
+
+First, for every data point in your training set, compute the activation values of the RBF neurons. These activation values become the training inputs to gradient descent.
+
+The linear equation needs a bias term, so we always add a fixed value of ‘1’ to the beginning of the vector of activation values.
+
+Gradient descent must be run separately for each output node (that is, for each class in your data set).
+
+For the output labels, use the value ‘1’ for samples that belong to the same category as the output node, and ‘0’ for all other samples. For example, if our data set has three classes, and we’re learning the weights for output node 3, then all category 3 examples should be labeled as ‘1’ and all category 1 and 2 examples should be labeled as 0.
+
+RBFN as a Neural Network
+------------------------
+
+So far, I’ve avoided using some of the typical neural network nomenclature to describe RBFNs. Since most papers do use neural network terminology when talking about RBFNs, I thought I’d provide some explanation on that here. Below is another version of the RBFN architecture diagram.
+
+![RBFN Architecture][RBFN_Architecture]
+
+Here the RBFN is viewed as a “3-layer network” where the input vector is the first layer, the second “hidden” layer is the RBF neurons, and the third layer is the output layer containing linear combination neurons.
+
+One bit of terminology that really had me confused for a while is that the prototype vectors used by the RBFN neurons are sometimes referred to as the “input weights”. I generally think of weights as being coefficients, meaning that the weights will be multiplied against an input value. Here, though, we’re computing the distance between the input vector and the “input weights” (the prototype vector).
+
+Example MATLAB Code
+===================
+I’ve packaged up the example dataset in this post and my MATLAB code for training an RBFN and generating the above plots. You can find it [here](https://chrisjmccormick.wordpress.com/2013/08/16/rbf-network-matlab-code/ "Post on Matlab code for RBFN").
+
+[Eq_Gaussian]: {{ site.url }}/assets/gaussian.png
+[Plot_bell_curve]: {{ site.url }}/assets/bell_curve.png
 [Eq_Gaussian_activation]: https://chrisjmccormick.files.wordpress.com/2013/08/activation_equation.png?w=211&h=45
-[Plot_Gaussian_sigmas]: https://chrisjmccormick.files.wordpress.com/2013/08/diff_variances_plot.png
-[Cluster_Centers]: https://chrisjmccormick.files.wordpress.com/2013/08/cluster_centers1.png
-[Contour_Plot_Cat1_Centers]: https://chrisjmccormick.files.wordpress.com/2013/08/category_1_scores_w_prototypes.png
-[approx_decision_boundary]: https://chrisjmccormick.files.wordpress.com/2013/08/approx_decision_boundary.png
+[Plot_Gaussian_sigmas]: {{ site.url }}/assets/diff_variances_plot.png
+[Cluster_Centers]: {{ site.url }}/assets/cluster_centers1.png
+[Contour_Plot_Cat1_Centers]: {{ site.url }}/assets/category_1_scores_w_prototypes.png
+[approx_decision_boundary]: {{ site.url }}/assets/approx_decision_boundary.png
+[variance_eq]: {{ site.url }}/assets/variance_eq.png
+[beta_eq]: {{ site.url }}/assets/beta_eq.png
+[RBFN_Architecture]: {{ site.url }}/assets/architecture_math.png
