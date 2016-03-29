@@ -6,11 +6,7 @@ layout: default
   <h1 class="post-title">{{ page.title }}</h1>
   <time datetime="{{ page.date | date_to_xmlschema }}" class="post-date">{{ page.date | date_to_string }}</time>
   {{ content }}
-  
-  <p>Testing 1 2 3 page.comments = "{{ page.comments }}"</p>
-  
-  {% if page.comments %}<p>Testing an if statement...</p> {% endif %}
-  
+    
   {% if page.comments %}
   <div id="disqus_thread"></div>
   <script>
