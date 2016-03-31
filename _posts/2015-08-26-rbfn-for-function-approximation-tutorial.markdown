@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title:  "RBFNs for Function Approximation"
 date:   2015-08-26 22:00:00 -0800
