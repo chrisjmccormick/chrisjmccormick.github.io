@@ -25,24 +25,53 @@ There's some thorough material on tf-idf in the Stanford NLP course on Coursera 
 
 LSA
 ---
-[Latent Semantic Analysis](https://en.wikipedia.org/wiki/Latent_semantic_analysis "LSA on Wikipedia") takes tf-idf one step further. Quite simply, you use SVD to perform dimensionality reduction on the tf-idf vectors. 
+[Latent Semantic Analysis](https://en.wikipedia.org/wiki/Latent_semantic_analysis "LSA on Wikipedia") takes tf-idf one step further. 
+
+Side note: "Latent Semantic Analysis (LSA)" and "Latent Semantic Indexing (LSI)" are the same thing, with the latter name being used sometimes when referring specifically to indexing a collection of documents for search ("Information Retrieval").
+
+LSA is quite simple, you just use SVD to perform dimensionality reduction on the tf-idf vectors, that's all there is to it.
 
 You might think to do this even if you had never heard of "LSA"--the tf-idf vectors tend to be long and unwieldy since they have one component for every word in the vocabulary. For instance, in my example Python code, these vectors have 10,000 components. So dimensionality reduction makes them more manageable for further operations like clustering or classification.
 
 However, the SVD step does more than just reduce the computational load--you are trading a large number of features for a smaller set of *better* features. 
 
-What makes the LSA features better?
+What makes the LSA features better? 
+
+### TODO
+
+LSA Python Code
+---------------
+{% highlight text %}
+Note: If you're less interested in learning LSA and just want to use it, you might consider checking out the nice `gensim` package in Python, it's built specifically for working with topic-modeling techniques like LSA.
+{% endhighlight %}
+
+I implemented an example of document classification with LSA in Python using scikit-learn. My code is available on GitHub, you can either visit the project page [here](https://github.com/chrisjmccormick/LSA_Classification "LSA_Classification project page"), or download the source [directly](https://github.com/chrisjmccormick/LSA_Classification/archive/master.zip "LSA_Classification direct download").
+
+scikit-learn already includes a [document classification example](http://scikit-learn.org/stable/auto_examples/applications/plot_out_of_core_classification.html "scikit-learn document classification example"). However, that example uses plain tf-idf rather than LSA, and is geared towards demonstrating batch training on large datasets. Still, I borrowed code from that example for things like retrieving the Reuters dataset.
+
+I wanted to put the emphasis on the feature extraction and not the classifier, so I used simple [k-nn classification](http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html) with k = 5 (majority wins). 
+
+Inspecting LSA
+--------------
+A little background on this Reuters dataset. These are news articles that were sent over the Reuters newswire in 1987. The dataset contains about 100 categories such as ‘mergers and acquisitions’, ‘interset rates’, ‘wheat’, ‘silver’ etc. Articles can be assigned multiple categories. The distribution of articles among categories is highly non-uniform; for example, the ‘earnings’ category contains 2,709 articles. And 75 of the categories contain less than 10 docs each!
+
+Armed with that background, let's see what LSA is learning from the dataset.
+
+You can look at component 0 of the SVD matrix, and look at the terms which are given the highest weight by this component. 
+
+![Top 10 Terms in Component 0][top_10_terms]
+
+These terms are all very common to articles in the "earnings" category.
+
+Here's an example earnings article to give you some context:
+
+{% highlight text %}
+COBANCO INC CBCO> YEAR NET
+
+Shr 34 cts vs 1.19 dlrs Net 807,000 vs 2,858,000 Assets 510.2 mln vs 479.7 mln Deposits 472.3 mln vs 440.3 mln Loans 299.2 mln vs 327.2 mln Note: 4th qtr not available. Year includes 1985 extraordinary gain from tax carry forward of 132,000 dlrs, or five cts per shr. Reuter
+{% endhighlight %}
+
+[top_10_terms]: {{ site.url }}/assets/Reuters_LSA_comp0_top10terms.png
 
 
 
-
-
- 
-Code
-----
-
-http://scikit-learn.org/stable/modules/neighbors.html#classification
-
-http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html
-
-http://scikit-learn.org/stable/auto_examples/applications/plot_out_of_core_classification.html
