@@ -36,3 +36,5 @@ pages_list:
 gems:
   - jekyll-paginate
   - jekyll-gist
+
+analytics_id:       UA-76624103-1
