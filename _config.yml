@@ -6,6 +6,7 @@ relative_permalinks: false
 title:               Chris McCormick
 tagline:             Machine Learning Tutorials and Insights
 url:                 http://mccormickml.com
+timezone:            America/Los_Angeles
 paginate:            1
 
 # Assets
@@ -20,7 +21,7 @@ author:
   name:              Chris McCormick
   url:               https://twitter.com/chrisjmccormick
   email:             chrisjmccormick@in2h2.com
-
+  
 # Custom vars
 version:             2.0.0
 github:
