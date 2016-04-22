@@ -33,7 +33,13 @@ We're going to look at the word "ants" and the words immediately around it.
 
 Side note: Stop words may or may not be removed when training Word2Vec. The pre-trained model released by Google (3 million word vectors learned from 100 billion words of Google news) does not include stop words. On the other hand, this [tutorial at Kaggle](https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-2-word-vectors "Kaggle tutorial on Word2Vec") says it is good to leave them in.
 
-We're going to train the neural network to predict, for a given input word, the probabilities of different words appearing nearby it ("Nearby" is formally defined by a "window size" parameter that dictates how many words behind and ahead of the input word we're looking at).  
+We're going to train the neural network to predict, for a given input word, the probabilities of different words appearing nearby it.  
+
+<div class="message">
+The number of surrounding words you take into account is referred to as the window size. Our example window size of 2 (2 words behind + 2 words ahead, 4 in total) is tiny. A more typical value would be 10 (20 surrounding words total). 
+
+For the skip-gram model, there is an additional detail about giving less weight to words farther away from the input word--we'll come back to that.
+</div>
 
 So how is this all represented?
 
@@ -69,19 +75,11 @@ This means that the hidden layer of this model is really just operating as a loo
 The Output Layer
 ================
 
-The word vector then gets fed to the output neurons. Remember that for our simple example we just have four output neurons, one for each of the four surrounding word positions.
-
-<div class="message">
-The number of surrounding words you take into account is referred to as the window size. Our window size of 2 (2 words to either direction --> 4 output nodes) is tiny. A more typical value would be 10 (20 output neurons).
-</div>
-
-Let's focus on just the output neuron for the word at position -2.
-
-The input to ouput neuron -2 is simply the `1 x 300` word vector for "ants". The weight matrix for output neuron -2 is `300 x 10,000` -- just like the hidden layer, except now there is one column per word instead of one row per word. 
+The `1 x 300` word vector for "ants" then gets fed to the output neuron. The weight matrix for the output neuron is `300 x 10,000` -- just like the hidden layer, except now there is one column per word instead of one row per word. 
 
 Now let's say the word car is at position 500 in our vocabulary. When we multiply our word vector for "ants" with the column for the word "car", we are calculating a value that reflects how likely it is for "car" to appear two positions to the left of "ants".
 
-[![Behavior of the output neuron for position -2][output_neuron]][output_neuron]
+[![Behavior of the output neuron][output_neuron]][output_neuron]
 
 Intuition
 =========
