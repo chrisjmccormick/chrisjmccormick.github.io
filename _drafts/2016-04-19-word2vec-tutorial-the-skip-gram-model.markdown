@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Word2Vec Tutorial"
+title:  "Word2Vec Tutorial - The Skip-Gram Model"
 date:   2016-04-19 22:00:00 -0800
 comments: true
 categories: tutorials
@@ -33,17 +33,17 @@ We're going to look at the word "ants" and the words immediately around it.
 
 Side note: Stop words may or may not be removed when training Word2Vec. The pre-trained model released by Google (3 million word vectors learned from 100 billion words of Google news) does not include stop words. On the other hand, this [tutorial at Kaggle](https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-2-word-vectors "Kaggle tutorial on Word2Vec") says it is good to leave them in.
 
-We're going to train the neural network to predict, for a given input word, what words it should expect at positions -2, -1, +1, and +2. The network won't output just a single word for each position, though. Rather, it will output a probability for every word in our vocabulary. 
+We're going to train the neural network to predict, for a given input word, the probabilities of different words appearing nearby it ("Nearby" is formally defined by a "window size" parameter that dictates how many words behind and ahead of the input word we're looking at).  
 
 So how is this all represented?
 
-We're going to represent the word "ant" as a one-hot vector. This vector will have 10,000 components (one for every word in our vocabulary) and we'll place a "1" in the position corresponding to the word "ant", and 0s in all of the other positions.
+We're going to represent the input word "ants" as a one-hot vector. This vector will have 10,000 components (one for every word in our vocabulary) and we'll place a "1" in the position corresponding to the word "ant", and 0s in all of the other positions.
+
+The output of the network is a single vector containing, for every word in our vocabulary, the probability that each word would appear near the input word. 
 
 Here's the architecture of our neural network.
 
 [![Skip-gram Neural Network Architecture][skip_gram_net_arch]][skip_gram_net_arch]
-
-Something a little unique about this neural network is that each output neuron is outputing a *vector* rather than a single value. This means that the weights for a single output neuron are stored as a matrix (rather than a vector), and the entire output layer is represented as a 3D-matrix.
 
 There is no activation function on the hidden layer neurons, but the output neurons use softmax. We'll come back to this later.
 
