@@ -6,6 +6,11 @@ permalink: /about/
 
 ![Profile picture][profile_pic]
 
+<div class="message">
+You are at my new Jekyll-based blog; I'm gradually moving over my original wordpress site where most of my content still resides.
+</div>
+[Wordpress site](http://chrisjmccormick.wordpress.com "My original Wordpress site")
+
 Hi! I’m a software and research engineer currently working for a startup named in2H2. 
 
 At in2H2, we are developing a unique hardware architecture for accelerating data mining algorithms that are based on distance calculations (such as Euclidean distance or Cosine distance). Specifically, we are targeting performance-constrained applications of k-Nearest Neighbor search and clustering algorithms such as k-Means.
