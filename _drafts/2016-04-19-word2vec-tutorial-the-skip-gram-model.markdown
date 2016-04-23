@@ -75,9 +75,11 @@ This means that the hidden layer of this model is really just operating as a loo
 The Output Layer
 ================
 
-The `1 x 300` word vector for "ants" then gets fed to the output neuron. The weight matrix for the output neuron is `300 x 10,000` -- just like the hidden layer, except now there is one column per word instead of one row per word. 
+The `1 x 300` word vector for "ants" then gets fed to the output layer. The output layer is a softmax regression classifier. There's an in-depth tutorial on Softmax Regression [here](http://ufldl.stanford.edu/tutorial/supervised/SoftmaxRegression/), but the gist of it is that each output neuron (one per word in our vocabulary!) will produce an output between 0 and 1, and the sum of all these output values will add up to 1. 
 
-Now let's say the word car is at position 500 in our vocabulary. When we multiply our word vector for "ants" with the column for the word "car", we are calculating a value that reflects how likely it is for "car" to appear two positions to the left of "ants".
+Specifically, each output neuron has a weight vector which it multiplies against the word vector from the hidden layer, then it applies the function `exp(x)` to the result. Finally, in order to get the outputs to sum up to 1, we divide this result by the sum of the results from *all* 10,000 output nodes.
+
+Here's an illustration of calculating the output of the output neuron for the word "car".
 
 [![Behavior of the output neuron][output_neuron]][output_neuron]
 
@@ -85,13 +87,11 @@ Intuition
 =========
 Ok, are you ready for an exciting bit of insight into this network? 
 
-If two different words have very similar "contexts" (that is, what words are likely to appear around them), then our model needs to output very similar results for these two words. And one way for the network to output similar context predictions for these two words is if *the word vectors are similar*. 
+If two different words have very similar "contexts" (that is, what words are likely to appear around them), then our model needs to output very similar results for these two words. And one way for the network to output similar context predictions for these two words is if *the word vectors are similar*. So, if two words have similar contexts, then our network is motivated to learn similar word vectors for these two words! Ta da!
 
-Ta da! 
+And what does it mean for two words to have similar contexts? I think you could expect that synonyms like "intelligent" and "smart" would have very similar contexts. Or that words that are related, like "engine" and "transmission", would probably have similar contexts as well. 
 
-If two words have similar contexts, then our network is motivated to learn similar word vectors for these two words.
-
-And what does it mean for two words to have similar contexts? Probably that they are synonyms or just closely related in some way.
+This can also handle stemming for you -- the network will likely learn similar word vectors for the words "ant" and "ants" because these should have similar contexts.
 
 [skip_gram_net_arch]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
 [weight_matrix]: {{ site.url }}/assets/word2vec/word2vec_weight_matrix_lookup_table.png
