@@ -11,39 +11,34 @@ This tutorial covers the skip gram neural network architecture for Word2Vec. My 
 
 The Model
 =========
+The skip-gram neural network model is actually surprisingly simple in its most basic form; I think it's the all the little tweaks and enhancements that start to clutter the explanation.
 
-Word2Vec uses a trick you may have seen elsewhere in machine learning. We're going to train a neural network with a single hidden layer to perform a certain task, but then we're not actually going to use that neural network for the task we trained it on!
+Let's start with a high-level insight about where we're going. Word2Vec uses a trick you may have seen elsewhere in machine learning. We're going to train a simple neural network with a single hidden layer to perform a certain task, but then we're not actually going to use that neural network for the task we trained it on! Instead, the goal is actually just to learn the weights of the hidden layer--we'll see that these weights are actually the "word vectors" that we're trying to learn.
 
 <div class="message">
 Another place you may have seen this trick is in unsupervised feature learning, where you train an auto-encoder to compress an input vector in the hidden layer, and decompress it back to the original in the output layer. After training it, you strip off the output layer (the decompression step) and just use the hidden layer--it's a trick for learning good image features without having labeled training data.
 </div>
 
-Let's get specific. I'm going to use some example values in place of variables. Let's say we have a vocabularly of 10,000 unique words, and we are going to train a Word2Vec model with 300 features.
+The Fake Task
+=============
+So now need to talk about this "fake" task that we're going to build the neural network to perform, and then we'll come back later to how this indirectly gives us those word vectors that we are really after.
 
-Take the following sentence
-
-"Do you want ants? Because that's how you get ants."
-
-We're going to look at the word "ants" and the words immediately around it.
-
-<table>
-<tr><td>-2</td><td>-1</td><td>0</td><td>1</td><td>2</td></tr>
-<tr><td>you</td><td>want</td><td>ants</td><td>because</td><td>that's</td></tr>
-</table>
-
-Side note: Stop words may or may not be removed when training Word2Vec. The pre-trained model released by Google (3 million word vectors learned from 100 billion words of Google news) does not include stop words. On the other hand, this [tutorial at Kaggle](https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-2-word-vectors "Kaggle tutorial on Word2Vec") says it is good to leave them in.
-
-We're going to train the neural network to predict, for a given input word, the probabilities of different words appearing nearby it.  
+We're going to train the neural network to tell us, for a given word in a sentence, what is the probability of each and every other word in our vocabulary appearing anywhere within a small window around the input word. For example, if you gave the trained network the word "Soviet" it's going to say that words like "Union" and "Russia" have a high probability of appearing nearby, and unrelated words like "watermelon" and "kangaroo" have a low probability. And it's going to output probabilities for every word in our vocabulary!
 
 <div class="message">
-The number of surrounding words you take into account is referred to as the window size. Our example window size of 2 (2 words behind + 2 words ahead, 4 in total) is tiny. A more typical value would be 10 (20 surrounding words total). 
-
-For the skip-gram model, there is an additional detail about giving less weight to words farther away from the input word--we'll come back to that.
+When I say "nearby", we'll actually be using a fixed "window size" that's a parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total).
 </div>
+
+We're going to train the neural network to do this by feeding it word pairs found in our training documents. The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
+
+Model Details
+=============
 
 So how is this all represented?
 
-We're going to represent the input word "ants" as a one-hot vector. This vector will have 10,000 components (one for every word in our vocabulary) and we'll place a "1" in the position corresponding to the word "ant", and 0s in all of the other positions.
+First of all, you know you can't feed a word just as a text string to a neural network, so we need a way to represent the words to the network. To do this, we first build a vocabulary of words from our training documents--let's say we have a vocabulary of 10,000 unique words.
+
+We're going to represent an input word like "ants" as a one-hot vector. This vector will have 10,000 components (one for every word in our vocabulary) and we'll place a "1" in the position corresponding to the word "ants", and 0s in all of the other positions.
 
 The output of the network is a single vector containing, for every word in our vocabulary, the probability that each word would appear near the input word. 
 
@@ -56,7 +51,7 @@ There is no activation function on the hidden layer neurons, but the output neur
 The Hidden Layer
 ================
 
-The hidden layer is going to be represented by a weight matrix with 10,000 rows (one for every word in our vocabulary) and 300 columns (one for every hidden neuron).
+For our example, we're going to say that we're learning word vectors with 300 features. So the hidden layer is going to be represented by a weight matrix with 10,000 rows (one for every word in our vocabulary) and 300 columns (one for every hidden neuron).
 
 If you look at the *rows* of this weight matrix, these are actually what will be our word vectors!
 
