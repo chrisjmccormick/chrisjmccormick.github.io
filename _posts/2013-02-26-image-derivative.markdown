@@ -110,7 +110,7 @@ Both lectures provide the following image as an example of the derivative with r
 
 
 
-[![ImageDerivative](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative.png)
+[![ImageDerivative](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative.png)](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative.png)
 
 Notice how, in the df/dx image, the vertical boundary between her face and hair is more apparent, or similarly the vertical boundary between her hair and the wall. The df/dy image, on the other hand, accentuates horizontal edges like the side/top of her hand, the edge of her eyes, and her eyebrows.
 
@@ -120,7 +120,7 @@ Also notice how, in the df/dx image, a horizontal transition from light to dark 
 
 We measure the strength of an edge by combining the df/dx and df/dy values, as shown below.
 
-[![ImageDerivative2](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative2.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative2.png)
+[![ImageDerivative2](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative2.png)](http://chrisjmccormick.files.wordpress.com/2013/02/imagederivative2.png)
 
 
 

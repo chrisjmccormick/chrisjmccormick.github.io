@@ -33,7 +33,7 @@ Let's start by looking at the effect of different variances, since this is the s
 
 Consider the following cluster, which has a multivariate distribution. This cluster was generated from a normal distribution with a horizontal variance of 1 and a vertical variance of 10, and no covariance. In order to assign a point to this cluster, we know intuitively that the distance in the horizontal dimension should be given a different weight than the distance in the vertical direction.
 
-[![Cluster with different variances](http://chrisjmccormick.files.wordpress.com/2014/07/cluster-with-different-variances.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/cluster-with-different-variances.png)
+[![Cluster with different variances](http://chrisjmccormick.files.wordpress.com/2014/07/cluster-with-different-variances.png)](https://chrisjmccormick.files.wordpress.com/2014/07/cluster-with-different-variances.png)
 
 We can account for the differences in variance by simply dividing the component differences by their variances.
 
@@ -84,7 +84,7 @@ Assuming no correlation, our covariance matrix is:
 
 The inverse of a 2x2 matrix can be found using the following:
 
-[![2x2MatrixInverse](http://chrisjmccormick.files.wordpress.com/2014/07/2x2matrixinverse.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/2x2matrixinverse.png)
+[![2x2MatrixInverse](http://chrisjmccormick.files.wordpress.com/2014/07/2x2matrixinverse.png)](https://chrisjmccormick.files.wordpress.com/2014/07/2x2matrixinverse.png)
 
 Applying this to get the inverse of the covariance matrix:
 
@@ -92,7 +92,7 @@ Applying this to get the inverse of the covariance matrix:
 
 Now we can work through the Mahalanobis equation to see how we arrive at our earlier variance-normalized distance equation.
 
-[![MDist_wo_correlation](http://chrisjmccormick.files.wordpress.com/2014/07/mdist_wo_correlation.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/mdist_wo_correlation.png)
+[![MDist_wo_correlation](http://chrisjmccormick.files.wordpress.com/2014/07/mdist_wo_correlation.png)](https://chrisjmccormick.files.wordpress.com/2014/07/mdist_wo_correlation.png)
 
 
 ### Correlation
@@ -111,7 +111,7 @@ Note that the placement of the transpose operator creates a matrix here, not a s
 For two dimensional data (as we've been working with so far), here are the equations for each individual cell of the 2x2 covariance matrix, so that you can get more of a feel for what each element represents.
 
 
-[![CovarianceMatrix](http://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png)
+[![CovarianceMatrix](http://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png)](https://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png)
 
 
 If you subtract the means from the dataset ahead of time, then you can drop the "minus mu" terms from these equations.
@@ -142,7 +142,7 @@ As another example, imagine two pixels taken from different places in a black an
 
 To understand how correlation confuses the distance calculation, let's look at the following two-dimensional example. The cluster of blue points exhibits positive correlation.
 
-[![DatasetWithCovariance](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)
+[![DatasetWithCovariance](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)
 
 
 
@@ -156,11 +156,11 @@ We can gain some insight into it, though, by taking a different approach. Instea
 
 We'll remove the correlation using a technique called Principal Component Analysis (PCA). To perform PCA, you calculate the eigenvectors of the data's covariance matrix. The two eigenvectors are the principal components. I've overlayed the eigenvectors on the plot. You can see that the first principal component, drawn in red, points in the direction of the highest variance in the data. The second principal component, drawn in black, points in the direction with the second highest variation.
 
-[![DatasetWithCovariance-PrincipalComponents](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance-principalcomponents.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance-principalcomponents.png)
+[![DatasetWithCovariance-PrincipalComponents](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance-principalcomponents.png)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance-principalcomponents.png)
 
 Using these vectors, we can rotate the data so that the highest direction of variance is aligned with the x-axis, and the second direction is aligned with the y-axis. This rotation is done by projecting the data onto the two principal components.
 
-[![DatasetRotated](http://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png)
+[![DatasetRotated](http://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png)
 
 If we calculate the covariance matrix for this rotated data, we can see that the data now has zero covariance:
 
@@ -177,7 +177,7 @@ What does it mean that there's no correlation? Just that the data is evenly dist
 
 You'll notice, though, that we haven't really accomplished anything yet in terms of normalizing the data. The two points are still equidistant from the mean. However, the principal directions of variation are now aligned with our axes, so we can normalize the data to have unit variance (we do this by dividing the components by the square root of their variance). This turns the data cluster into a sphere.
 
-[![DatasetNormalized](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)
+[![DatasetNormalized](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)](https://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)
 
 And now, finally, we see that our green point is closer to the mean than the red. Hurray!
 

@@ -59,11 +59,11 @@ Here's what the matcher_simple example shows you how to do, though:
 
 I have a sequence of images that I've captured of me holding a flash card in different positions and angles. The flash card has a penguin on it. Here are the two frames from the sequence that I've used for this example.
 
-[![frame_18](http://chrisjmccormick.files.wordpress.com/2013/01/frame_18.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/01/frame_18.png) [![frame_20](http://chrisjmccormick.files.wordpress.com/2013/01/frame_20.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/01/frame_20.png)
+[![frame_18](http://chrisjmccormick.files.wordpress.com/2013/01/frame_18.png)](http://chrisjmccormick.files.wordpress.com/2013/01/frame_18.png) [![frame_20](http://chrisjmccormick.files.wordpress.com/2013/01/frame_20.png)](http://chrisjmccormick.files.wordpress.com/2013/01/frame_20.png)
 
 I took two images from the sequence, and cropped one of them down to just the penguin, then ran the example on the two images. Below is the result.
 
-[![SiftMatching](http://chrisjmccormick.files.wordpress.com/2013/01/siftmatching.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/01/siftmatching.png)
+[![SiftMatching](http://chrisjmccormick.files.wordpress.com/2013/01/siftmatching.png)](http://chrisjmccormick.files.wordpress.com/2013/01/siftmatching.png)
 
 The example code is extracting all of the SIFT features that it can find in both images. Then, for each feature in the left image, it's finding the closest matching feature in the image on the right. It draws a line from each keypoint in the left image to its closest match in the right image. I can see about five features that are clearly matched incorrectly, but it looks like the majority of them are correct.
 

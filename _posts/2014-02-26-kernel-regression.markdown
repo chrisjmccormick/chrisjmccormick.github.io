@@ -22,13 +22,13 @@ Gaussian Kernel Regression is a regression technique which interestingly does no
 
 I think of regression as simply fitting a line to a scatter plot. In Andrew Ng's machine learning course on Coursera, he uses the example of predicting a home's sale value based on its square footage.
 
-[![HousingPricesPlot](http://chrisjmccormick.files.wordpress.com/2014/02/housingpricesplot.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/housingpricesplot.png)
+[![HousingPricesPlot](http://chrisjmccormick.files.wordpress.com/2014/02/housingpricesplot.png)](http://chrisjmccormick.files.wordpress.com/2014/02/housingpricesplot.png)
 
 Note that the data points don't really lie on the line. Regression allows for the fact that there are other variables or noise in the data. For example, there are many other factors in the sale price of a home besides just the square footage.
 
 Gaussian Kernel Regression is a technique for [_non-linear_ regression](http://en.wikipedia.org/wiki/Nonlinear_regression). I like the dataset Youngmok Yun used in his post, so I'm going to reuse it here.
 
-[![2D_Approximated](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approximated.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approximated.png)
+[![2D_Approximated](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approximated.png)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approximated.png)
 
 The black line represents our original function given by the following equation:
 
@@ -40,15 +40,15 @@ The black line represents our original function given by the following equation:
 
 Here's another fun example in three dimensions. Below is a plot of what's known as the "sombrero" function. The first plot shows the original sombrero function. In the second plot I've added random noise to the data points. The third plot shows the result of using Gaussian Kernel Regression to recover the original function.
 
-[![SombreroOriginal](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerooriginal1.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerooriginal1.png)
+[![SombreroOriginal](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerooriginal1.png)](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerooriginal1.png)
 
 
-[![SombreroWithNoise](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerowithnoise1.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerowithnoise1.png)
+[![SombreroWithNoise](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerowithnoise1.png)](http://chrisjmccormick.files.wordpress.com/2014/02/sombrerowithnoise1.png)
 
 
 
 
-[![SombreroApproximated](http://chrisjmccormick.files.wordpress.com/2014/02/sombreroapproximated1.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/sombreroapproximated1.png)
+[![SombreroApproximated](http://chrisjmccormick.files.wordpress.com/2014/02/sombreroapproximated1.png)](http://chrisjmccormick.files.wordpress.com/2014/02/sombreroapproximated1.png)
 
 
 
@@ -61,7 +61,7 @@ Before we dive into the actual regression algorithm, let's look at the approach 
 
 Let's say you have the following scatter plot, and you want to approximate the 'y' value at x = 60. We'll call this our "query point".
 
-[![2D_Noisy](http://chrisjmccormick.files.wordpress.com/2014/02/2d_noisy.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_noisy.png)
+[![2D_Noisy](http://chrisjmccormick.files.wordpress.com/2014/02/2d_noisy.png)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_noisy.png)
 
 How would you go about it? One way would be to look at the data points near x = 60, say from x = 58 to x = 62, and average their 'y' values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to x = 60 got more weight than points farther away.
 
@@ -119,11 +119,11 @@ The above equation is the formula for what is more broadly known as [Kernel Regr
 
 An important parameter of Gaussian Kernel Regression is the variance, sigma^2. Informally, this parameter will control the smoothness of your approximated function. Smaller values of sigma will cause the function to overfit the data points, while larger values will cause it to underfit. The below plots show the result of using three different values of sigma: 0.5, 5, and 50.
 
-[![2D_Approx_Sigma0_5](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma0_5.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma0_5.png)
+[![2D_Approx_Sigma0_5](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma0_5.png)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma0_5.png)
 
-[![2D_Approx_Sigma5](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma5.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma5.png)
+[![2D_Approx_Sigma5](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma5.png)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma5.png)
 
-[![2D_Approx_Sigma50](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma50.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma50.png)
+[![2D_Approx_Sigma50](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma50.png)](http://chrisjmccormick.files.wordpress.com/2014/02/2d_approx_sigma50.png)
 
 Sigma controls the width of the Gaussian, so a larger value of sigma will incorporate farther away points into the averaging, resulting in a smoother result.
 

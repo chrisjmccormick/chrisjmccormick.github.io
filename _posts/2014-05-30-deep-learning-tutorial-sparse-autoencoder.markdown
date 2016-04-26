@@ -67,9 +67,9 @@ Given this constraint, the input vector which will produce the largest response 
 
 The below examples show the dot product between two vectors. The magnitude of the dot product is largest when the vectors  are parallel.
 
-[![DotProductMagnitudeA](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudea.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudea.png)
+[![DotProductMagnitudeA](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudea.png)](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudea.png)
 
-[![DotProductMagnitudeB](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudeb.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudeb.png)
+[![DotProductMagnitudeB](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudeb.png)](http://chrisjmccormick.files.wordpress.com/2014/05/dotproductmagnitudeb.png)
 
 Ok, that's great. But in the real world, the magnitude of the input vector is not constrained. The reality is that a vector with larger magnitude components (corresponding, for example, to a higher contrast image) could produce a stronger response than a vector with lower magnitude components (a lower contrast image), even if the smaller vector is more in alignment with the weight vector.
 
@@ -103,7 +103,7 @@ Once you have the network's outputs for all of the training examples, we can use
 
 Next, we need to add in the regularization cost term (also a part of Equation (8)).
 
-[![RegularizationTerm](https://chrisjmccormick.files.wordpress.com/2014/05/regularizationterm.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/regularizationterm.png)
+[![RegularizationTerm](https://chrisjmccormick.files.wordpress.com/2014/05/regularizationterm.png)](https://chrisjmccormick.files.wordpress.com/2014/05/regularizationterm.png)
 
 This term is a complex way of describing a fairly simple step. You just need to square every single weight value in both weight matrices (W1 and W2), and sum all of them up. Finally, multiply the result by lambda over 2.
 
@@ -115,7 +115,7 @@ Next, we need add in the sparsity constraint.
 
 First we'll need to calculate the average activation value for each hidden neuron.
 
-[![AvgHiddenNeuronActivation](https://chrisjmccormick.files.wordpress.com/2014/05/avghiddenneuronactivation.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/avghiddenneuronactivation.png)
+[![AvgHiddenNeuronActivation](https://chrisjmccormick.files.wordpress.com/2014/05/avghiddenneuronactivation.png)](https://chrisjmccormick.files.wordpress.com/2014/05/avghiddenneuronactivation.png)
 
 If a2 is a matrix containing the hidden neuron activations with one row per hidden neuron and one column per training example, then you can just sum along the rows of a2 and divide by m.
 
@@ -123,7 +123,7 @@ The result is pHat, a column vector with one row per hidden neuron.
 
 Once you have pHat, you can calculate the sparsity cost term.
 
-[![SparsityCostTerm](https://chrisjmccormick.files.wordpress.com/2014/05/sparsitycostterm.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/sparsitycostterm.png)
+[![SparsityCostTerm](https://chrisjmccormick.files.wordpress.com/2014/05/sparsitycostterm.png)](https://chrisjmccormick.files.wordpress.com/2014/05/sparsitycostterm.png)
 
 To vectorize this equation:
 
@@ -157,7 +157,7 @@ This is the update rule for gradient descent. However, we're not strictly using 
 
 [Equation 2.1]
 
-[![W1grad](http://chrisjmccormick.files.wordpress.com/2014/05/w1grad1.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/w1grad1.png)
+[![W1grad](http://chrisjmccormick.files.wordpress.com/2014/05/w1grad1.png)](https://chrisjmccormick.files.wordpress.com/2014/05/w1grad1.png)
 
 We need to compute this for both W1grad and W2grad.
 
@@ -165,7 +165,7 @@ The key term here which we have to work hard to calculate is the matrix of weigh
 
 To understand how the weight gradients are calculated, it's most clear when you look at this equation (from page 8 of the lecture notes) which gives you the gradient value for a _single weight value_ relative to a _single training example._ This equation needs to be evaluated for every combination of j and i, leading to a matrix with same dimensions as the weight matrix. Then it needs to be evaluated for every training example, and the resulting matrices are summed.
 
-[![GradientForSingleWeight](https://chrisjmccormick.files.wordpress.com/2014/05/gradientforsingleweight.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/gradientforsingleweight.png)
+[![GradientForSingleWeight](https://chrisjmccormick.files.wordpress.com/2014/05/gradientforsingleweight.png)](https://chrisjmccormick.files.wordpress.com/2014/05/gradientforsingleweight.png)
 
 In the lecture notes, step 4 at the top of page 9 shows you how to vectorize this over all of the weights for a _single training example:_
 
@@ -177,19 +177,19 @@ Instead of looping over the training examples, though, we can express this as a 
 
 [Equation 2.2]
 
-[![W1grad_total](http://chrisjmccormick.files.wordpress.com/2014/05/w1grad_total.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/w1grad_total.png)
+[![W1grad_total](http://chrisjmccormick.files.wordpress.com/2014/05/w1grad_total.png)](https://chrisjmccormick.files.wordpress.com/2014/05/w1grad_total.png)
 
-[![W2grad_total](http://chrisjmccormick.files.wordpress.com/2014/05/w2grad_total.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/w2grad_total.png)
+[![W2grad_total](http://chrisjmccormick.files.wordpress.com/2014/05/w2grad_total.png)](https://chrisjmccormick.files.wordpress.com/2014/05/w2grad_total.png)
 
 So we can see that there are ultimately four matrices that we'll need: a1, a2, delta2, and delta3. Once we have these four, we're ready to calculate the final gradient matrices W1grad and W2grad. We already have a1 and a2 from step 1.1, so we're halfway there, ha!
 
 Delta3 can be calculated with the following. I've taken the equations from the lecture notes and modified them slightly to be matrix operations, so they translate pretty directly into Matlab code; you're welcome :).
 
-[![delta3](https://chrisjmccormick.files.wordpress.com/2014/05/delta32.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/delta32.png)
+[![delta3](https://chrisjmccormick.files.wordpress.com/2014/05/delta32.png)](https://chrisjmccormick.files.wordpress.com/2014/05/delta32.png)
 
 Next, the below equations show you how to calculate delta2. Again I've modified the equations into a vectorized form. Here the notation gets a little wacky, and I've even resorted to making up my own symbols! Hopefully the table below will explain the operations clearly, though. Just be careful in looking at whether each operation is a regular matrix product, an element-wise product, etc.
 
-[![delta2](http://chrisjmccormick.files.wordpress.com/2014/05/delta2.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/05/delta2.png)
+[![delta2](http://chrisjmccormick.files.wordpress.com/2014/05/delta2.png)](https://chrisjmccormick.files.wordpress.com/2014/05/delta2.png)
 
 Now that you have delta3 and delta2, you can evaluate [Equation 2.2], then plug the result into [Equation 2.1] to get your final matrices W1grad and W2grad. Whew!
 

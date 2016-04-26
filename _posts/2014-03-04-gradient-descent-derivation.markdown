@@ -39,7 +39,7 @@ The cost function J for a particular choice of parameters Ѳ is the mean squared
 Where the variables used are:
 
 
-[![MSE_Variable_Descriptions](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)
+[![MSE_Variable_Descriptions](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)
 
 
 The MSE measures the average amount that the model's predictions vary from the correct values, so you can think of it as a measure of the model’s performance on the training set. The cost is higher when the model is performing poorly on the training set. The objective of the learning algorithm, then, is to find the parameters Ѳ which give the minimum possible cost J.
@@ -77,7 +77,7 @@ Alpha is a parameter called the learning rate which we'll come back to, but for 
 Below is a plot of our function, J(Ѳ), and the value of Ѳ over ten iterations of gradient descent.
 
 
-[![Simple2DGradientDescent](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)
+[![Simple2DGradientDescent](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)
 
 
 Below is a table showing the value of theta prior to each iteration, and the update amounts.
@@ -142,19 +142,19 @@ I've written out the derivation below, and I explain each step in detail further
 
 To move from equation [1.1] to [1.2], we need to apply two basic derivative rules:
 
-[![ScalarMultipleAndSumRules](http://chrisjmccormick.files.wordpress.com/2014/03/scalarmultipleandsumrules.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/03/scalarmultipleandsumrules.png)
+[![ScalarMultipleAndSumRules](http://chrisjmccormick.files.wordpress.com/2014/03/scalarmultipleandsumrules.png)](http://chrisjmccormick.files.wordpress.com/2014/03/scalarmultipleandsumrules.png)
 
 Moving from [1.2] to [1.3], we apply both the power rule and the chain rule:
 
-[![PowerRule](http://chrisjmccormick.files.wordpress.com/2014/03/powerrule.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/03/powerrule.png)
+[![PowerRule](http://chrisjmccormick.files.wordpress.com/2014/03/powerrule.png)](http://chrisjmccormick.files.wordpress.com/2014/03/powerrule.png)
 
 Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except Ѳ0 are treated as constants (Ѳ1, x, and y).
 
-[![ThetaZeroDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)
+[![ThetaZeroDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)
 
 Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, Ѳ0. Now we must also take the partial derivative of the MSE function with respect to Ѳ1. The only difference is in the final step, where we take the partial derivative of the error:
 
-[![ThetaOneDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetaonederivativeoferror.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/03/thetaonederivativeoferror.png)
+[![ThetaOneDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetaonederivativeoferror.png)](http://chrisjmccormick.files.wordpress.com/2014/03/thetaonederivativeoferror.png)
 
 
 ### One Half Mean Squared Error
@@ -170,7 +170,7 @@ Alternatively, you could think of this as folding the 2 into the learning rate. 
 
 Altogether, we have the following definition for gradient descent over our cost function.
 
-[![GradientDescentOfMSETable](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)
+[![GradientDescentOfMSETable](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)
 
 
 ### Training Set Statistics

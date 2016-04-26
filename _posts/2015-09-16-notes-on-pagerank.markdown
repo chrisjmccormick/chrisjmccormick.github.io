@@ -155,7 +155,7 @@ We fix this by tweaking the web graph. We add a link between each page and every
 
 Here's how we express this tweak algebraically. 'M' is our original matrix, and A is our new modified matrix that we will use to determine the scores.
 
-[![Eq_FinalFormulation](https://chrisjmccormick.files.wordpress.com/2015/09/eq_finalformulation.png?w=470)](https://chrisjmccormick.files.wordpress.com/2015/09/eq_finalformulation.png)
+[![Eq_FinalFormulation](https://chrisjmccormick.files.wordpress.com/2015/09/eq_finalformulation.png)](https://chrisjmccormick.files.wordpress.com/2015/09/eq_finalformulation.png)
 
 And here's the Matlab code to run PageRank with this modified graph. If you run this code, you'll find that it produces close to the same result as before, but the implementation is now robust against dead ends and cycles in the graph.
 

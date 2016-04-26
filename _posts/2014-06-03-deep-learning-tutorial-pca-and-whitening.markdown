@@ -48,7 +48,7 @@ For 2D data, here are the equations for each individual cell of the 2x2 covarian
 
 
 
-[![CovarianceMatrix](http://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png)
+[![CovarianceMatrix](http://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png)](https://chrisjmccormick.files.wordpress.com/2014/06/covariancematrix.png)
 
 
 If you subtract the means from the dataset ahead of time, then you can drop the "minus mu" terms from these equations. Subtracting the means causes the dataset to be centered around (0, 0).

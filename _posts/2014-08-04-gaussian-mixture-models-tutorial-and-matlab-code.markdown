@@ -31,11 +31,11 @@ You can think of building a Gaussian Mixture Model as a type of clustering algor
 
 When performing k-means clustering, you assign points to clusters using the straight Euclidean distance. The Euclidean distance is a poor metric, however, when the cluster contains significant covariance. In the below example, we have a group of points exhibiting some correlation. The red and green x's are equidistant from the cluster mean using the Euclidean distance, but we can see intuitively that the red X doesn't match the statistics of this cluster near as well as the green X.
 
-[![DatasetWithCovariance](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)
+[![DatasetWithCovariance](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)
 
 If you were to take these points and normalize them to remove the covariance (using a process called whitening), the green X becomes much closer to the mean than the red X.
 
-[![DatasetNormalized](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)
+[![DatasetNormalized](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)
 
 The Gaussian Mixture Models approach will take cluster covariance into account when forming the clusters.
 
@@ -65,11 +65,11 @@ In the "Expectation" step, we calculate the probability that each data point bel
 
 We'll need the equation for the probability density function of a multivariate Gaussian. A multivariate Gaussian ("multivariate" just means multiple input variables) is more complex because there is the possibility for the different variables to have different variances, and even for there to be correlation between the variables. These properties are captured by the covariance matrix.
 
-[![MultivariateGaussian_Eq](http://chrisjmccormick.files.wordpress.com/2014/08/multivariategaussian_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/multivariategaussian_eq.png)
+[![MultivariateGaussian_Eq](http://chrisjmccormick.files.wordpress.com/2014/08/multivariategaussian_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/08/multivariategaussian_eq.png)
 
 The probability that example point i belongs to cluster j can be calculated using the following:
 
-[![MembershipProbability_Eq](http://chrisjmccormick.files.wordpress.com/2014/08/membershipprobability_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/membershipprobability_eq.png)
+[![MembershipProbability_Eq](http://chrisjmccormick.files.wordpress.com/2014/08/membershipprobability_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/08/membershipprobability_eq.png)
 
 We'll apply this equation to every example and every cluster, giving us a matrix with one row per example and one column per cluster.
 
@@ -87,7 +87,7 @@ With this in mind,  the update rules for the maximization step are below. I've 
 
 
 
-[![MaximizationEquations](http://chrisjmccormick.files.wordpress.com/2014/08/maximizationequations1.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/maximizationequations1.png)
+[![MaximizationEquations](http://chrisjmccormick.files.wordpress.com/2014/08/maximizationequations1.png)](https://chrisjmccormick.files.wordpress.com/2014/08/maximizationequations1.png)
 
 The equation for mean (mu) of cluster j is just the average of all data points in the training set, with each example weighted by its probability of belonging to cluster j.
 
@@ -108,7 +108,7 @@ If you are simply interested in using GMMs and don't care how they're implemente
 The 1D example will output a plot showing the original data points and their PDFs in blue and red. The PDFs estimated by the EM algorithm are plotted in black for comparison.
 
 
-### [![1D_Example](http://chrisjmccormick.files.wordpress.com/2014/08/1d_example.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/1d_example.png)
+### [![1D_Example](http://chrisjmccormick.files.wordpress.com/2014/08/1d_example.png)](https://chrisjmccormick.files.wordpress.com/2014/08/1d_example.png)
 
 
 The 2D example is based on Matlab's own GMM tutorial [here](http://www.mathworks.com/help/stats/gaussian-mixture-models.html), but without any dependency on the Statistics Toolbox. The 2D example plots the PDFs using contour plots; you should see one plot of the original PDFs and another showing the estimated PDFs.

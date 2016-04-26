@@ -33,7 +33,7 @@ The following is the equation for the Euclidean distance between two vectors, x 
 
 Let's see what the code looks like for calculating the Euclidean distance between a collection of input vectors in X (one per row) and a collection of 'k' models or cluster centers in C (also one per row).
 
-[![SlowL2Code](http://chrisjmccormick.files.wordpress.com/2014/08/slowl2code.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/slowl2code.png)
+[![SlowL2Code](http://chrisjmccormick.files.wordpress.com/2014/08/slowl2code.png)](https://chrisjmccormick.files.wordpress.com/2014/08/slowl2code.png)
 
 The problem with this approach is that there's no way to get rid of that for loop, iterating over each of the clusters. In the next section we'll look at an approach that let's us avoid the for-loop and perform a matrix multiplication instead.
 
@@ -43,7 +43,7 @@ The problem with this approach is that there's no way to get rid of that for loo
 
 If we simply expand the square term:
 
-[![EuclideanDistanceExpansion_Eq](http://chrisjmccormick.files.wordpress.com/2014/08/euclideandistanceexpansion_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/euclideandistanceexpansion_eq.png)
+[![EuclideanDistanceExpansion_Eq](http://chrisjmccormick.files.wordpress.com/2014/08/euclideandistanceexpansion_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/08/euclideandistanceexpansion_eq.png)
 
 
 
@@ -96,6 +96,6 @@ We will show that, in order to make this comparison, it is equivalent to instead
 
 The following figure shows the derivation of the above equivalence.
 
-[![FastL2ComparisonDerivation](http://chrisjmccormick.files.wordpress.com/2014/08/fastl2comparisonderivation.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/08/fastl2comparisonderivation.png)
+[![FastL2ComparisonDerivation](http://chrisjmccormick.files.wordpress.com/2014/08/fastl2comparisonderivation.png)](https://chrisjmccormick.files.wordpress.com/2014/08/fastl2comparisonderivation.png)
 
 There is one additional modification we can make to this equation, which is to divide both sides by -2. This moves the 2 over to the pre-calculated term. Note that it also flips the comparison sign, so where we were previously looking for the minimum value, we are now looking for the maximum.

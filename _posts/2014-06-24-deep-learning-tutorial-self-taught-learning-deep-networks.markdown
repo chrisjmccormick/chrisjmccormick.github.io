@@ -100,7 +100,7 @@ You could probably also derive this equation by working through the derivative o
 
 The gradient checking code verified my implementation.
 
-[![delta4_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/delta4_eq1.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/delta4_eq1.png)
+[![delta4_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/delta4_eq1.png)](https://chrisjmccormick.files.wordpress.com/2014/06/delta4_eq1.png)
 
 
 
@@ -108,13 +108,13 @@ In calculating the layer 3 and layer 2 deltas, note that _W_ does not include th
 
 
 
-[![delta3_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/delta3_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/delta3_eq.png)
+[![delta3_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/delta3_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/06/delta3_eq.png)
 
 
 
 
 
-[![delta2_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/delta2_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/delta2_eq.png)
+[![delta2_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/delta2_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/06/delta2_eq.png)
 
 
 
@@ -124,17 +124,17 @@ Once you have the delta terms, you can calculate the gradient values.
 
 My Softmax Regression model doesn't include a bias term, so I'm only showing the equation for gradients for W. Also, note that we are applying regularization to the output layer, and so I've included the lambda term.
 
-[![Layer3_grads_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/layer3_grads_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/layer3_grads_eq.png)
+[![Layer3_grads_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/layer3_grads_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/06/layer3_grads_eq.png)
 
 For the hidden layers, I do have a bias term. Also, we are not applying regularization to these layers, so there is no lambda term.
 
-[![Layer2_grads_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/layer2_grads_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/layer2_grads_eq.png)
+[![Layer2_grads_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/layer2_grads_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/06/layer2_grads_eq.png)
 
 
 
 
 
-[![Layer1_grads_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/layer1_grads_eq.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/layer1_grads_eq.png)
+[![Layer1_grads_Eq](http://chrisjmccormick.files.wordpress.com/2014/06/layer1_grads_eq.png)](https://chrisjmccormick.files.wordpress.com/2014/06/layer1_grads_eq.png)
 
 
 

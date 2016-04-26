@@ -33,7 +33,7 @@ One bit of intuition you can derive about it, though, is the normalization. By d
 
 Below is the plot of e^x. There's not much intuition to be derived from this plot, other than that the output of e^x is always positive.
 
-[![Graph_exponential](http://chrisjmccormick.files.wordpress.com/2014/06/graph_exponential.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/graph_exponential.png)
+[![Graph_exponential](http://chrisjmccormick.files.wordpress.com/2014/06/graph_exponential.png)](https://chrisjmccormick.files.wordpress.com/2014/06/graph_exponential.png)
 
 
 ### Over-Parameterization
@@ -57,13 +57,13 @@ While the notes don't provide a derivation of Softmax Regression, they do show h
 
 Below is the cost function (with weight decay) for Softmax Regression from the tutorial.
 
-[![SoftmaxRegression_Cost](http://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_cost.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_cost.png)
+[![SoftmaxRegression_Cost](http://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_cost.png)](https://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_cost.png)
 
 The indicator function denoted by 1{y^(i) = _j_} means that only the output of the classifier corresponding to the correct class label is included in the cost. That is, when computing the cost for an example of the digit "4", only the output of classifier 4 contributes to the cost.
 
 Below is a plot of log(x). Note that the input will only range from 0 to 1. The costs in this range are all negative, so note the negative sign at the beginning of our cost function to account for this.
 
-[![GraphLogX](http://chrisjmccormick.files.wordpress.com/2014/06/graphlogx.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/graphlogx.png)
+[![GraphLogX](http://chrisjmccormick.files.wordpress.com/2014/06/graphlogx.png)](https://chrisjmccormick.files.wordpress.com/2014/06/graphlogx.png)
 
 The output of log(x) ranges from negative infinity to 0. If the classifier outputs 1 for the training example, then the cost is zero. The cost increases exponentially as the classifier's output decreases towards 0. Sounds like good behavior for our cost function!
 
@@ -73,7 +73,7 @@ The output of log(x) ranges from negative infinity to 0. If the classifier outpu
 
 Below is the gradient function from the tutorial.
 
-[![SoftmaxRegression_ThetaGrad](http://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_thetagrad.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_thetagrad.png)
+[![SoftmaxRegression_ThetaGrad](http://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_thetagrad.png)](https://chrisjmccormick.files.wordpress.com/2014/06/softmaxregression_thetagrad.png)
 
 Note that this function computes the gradients for a single class _j_. The expression inside the parentheses evaluates to a single value between 0 and 1. This is multiplied by the vector x^(i) to get the weight updates for a single training example _i_ and a single class _j_.
 

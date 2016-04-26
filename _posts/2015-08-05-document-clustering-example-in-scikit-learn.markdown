@@ -153,7 +153,7 @@ The Adjusted Rand-Index tells you how it's doing compared to random guessing. Ra
 
 Here are some V-Measure scores I got from trying different parameters:
 
-[![image (3)](https://chrisjmccormick.files.wordpress.com/2015/08/image-3.png?w=470)](https://chrisjmccormick.files.wordpress.com/2015/08/image-3.png)
+[![image (3)](https://chrisjmccormick.files.wordpress.com/2015/08/image-3.png)](https://chrisjmccormick.files.wordpress.com/2015/08/image-3.png)
 
 
 

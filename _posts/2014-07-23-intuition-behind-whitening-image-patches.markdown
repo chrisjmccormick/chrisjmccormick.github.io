@@ -41,27 +41,27 @@ I randomly selected 10,000 8x8 pixel patches from the CIFAR-10 dataset (a large 
 
 For example, here are the covariance values between the pixel at row 4, column 5 and every pixel in the 8x8 patch.
 
-[![Pixel_4_5_correlation](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation.png)
+[![Pixel_4_5_correlation](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation.png)
 
 As you might expect, the pixel is most strongly correlated with its neighbors, and decreasingly so as you move outwards.
 
 Here is another example, this time for the pixel in the top left corner.
 
-[![Pixel_1_1_correlation](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation.png)
+[![Pixel_1_1_correlation](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation.png)
 
 To take this to its conclusion, here are the correlations for all 64 pixels, displayed in a grid. There is a grey border around each pixel to separate them.
 
-[![All Pixel Correlations](http://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations1.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations1.png)
+[![All Pixel Correlations](http://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations1.png)](https://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations1.png)
 
 
 
 We know that PCA Whitening removes correlation, and we can confirm this by looking at the pixel correlations in the whitened image patches. Below are the same figures as before, but using the whitened image patches.
 
-[![Pixel_4_5_correlation_after_whiten](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation_after_whiten.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation_after_whiten.png)
+[![Pixel_4_5_correlation_after_whiten](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation_after_whiten.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_4_5_correlation_after_whiten.png)
 
-[![Pixel_1_1_correlation_afterWhiten](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation_afterwhiten.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation_afterwhiten.png)
+[![Pixel_1_1_correlation_afterWhiten](http://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation_afterwhiten.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pixel_1_1_correlation_afterwhiten.png)
 
-[![All Pixel Correlations After Whiten](http://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations-after-whiten.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations-after-whiten.png)
+[![All Pixel Correlations After Whiten](http://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations-after-whiten.png)](https://chrisjmccormick.files.wordpress.com/2014/07/all-pixel-correlations-after-whiten.png)
 
 There is still a little correlation between each pixel and its neighbors, but overall the correlation has been reduced dramatically.
 
@@ -77,15 +77,15 @@ I dig into this issue some in [my post on the Mahalanobis distance](http://chris
 
 Here is a simple 2D example, taken from that blog post. The below plot shows a dataset with some strong covariance. The green X and red X are both equidistant from the mean (red circle), but we can see intuitively that the green X is really more similar to the data than the red X.
 
-[![DatasetWithCovariance](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)
+[![DatasetWithCovariance](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetwithcovariance.png)
 
 In order for the green X to have a smaller distance to the mean than the red X, we need to normalize for the covariance present in this data. The problem, though, is that the variance isn't aligned with the x or y axes. So first we need to rotate the data so that variance is aligned with the axes (by projecting it onto the principal components):
 
-[![DatasetRotated](http://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png)
+[![DatasetRotated](http://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetrotated.png)
 
 Then we can normalize for variance, and the green X becomes much closer to the mean than the red.
 
-[![DatasetNormalized](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png?w=470)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)
+[![DatasetNormalized](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)](http://chrisjmccormick.files.wordpress.com/2014/07/datasetnormalized.png)
 
 From this example, we gain the following key insight:
 
@@ -134,13 +134,13 @@ So what are these "directions" in which random image patches vary? We can gain s
 
 Let's look at just the first principal component, which is essentially a blank square. Before projecting the image patches onto these components, we calculate the mean of each pixel and subtract these means from all of the image patches, so that the image patches are all centered around 0. When you take the dot product between the (re-centered) 10k patches and this blank square, you get a set of 10k values with the following histogram:
 
-[![PC-1_Hist](http://chrisjmccormick.files.wordpress.com/2014/07/pc-1_hist.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pc-1_hist.png)
+[![PC-1_Hist](http://chrisjmccormick.files.wordpress.com/2014/07/pc-1_hist.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pc-1_hist.png)
 
 Because we subtracted out the mean, the dot-product between the image patch and the principal component is also the correlation. A black image patch has a large positive correlation to the first component, whereas a white patch will produce a large negative value.
 
 Here is the histogram for the second principal component (which looks like a vertical edge pattern).
 
-[![PC-2_Hist](http://chrisjmccormick.files.wordpress.com/2014/07/pc-2_hist.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pc-2_hist.png)
+[![PC-2_Hist](http://chrisjmccormick.files.wordpress.com/2014/07/pc-2_hist.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pc-2_hist.png)
 
 An image patch containing a vertical edge that's black on the left and white on the right will produce a strong positive correlation, or if it's white on the left and black on the right it will produce a strong negative correlation.
 
@@ -164,7 +164,7 @@ This intuition is supported by PCA's usefulness for compression. You could comp
 
 It's also interesting to look at the histogram of correlations for the 64th principal component. Note the scale on the x-axis: ten to the negative fourteenth! There is almost no correlation in the dataset with this pattern, meaning it's very uncommon.
 
-[![PC-64_Hist](http://chrisjmccormick.files.wordpress.com/2014/07/pc-64_hist.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/pc-64_hist.png)
+[![PC-64_Hist](http://chrisjmccormick.files.wordpress.com/2014/07/pc-64_hist.png)](https://chrisjmccormick.files.wordpress.com/2014/07/pc-64_hist.png)
 
 The final step of PCA Whitening is to divide each component by its variance. This will have the effect of balancing out the weight of the different components. You could interpret this as saying "give comparatively _less_ weight to a correlation (positive or negative) with the more common patterns, and comparatively _more_ weight to a correlation with the less common patterns".
 
@@ -178,7 +178,7 @@ Here's a fairly cheesy example that I worked through. I created an 8x8 pixel let
 
 After whitening these images, however, the bright D is closer to the darker D than to the bright B.
 
-[![ResultsTable](http://chrisjmccormick.files.wordpress.com/2014/07/resultstable.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/07/resultstable.png)
+[![ResultsTable](http://chrisjmccormick.files.wordpress.com/2014/07/resultstable.png)](https://chrisjmccormick.files.wordpress.com/2014/07/resultstable.png)
 
 
 

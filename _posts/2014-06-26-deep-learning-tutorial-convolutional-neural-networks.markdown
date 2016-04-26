@@ -38,7 +38,7 @@ _Calculating Features with Convolution_
 
 The following equation is provided in the exercise description for calculating the features for an image patch. The inner term, (T(x - x_bar)) is the ZCA whitening step. The remainder is the evaluation of all 400 features over the image patch. This equation helps you understand the operation we're performing; however, it's applied to only a single image patch, and the image patch is represented as a column vector rather than a 2D array.
 
-[![Calculating features over single patch](http://chrisjmccormick.files.wordpress.com/2014/06/calculating-features-over-single-patch.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/calculating-features-over-single-patch.png)
+[![Calculating features over single patch](http://chrisjmccormick.files.wordpress.com/2014/06/calculating-features-over-single-patch.png)](https://chrisjmccormick.files.wordpress.com/2014/06/calculating-features-over-single-patch.png)
 
 They expand the terms in the above equation to arrive at the following:
 
@@ -58,7 +58,7 @@ In the above equation, the terms have been re-arranged such that we will actuall
 
 Below is the equation and explanation of the convolution operation we'll be performing.
 
-[![Convolution](http://chrisjmccormick.files.wordpress.com/2014/06/convolution.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/convolution.png)
+[![Convolution](http://chrisjmccormick.files.wordpress.com/2014/06/convolution.png)](https://chrisjmccormick.files.wordpress.com/2014/06/convolution.png)
 
 The feature vectors are stored in a matrix and need to be reshaped back into 8 x 8 element kernels. You can do this using the 'reshape' command:
 
@@ -70,7 +70,7 @@ where 'feature' is the 192-value feature vector.
 
 The combined bias term is given by the following equation.
 
-[![Convolution Bias Term](http://chrisjmccormick.files.wordpress.com/2014/06/convolution-bias-term.png?w=470)](https://chrisjmccormick.files.wordpress.com/2014/06/convolution-bias-term.png)
+[![Convolution Bias Term](http://chrisjmccormick.files.wordpress.com/2014/06/convolution-bias-term.png)](https://chrisjmccormick.files.wordpress.com/2014/06/convolution-bias-term.png)
 
 Note that you need to be careful of the signs of the terms. You can either _add (b - WTx)_ or you can_ subtract (WTx - b)_ as I have here.
 

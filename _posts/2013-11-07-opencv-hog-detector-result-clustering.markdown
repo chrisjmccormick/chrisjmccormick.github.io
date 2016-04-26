@@ -21,9 +21,9 @@ The final step of the HOG detection process is to cluster the search results.
 
 Here is the result of running the OpenCV HOG detector on a frame with and without result clustering. I've colored the results blue or red based on whether they represent a true positive or a false positive, respectively.
 
-[caption id="attachment_5710" align="alignnone" width="470"][![Clustering2_marked](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png) With clustering[/caption]
+[caption id="attachment_5710" align="alignnone" width="470"][![Clustering2_marked](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png)](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png) With clustering[/caption]
 
-[caption id="attachment_5711" align="alignnone" width="470"][![NoClustering_marked](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png) Without clustering[/caption]
+[caption id="attachment_5711" align="alignnone" width="470"][![NoClustering_marked](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png)](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png) Without clustering[/caption]
 
 The above searches were performed with a scaling factor of 1.05 (increase the detection window size by 1.05 for each search scale). For the clustering, I used a minimum cluster size of 3 and used the default window overlap method for clustering.
 
@@ -142,7 +142,7 @@ The 'groupRectangles' function essentially calls down to the 'partition' functio
 
 To determine if two rectangular detection windows belong in the same cluster, first a value 'delta' is computed using the following equation, (where epsilon is 0.2):
 
-[![delta_eq](http://chrisjmccormick.files.wordpress.com/2013/11/delta_eq.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/11/delta_eq.png)
+[![delta_eq](http://chrisjmccormick.files.wordpress.com/2013/11/delta_eq.png)](http://chrisjmccormick.files.wordpress.com/2013/11/delta_eq.png)
 
 The rectangles correspond to a single detection if each of these four labeled distances is less than or equal to delta:
 
@@ -168,6 +168,6 @@ First, it defines two deltas:
 
 Then, it filters out rectangle 2 if all of the following hold:
 
-[![small_face_check](http://chrisjmccormick.files.wordpress.com/2013/11/small_face_check.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/11/small_face_check.png)
+[![small_face_check](http://chrisjmccormick.files.wordpress.com/2013/11/small_face_check.png)](http://chrisjmccormick.files.wordpress.com/2013/11/small_face_check.png)
 
 The fifth condition ensures that we don't remove rectangle 1 if it has more cluster members than rectangle 2, or if rectangle 2 has only 3 or fewer cluster members. The number of members in each cluster is a measure of our confidence in the result, so we don't want to filter out a high-confidence result just because it's encompassed by a larger rectangle. Going back to the two images at the top of the post, the woman's leg is preserved as a result (even though it's encompassed by another rectangle) because of the high number of results in that cluster.

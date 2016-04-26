@@ -26,7 +26,7 @@ I fabricated a very simple SVM example in order to help myself understand some o
 
 In Excel, I created two sets of points (two "classes") that I placed arbitrarily. I placed the points such that you can easily draw a straight line to separate the two classes (the classes are "linearly separable"). These points are my training set which I used to train the SVM.
 
-[![TrivialDataset](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset.png)
+[![TrivialDataset](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset.png)](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset.png)
 
 Here is the [Excel spreadsheet](http://chrisjmccormick.files.wordpress.com/2013/04/supportvectormachines.xlsx) containing the data values and the plots in this post.
 
@@ -105,7 +105,7 @@ In the below plot, you can see the support vectors chosen by the SVM--the three 
 
 
 
-[![TrivialDataset_SupportVectors](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset_supportvectors.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset_supportvectors.png)
+[![TrivialDataset_SupportVectors](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset_supportvectors.png)](http://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset_supportvectors.png)
 
 
 
@@ -134,7 +134,7 @@ To train an SVM on this data set, I used the freely available [WEKA toolset](htt
 
 
 
-[![OpenFile](http://chrisjmccormick.files.wordpress.com/2013/04/openfile.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/openfile.png)
+[![OpenFile](http://chrisjmccormick.files.wordpress.com/2013/04/openfile.png)](http://chrisjmccormick.files.wordpress.com/2013/04/openfile.png)
 
 
 
@@ -150,7 +150,7 @@ To train an SVM on this data set, I used the freely available [WEKA toolset](htt
 
 
 
-[![ChooseSMO](http://chrisjmccormick.files.wordpress.com/2013/04/choosesmo.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/choosesmo.png)
+[![ChooseSMO](http://chrisjmccormick.files.wordpress.com/2013/04/choosesmo.png)](http://chrisjmccormick.files.wordpress.com/2013/04/choosesmo.png)
 
 
 
@@ -177,7 +177,7 @@ Also, click the command line of the 'kernel' property. This will bring up anothe
 
 
 
-[![SetupPolyKernel](http://chrisjmccormick.files.wordpress.com/2013/04/setuppolykernel.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/setuppolykernel.png)
+[![SetupPolyKernel](http://chrisjmccormick.files.wordpress.com/2013/04/setuppolykernel.png)](http://chrisjmccormick.files.wordpress.com/2013/04/setuppolykernel.png)
 
 
 
@@ -289,7 +289,7 @@ And plug in the values we've found to get:
 
 
 
-[![ScoringFunctionValues](http://chrisjmccormick.files.wordpress.com/2013/04/scoringfunctionvalues.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/scoringfunctionvalues.png)
+[![ScoringFunctionValues](http://chrisjmccormick.files.wordpress.com/2013/04/scoringfunctionvalues.png)](http://chrisjmccormick.files.wordpress.com/2013/04/scoringfunctionvalues.png)
 
 
 
@@ -337,7 +337,7 @@ Change the ranges to x: 0 - 16 and y: 0 - 16 and you should get something like
 
 
 
-[![Hypothesis](http://chrisjmccormick.files.wordpress.com/2013/04/hypothesis.png?w=470)](http://chrisjmccormick.files.wordpress.com/2013/04/hypothesis.png)
+[![Hypothesis](http://chrisjmccormick.files.wordpress.com/2013/04/hypothesis.png)](http://chrisjmccormick.files.wordpress.com/2013/04/hypothesis.png)
 
 
 
