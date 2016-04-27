@@ -19,9 +19,9 @@ The final step of the HOG detection process is to cluster the search results.
 
 Here is the result of running the OpenCV HOG detector on a frame with and without result clustering. I've colored the results blue or red based on whether they represent a true positive or a false positive, respectively.
 
-[caption id="attachment_5710" align="alignnone" width="470"][![Clustering2_marked](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png)](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png) With clustering[/caption]
+[![Clustering2_marked](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png)](http://chrisjmccormick.files.wordpress.com/2013/11/clustering2_marked.png) With clustering
 
-[caption id="attachment_5711" align="alignnone" width="470"][![NoClustering_marked](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png)](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png) Without clustering[/caption]
+[![NoClustering_marked](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png)](http://chrisjmccormick.files.wordpress.com/2013/11/noclustering_marked.png) Without clustering
 
 The above searches were performed with a scaling factor of 1.05 (increase the detection window size by 1.05 for each search scale). For the clustering, I used a minimum cluster size of 3 and used the default window overlap method for clustering.
 
