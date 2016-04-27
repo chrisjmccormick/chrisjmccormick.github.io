@@ -15,8 +15,9 @@ I've written a number of posts related to Radial Basis Function Networks. Togeth
 * [Gaussian Kernel Regression][kernel_regression]
 * [Mahalonobis Distance][mahal_dist]
 
-[rbfn_classification]: {{ site.url }}/tutorials/2013/08/16/radial-basis-function-network-rbfn-tutorial/ "RBFN basics and classification"
-[rbfn_code]: https://chrisjmccormick.wordpress.com/2013/08/16/rbf-network-matlab-code/ "Post on Matlab code for RBFN"
-[rbfn_func_approx]: https://chrisjmccormick.wordpress.com/2015/08/26/rbfn-tutorial-part-ii-function-approximation/ "RBFNs for function approximation"
+[rbfn_classification]: {{ site.url }}/2013/08/15/radial-basis-function-network-rbfn-tutorial/ "RBFN basics and classification"
+[rbfn_code]: {{ site.url }}/2013/08/16/rbf-network-matlab-code/ "Post on Matlab code for RBFN"
+[rbfn_func_approx]: {{ site.url }}/2015/08/26/rbfn-tutorial-part-ii-function-approximation/ "RBFNs for function approximation"
 [kernel_regression]: https://chrisjmccormick.wordpress.com/2014/02/26/kernel-regression/ "Gaussian Kernel Regression"
 [mahal_dist]: https://chrisjmccormick.wordpress.com/2014/07/21/mahalanobis-distance/ "Mahalanobis Distance"
+
