@@ -3,6 +3,7 @@ layout: post
 title:  "RBFNs for Function Approximation"
 date:   2015-08-26 22:00:00 -0800
 comments: true
+categories: tutorials
 tags: Function Approximation, Regression, K-Means Clustering, Machine Learning, Neural Networks, Radial Basis Function Netowrk, RBF Network, RBF Network Tutorial, RBFN
 ---
 
