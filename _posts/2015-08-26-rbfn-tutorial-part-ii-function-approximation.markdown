@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-08-26 21:20:48+00:00
+date: 2015-08-26 21:20:48 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/08/26/rbfn-tutorial-part-ii-function-approximation/
 slug: rbfn-tutorial-part-ii-function-approximation

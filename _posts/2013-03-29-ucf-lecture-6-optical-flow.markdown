@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-03-29 23:08:29+00:00
+date: 2013-03-29 23:08:29 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/03/29/ucf-lecture-6-optical-flow/
 slug: ucf-lecture-6-optical-flow

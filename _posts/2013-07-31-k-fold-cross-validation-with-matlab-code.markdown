@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-07-31 23:30:05+00:00
+date: 2013-07-31 23:30:05 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/07/31/k-fold-cross-validation-with-matlab-code/
 slug: k-fold-cross-validation-with-matlab-code

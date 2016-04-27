@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-25 19:05:10+00:00
+date: 2013-02-25 19:05:10 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/25/ucf-computer-vision-lecture-series/
 slug: ucf-computer-vision-lecture-series

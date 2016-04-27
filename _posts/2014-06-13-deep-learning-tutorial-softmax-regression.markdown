@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-06-13 20:30:43+00:00
+date: 2014-06-13 20:30:43 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/06/13/deep-learning-tutorial-softmax-regression/
 slug: deep-learning-tutorial-softmax-regression

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-08-15 22:40:19+00:00
+date: 2013-08-15 22:40:19 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/08/15/radial-basis-function-network-rbfn-tutorial/
 slug: radial-basis-function-network-rbfn-tutorial

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-05-25 05:16:38+00:00
+date: 2014-05-25 05:16:38 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/05/25/stanford-deep-learning-tutorial/
 slug: stanford-deep-learning-tutorial

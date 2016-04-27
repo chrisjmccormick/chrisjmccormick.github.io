@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-06-12 17:21:15+00:00
+date: 2015-06-12 17:21:15 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/06/12/minhash-tutorial-with-python-code/
 slug: minhash-tutorial-with-python-code

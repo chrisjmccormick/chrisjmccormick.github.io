@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-01-10 21:47:52+00:00
+date: 2015-01-10 21:47:52 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/01/10/understanding-the-deeplearntoolbox-cnn-example/
 slug: understanding-the-deeplearntoolbox-cnn-example

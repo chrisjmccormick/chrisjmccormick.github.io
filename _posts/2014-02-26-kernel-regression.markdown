@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-02-26 05:53:59+00:00
+date: 2014-02-26 05:53:59 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/02/26/kernel-regression/
 slug: kernel-regression

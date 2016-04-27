@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-05-09 05:13:42+00:00
+date: 2013-05-09 05:13:42 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/05/09/hog-descriptor-in-matlab/
 slug: hog-descriptor-in-matlab

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-01-06 23:09:39+00:00
+date: 2015-01-06 23:09:39 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/01/06/what-is-an-l2-svm/
 slug: what-is-an-l2-svm

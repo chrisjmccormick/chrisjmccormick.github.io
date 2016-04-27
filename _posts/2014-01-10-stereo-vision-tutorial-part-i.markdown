@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-01-10 22:30:10+00:00
+date: 2014-01-10 22:30:10 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/01/10/stereo-vision-tutorial-part-i/
 slug: stereo-vision-tutorial-part-i

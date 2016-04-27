@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2012-12-08 00:21:30+00:00
+date: 2012-12-08 00:21:30 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2012/12/08/hand-pose-recognition-with-microsoft-kinect-and-cognimem-v1ku/
 slug: hand-pose-recognition-with-microsoft-kinect-and-cognimem-v1ku

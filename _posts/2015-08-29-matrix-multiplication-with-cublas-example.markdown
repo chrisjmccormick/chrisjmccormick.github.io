@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-08-29 00:42:50+00:00
+date: 2015-08-29 00:42:50 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/08/29/matrix-multiplication-with-cublas-example/
 slug: matrix-multiplication-with-cublas-example

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-08-05 23:13:40+00:00
+date: 2015-08-05 23:13:40 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/08/05/document-clustering-example-in-scikit-learn/
 slug: document-clustering-example-in-scikit-learn

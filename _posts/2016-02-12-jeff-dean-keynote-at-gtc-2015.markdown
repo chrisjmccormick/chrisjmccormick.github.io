@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2016-02-12 22:14:39+00:00
+date: 2016-02-12 22:14:39 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/2016/02/12/jeff-dean-keynote-at-gtc-2015/
 slug: jeff-dean-keynote-at-gtc-2015
