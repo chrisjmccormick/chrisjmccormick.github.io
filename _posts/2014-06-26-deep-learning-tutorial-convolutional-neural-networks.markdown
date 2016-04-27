@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/06/26/deep-learning-tutorial-co
 slug: deep-learning-tutorial-convolutional-neural-networks
 title: Deep Learning Tutorial - Convolutional Neural Networks
 wordpress_id: 5905
-categories:
-- Tutorials
 tags:
 - Classification
 - Computer Vision

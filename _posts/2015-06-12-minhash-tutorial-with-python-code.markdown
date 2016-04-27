@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/06/12/minhash-tutorial-with-pyt
 slug: minhash-tutorial-with-python-code
 title: MinHash Tutorial with Python Code
 wordpress_id: 6028
-categories:
-- Tutorials
 tags:
 - Coursera
 - Data Mining

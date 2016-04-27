@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/05/25/stanford-deep-learning-tu
 slug: stanford-deep-learning-tutorial
 title: Stanford Deep Learning Tutorial
 wordpress_id: 5827
-categories:
-- Tutorials
 tags:
 - Deep Learning
 - Feature Extraction

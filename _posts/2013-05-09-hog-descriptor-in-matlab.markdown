@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/05/09/hog-descriptor-in-matlab/
 slug: hog-descriptor-in-matlab
 title: HOG Descriptor in MATLAB
 wordpress_id: 5637
-categories:
-- Tutorials
 tags:
 - Feature Extraction
 - Histograms of Oriented Gradients

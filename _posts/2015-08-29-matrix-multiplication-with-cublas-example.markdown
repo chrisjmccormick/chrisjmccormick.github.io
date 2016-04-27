@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/08/29/matrix-multiplication-wit
 slug: matrix-multiplication-with-cublas-example
 title: Matrix Multiplication with cuBLAS Example
 wordpress_id: 6064
-categories:
-- Tutorials
 tags:
 - cuBLAS
 - CUDA

@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/05/08/experiences-renting-gpu-i
 slug: experiences-renting-gpu-instances
 title: Experiences Renting GPU Instances
 wordpress_id: 6025
-categories:
-- Article
 tags:
 - Amazon
 - GPU

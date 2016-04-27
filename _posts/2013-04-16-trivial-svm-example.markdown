@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/04/16/trivial-svm-example/
 slug: trivial-svm-example
 title: SVM Tutorial - Part I
 wordpress_id: 5587
-categories:
-- Tutorials
 tags:
 - Kernel
 - Support Vector Machines

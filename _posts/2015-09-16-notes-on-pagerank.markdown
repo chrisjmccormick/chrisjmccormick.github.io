@@ -7,9 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/09/16/notes-on-pagerank/
 slug: notes-on-pagerank
 title: Notes on PageRank
 wordpress_id: 6068
-categories:
-- Lecture Notes
-- Tutorials
 tags:
 - Data Mining
 - MATLAB

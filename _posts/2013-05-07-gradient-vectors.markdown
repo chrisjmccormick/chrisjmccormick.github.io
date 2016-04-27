@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/05/07/gradient-vectors/
 slug: gradient-vectors
 title: Gradient Vectors
 wordpress_id: 5616
-categories:
-- Tutorials
 tags:
 - Computer Vision
 - Gradient Image

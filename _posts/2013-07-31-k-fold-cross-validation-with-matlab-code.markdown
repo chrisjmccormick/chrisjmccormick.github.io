@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/07/31/k-fold-cross-validation-w
 slug: k-fold-cross-validation-with-matlab-code
 title: K-Fold Cross-Validation, With MATLAB Code
 wordpress_id: 5646
-categories:
-- Tutorials
 tags:
 - Cross Validation
 - K-Folds Cross-Validation

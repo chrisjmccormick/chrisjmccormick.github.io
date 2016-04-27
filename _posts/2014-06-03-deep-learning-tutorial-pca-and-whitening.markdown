@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/06/03/deep-learning-tutorial-pc
 slug: deep-learning-tutorial-pca-and-whitening
 title: Deep Learning Tutorial - PCA and Whitening
 wordpress_id: 5830
-categories:
-- Tutorials
 tags:
 - CS249A
 - Deep Learning

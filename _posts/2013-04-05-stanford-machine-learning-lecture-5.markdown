@@ -7,9 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/04/05/stanford-machine-learning
 slug: stanford-machine-learning-lecture-5
 title: Stanford Machine Learning - Lecture 5
 wordpress_id: 5539
-categories:
-- Lecture Notes
-- Stanford Machine Learning
 tags:
 - Baye's Theorem
 - Classification

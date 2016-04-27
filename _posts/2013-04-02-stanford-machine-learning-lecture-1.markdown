@@ -7,9 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/04/02/stanford-machine-learning
 slug: stanford-machine-learning-lecture-1
 title: Stanford Machine Learning - Lecture 1
 wordpress_id: 5490
-categories:
-- Lecture Notes
-- Stanford Machine Learning
 tags:
 - Course Overview
 - Lecture Notes

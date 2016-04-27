@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/05/09/hog-person-detector-tutor
 slug: hog-person-detector-tutorial
 title: HOG Person Detector Tutorial
 wordpress_id: 5612
-categories:
-- Tutorials
 tags:
 - Computer Vision
 - Feature Extraction

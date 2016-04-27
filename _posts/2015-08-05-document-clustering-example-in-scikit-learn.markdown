@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/08/05/document-clustering-examp
 slug: document-clustering-example-in-scikit-learn
 title: Document Clustering Example in SciKit-Learn
 wordpress_id: 6037
-categories:
-- Tutorials
 tags:
 - 20 Newsgroups
 - Document Clustering

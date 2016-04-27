@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/08/04/gaussian-mixture-models-t
 slug: gaussian-mixture-models-tutorial-and-matlab-code
 title: Gaussian Mixture Models Tutorial and MATLAB Code
 wordpress_id: 5969
-categories:
-- Tutorials
 tags:
 - Clustering
 - Covariance

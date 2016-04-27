@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/06/24/deep-learning-tutorial-se
 slug: deep-learning-tutorial-self-taught-learning-deep-networks
 title: Deep Learning Tutorial - Self-Taught Learning & Deep Networks
 wordpress_id: 5894
-categories:
-- Tutorials
 tags:
 - Backpropagation
 - Classification

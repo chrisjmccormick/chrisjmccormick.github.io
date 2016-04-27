@@ -7,9 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/04/06/stanford-machine-learning
 slug: stanford-machine-learning-lecture-6
 title: Stanford Machine Learning - Lecture 6
 wordpress_id: 5550
-categories:
-- Lecture Notes
-- Stanford Machine Learning
 tags:
 - Functional Margin
 - Geometric Margin

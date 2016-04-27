@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/03/04/gradient-descent-derivati
 slug: gradient-descent-derivation
 title: Gradient Descent Derivation
 wordpress_id: 5800
-categories:
-- Tutorials
 tags:
 - Cost Function
 - Derivation

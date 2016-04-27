@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/07/21/mahalanobis-distance/
 slug: mahalanobis-distance
 title: Mahalanobis Distance
 wordpress_id: 5918
-categories:
-- Tutorials
 tags:
 - Correlation
 - Covariance

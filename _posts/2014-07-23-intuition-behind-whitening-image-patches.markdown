@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/07/23/intuition-behind-whitenin
 slug: intuition-behind-whitening-image-patches
 title: Intuition Behind Whitening Image Patches
 wordpress_id: 5937
-categories:
-- Tutorials
 tags:
 - Covariance
 - Deep Learning

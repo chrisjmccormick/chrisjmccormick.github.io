@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/08/15/radial-basis-function-net
 slug: radial-basis-function-network-rbfn-tutorial
 title: Radial Basis Function Network (RBFN) Tutorial
 wordpress_id: 5652
-categories:
-- Tutorials
 tags:
 - Classification
 - Gradient Descent

@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/01/10/stereo-vision-tutorial-pa
 slug: stereo-vision-tutorial-part-i
 title: Stereo Vision Tutorial - Part I
 wordpress_id: 5747
-categories:
-- Tutorials
 tags:
 - Block Matching
 - Computer Vision

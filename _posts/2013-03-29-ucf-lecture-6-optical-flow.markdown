@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/03/29/ucf-lecture-6-optical-flo
 slug: ucf-lecture-6-optical-flow
 title: UCF Lecture 6 - Optical Flow
 wordpress_id: 5471
-categories:
-- Lecture Notes
 ---
 
 The following post contains my notes on lecture 6 of Dr. Shah's computer vision course:

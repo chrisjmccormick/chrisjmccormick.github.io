@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/08/16/rbf-network-matlab-code/
 slug: rbf-network-matlab-code
 title: RBF Network MATLAB Code
 wordpress_id: 5702
-categories:
-- Tutorials
 tags:
 - Classification
 - Example Code

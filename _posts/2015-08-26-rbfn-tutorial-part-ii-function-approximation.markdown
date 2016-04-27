@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/08/26/rbfn-tutorial-part-ii-fun
 slug: rbfn-tutorial-part-ii-function-approximation
 title: RBFN Tutorial Part II - Function Approximation
 wordpress_id: 6047
-categories:
-- Tutorials
 tags:
 - Function Approximation
 - Gaussian

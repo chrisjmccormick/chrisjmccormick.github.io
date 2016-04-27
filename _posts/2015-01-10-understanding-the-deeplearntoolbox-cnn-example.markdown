@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2015/01/10/understanding-the-deeplea
 slug: understanding-the-deeplearntoolbox-cnn-example
 title: Understanding the DeepLearnToolbox CNN Example
 wordpress_id: 6015
-categories:
-- Tutorials
 tags:
 - Convolutional Neural Network
 - Deep Learning

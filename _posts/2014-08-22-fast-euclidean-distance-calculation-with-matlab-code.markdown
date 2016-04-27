@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/08/22/fast-euclidean-distance-c
 slug: fast-euclidean-distance-calculation-with-matlab-code
 title: Fast Euclidean Distance Calculation with Matlab Code
 wordpress_id: 5995
-categories:
-- Tutorials
 tags:
 - Euclidean Distance
 - Fast Euclidean Distance

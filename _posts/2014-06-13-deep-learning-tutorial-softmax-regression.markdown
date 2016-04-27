@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/06/13/deep-learning-tutorial-so
 slug: deep-learning-tutorial-softmax-regression
 title: Deep Learning Tutorial - Softmax Regression
 wordpress_id: 5881
-categories:
-- Tutorials
 tags:
 - Classification
 - CS249A

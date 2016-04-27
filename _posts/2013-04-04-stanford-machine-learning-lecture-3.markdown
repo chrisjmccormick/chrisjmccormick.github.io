@@ -7,9 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/04/04/stanford-machine-learning
 slug: stanford-machine-learning-lecture-3
 title: Stanford Machine Learning - Lecture 3
 wordpress_id: 5495
-categories:
-- Lecture Notes
-- Stanford Machine Learning
 tags:
 - Lecture Notes
 - Locally Weighted Regression

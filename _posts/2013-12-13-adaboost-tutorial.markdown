@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/12/13/adaboost-tutorial/
 slug: adaboost-tutorial
 title: AdaBoost Tutorial
 wordpress_id: 5733
-categories:
-- Tutorials
 tags:
 - AdaBoost
 - Rejection Cascade

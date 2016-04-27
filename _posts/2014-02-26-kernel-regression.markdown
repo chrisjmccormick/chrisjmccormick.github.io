@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/02/26/kernel-regression/
 slug: kernel-regression
 title: Kernel Regression
 wordpress_id: 5772
-categories:
-- Tutorials
 tags:
 - Gaussian Kernel
 - Kernel Regression

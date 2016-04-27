@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2014/05/30/deep-learning-tutorial-sp
 slug: deep-learning-tutorial-sparse-autoencoder
 title: Deep Learning Tutorial - Sparse Autoencoder
 wordpress_id: 5743
-categories:
-- Tutorials
 tags:
 - Autoencoder
 - CS294A

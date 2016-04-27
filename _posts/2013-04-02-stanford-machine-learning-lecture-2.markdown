@@ -7,9 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/04/02/stanford-machine-learning
 slug: stanford-machine-learning-lecture-2
 title: Stanford Machine Learning - Lecture 2
 wordpress_id: 5492
-categories:
-- Lecture Notes
-- Stanford Machine Learning
 tags:
 - Gradient Descent
 - Lecture Notes

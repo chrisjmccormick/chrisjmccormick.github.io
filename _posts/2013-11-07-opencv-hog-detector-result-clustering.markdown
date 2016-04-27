@@ -7,8 +7,6 @@ link: https://chrisjmccormick.wordpress.com/2013/11/07/opencv-hog-detector-resul
 slug: opencv-hog-detector-result-clustering
 title: 'OpenCV HOG Detector: Result Clustering'
 wordpress_id: 5709
-categories:
-- Tutorials
 tags:
 - Clustering
 - HOG
