@@ -3,7 +3,6 @@ layout: post
 title:  "Google's trained Word2Vec model in Python"
 date:   2016-04-12 22:00:00 -0800
 comments: true
-categories: tutorials
 tags: gensim, Python, WinPython, Windows, Text Classification, Natural Language Processing
 ---
 
