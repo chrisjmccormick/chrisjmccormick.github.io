@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-08-16 17:50:47+00:00
+date: 2013-08-16 17:50:47
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/08/16/rbf-network-matlab-code/
 slug: rbf-network-matlab-code

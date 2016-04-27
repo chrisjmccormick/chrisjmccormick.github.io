@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-01-24 18:45:01+00:00
+date: 2013-01-24 18:45:01
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/01/24/opencv-setup-in-visual-studio-2010/
 slug: opencv-setup-in-visual-studio-2010

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-07-21 23:47:40+00:00
+date: 2014-07-21 23:47:40
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/07/21/mahalanobis-distance/
 slug: mahalanobis-distance

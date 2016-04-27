@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-27 22:58:24+00:00
+date: 2013-02-27 22:58:24
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/27/gaussian-filter/
 slug: gaussian-filter

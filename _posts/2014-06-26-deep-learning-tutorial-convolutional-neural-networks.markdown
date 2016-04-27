@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-06-26 23:36:39+00:00
+date: 2014-06-26 23:36:39
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/06/26/deep-learning-tutorial-convolutional-neural-networks/
 slug: deep-learning-tutorial-convolutional-neural-networks

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-06-24 18:09:35+00:00
+date: 2014-06-24 18:09:35
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/06/24/deep-learning-tutorial-self-taught-learning-deep-networks/
 slug: deep-learning-tutorial-self-taught-learning-deep-networks

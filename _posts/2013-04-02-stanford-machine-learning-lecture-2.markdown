@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-04-02 18:12:42+00:00
+date: 2013-04-02 18:12:42
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/04/02/stanford-machine-learning-lecture-2/
 slug: stanford-machine-learning-lecture-2

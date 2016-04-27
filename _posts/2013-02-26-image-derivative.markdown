@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-26 00:55:45+00:00
+date: 2013-02-26 00:55:45
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/26/image-derivative/
 slug: image-derivative

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-11-07 00:58:07+00:00
+date: 2013-11-07 00:58:07
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/11/07/opencv-hog-detector-result-clustering/
 slug: opencv-hog-detector-result-clustering

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-05-09 05:09:08+00:00
+date: 2013-05-09 05:09:08
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/05/09/hog-person-detector-tutorial/
 slug: hog-person-detector-tutorial

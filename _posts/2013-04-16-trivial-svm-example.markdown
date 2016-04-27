@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-04-16 21:42:40+00:00
+date: 2013-04-16 21:42:40
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/04/16/trivial-svm-example/
 slug: trivial-svm-example

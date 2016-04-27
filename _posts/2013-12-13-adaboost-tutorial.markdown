@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-12-13 06:01:54+00:00
+date: 2013-12-13 06:01:54
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/12/13/adaboost-tutorial/
 slug: adaboost-tutorial

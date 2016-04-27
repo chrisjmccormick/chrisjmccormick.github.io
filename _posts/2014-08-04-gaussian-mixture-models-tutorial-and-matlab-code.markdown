@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-08-04 19:19:59+00:00
+date: 2014-08-04 19:19:59
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/08/04/gaussian-mixture-models-tutorial-and-matlab-code/
 slug: gaussian-mixture-models-tutorial-and-matlab-code

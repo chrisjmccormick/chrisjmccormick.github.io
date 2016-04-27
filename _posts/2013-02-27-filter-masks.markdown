@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-27 22:45:08+00:00
+date: 2013-02-27 22:45:08
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/27/filter-masks/
 slug: filter-masks

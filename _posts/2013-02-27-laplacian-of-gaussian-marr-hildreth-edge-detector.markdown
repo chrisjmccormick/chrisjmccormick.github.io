@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-27 23:10:55+00:00
+date: 2013-02-27 23:10:55
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/27/laplacian-of-gaussian-marr-hildreth-edge-detector/
 slug: laplacian-of-gaussian-marr-hildreth-edge-detector

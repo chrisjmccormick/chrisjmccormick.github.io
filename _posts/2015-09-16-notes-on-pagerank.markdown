@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-09-16 23:16:41+00:00
+date: 2015-09-16 23:16:41
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/09/16/notes-on-pagerank/
 slug: notes-on-pagerank
