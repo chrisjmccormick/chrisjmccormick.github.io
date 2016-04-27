@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-05-07 17:22:44
+date: 2013-05-07 17:22:44+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/05/07/gradient-vectors/
 slug: gradient-vectors

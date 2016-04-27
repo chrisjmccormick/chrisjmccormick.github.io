@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-05-30 21:54:01
+date: 2014-05-30 21:54:01+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/05/30/deep-learning-tutorial-sparse-autoencoder/
 slug: deep-learning-tutorial-sparse-autoencoder

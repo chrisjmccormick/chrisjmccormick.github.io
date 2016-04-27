@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-27 23:15:16
+date: 2013-02-27 23:15:16+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/27/canny-edge-detector/
 slug: canny-edge-detector

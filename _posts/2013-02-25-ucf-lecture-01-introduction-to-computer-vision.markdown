@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-02-25 19:09:29
+date: 2013-02-25 19:09:29+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/02/25/ucf-lecture-01-introduction-to-computer-vision/
 slug: ucf-lecture-01-introduction-to-computer-vision

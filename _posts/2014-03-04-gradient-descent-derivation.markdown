@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-03-04 01:14:11
+date: 2014-03-04 01:14:11+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/03/04/gradient-descent-derivation/
 slug: gradient-descent-derivation

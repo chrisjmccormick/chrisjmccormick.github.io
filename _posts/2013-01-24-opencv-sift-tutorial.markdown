@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-01-24 21:10:46
+date: 2013-01-24 21:10:46+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/01/24/opencv-sift-tutorial/
 slug: opencv-sift-tutorial

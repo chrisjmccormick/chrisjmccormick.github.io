@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-07-23 23:50:38
+date: 2014-07-23 23:50:38+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/07/23/intuition-behind-whitening-image-patches/
 slug: intuition-behind-whitening-image-patches

@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-04-02 16:34:27
+date: 2013-04-02 16:34:27+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2013/04/02/stanford-machine-learning-course/
 slug: stanford-machine-learning-course

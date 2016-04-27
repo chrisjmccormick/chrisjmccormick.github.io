@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-06-03 00:07:58
+date: 2014-06-03 00:07:58+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/06/03/deep-learning-tutorial-pca-and-whitening/
 slug: deep-learning-tutorial-pca-and-whitening

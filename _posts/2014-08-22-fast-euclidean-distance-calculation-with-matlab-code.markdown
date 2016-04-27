@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2014-08-22 19:11:30
+date: 2014-08-22 19:11:30+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2014/08/22/fast-euclidean-distance-calculation-with-matlab-code/
 slug: fast-euclidean-distance-calculation-with-matlab-code

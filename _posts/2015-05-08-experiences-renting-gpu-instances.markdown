@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2015-05-08 23:38:36
+date: 2015-05-08 23:38:36+00:00
 layout: post
 link: https://chrisjmccormick.wordpress.com/2015/05/08/experiences-renting-gpu-instances/
 slug: experiences-renting-gpu-instances
