@@ -40,7 +40,7 @@ I think this is mainly a re-hash of the content in the two papers. Seeing it pre
 
 ### C Code Implementation
 [Link](https://code.google.com/archive/p/word2vec/)
-The above link is to the home page for google’s own Word2Vec implementation in C.
+The above link is to the home page for google's own Word2Vec implementation in C.
 
 You can also find here some pre-trained models that they have provided. Note that it's possible to load these pre-trained models into `gensim` if you want to work with them in Python.
 
@@ -83,6 +83,13 @@ I haven't read this tutorial in depth... It covers the Continuous Bag of Words m
 Alex Minnaar's Tutorials
 ========================
 The best tutorials I found online were on Alex Minnaar's blog; however, he has since taken them down! I'm trying to get in touch with him to find out why.
+
+Discussions on Quora
+====================
+
+* [https://www.quora.com/What-are-the-continuous-bag-of-words-and-skip-gram-architectures-in-laymans-terms](https://www.quora.com/What-are-the-continuous-bag-of-words-and-skip-gram-architectures-in-laymans-terms)
+* [https://www.quora.com/How-does-word2vec-work](https://www.quora.com/How-does-word2vec-work)
+*[https://www.quora.com/What-are-some-interesting-Word2Vec-results/answer/Omer-Levy](https://www.quora.com/What-are-some-interesting-Word2Vec-results/answer/Omer-Levy)
 
 Implementations
 ---------------
