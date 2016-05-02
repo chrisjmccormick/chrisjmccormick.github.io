@@ -15,7 +15,9 @@ Hi! I’m a software and research engineer currently working for a startup named
 
 At in2H2, we are developing a unique hardware architecture for accelerating data mining algorithms that are based on distance calculations (such as Euclidean distance or Cosine distance). Specifically, we are targeting performance-constrained applications of k-Nearest Neighbor search and clustering algorithms such as k-Means.
 
-My role is in leading our benchmarking efforts (primarily against high-end GPUs) and our application research. As we look for opportunities for our hardware across different markets, I get to investigate a wide range of algorithms and applications. And, when I can, I like to share what I learn here. I find that one of the best ways, for me, to learn a subject is to try and teach it. You don't realize what you don't know until you try and teach it :).
+<!-- Side note: We look at applications using the L2 or Cosine distance, but our hardware actually just implements the L1 distance as an approximation. Because the L1 distance only requires subtraction and addition, we can pack a lot of our little calculator engines into a chip. -->
+
+My role is in leading our benchmarking efforts (primarily against high-end GPUs) and our application research. As we look for opportunities for our hardware across different markets, I get to investigate a wide range of algorithms and applications. And, when I can, I like to share what I learn here. I find that one of the best ways, for me, to learn a subject is to try and communicate it to others. You often don't realize what you don't know about a subject until you try and explain it to someone :).
 
 Education & Experience
 ======================
