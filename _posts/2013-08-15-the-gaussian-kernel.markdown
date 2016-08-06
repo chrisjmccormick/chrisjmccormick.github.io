@@ -4,7 +4,6 @@ comments: true
 date: 2013-08-15 22:31:55 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/?p=5686
-published: false
 slug: the-gaussian-kernel
 title: The Gaussian Kernel
 wordpress_id: 5686
