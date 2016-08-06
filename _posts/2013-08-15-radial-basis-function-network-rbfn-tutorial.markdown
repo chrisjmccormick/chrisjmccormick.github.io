@@ -189,7 +189,7 @@ To plot the decision boundary, I've computed the scores over a finite grid. As a
 
 The training process for an RBFN consists of selecting three sets of parameters: the prototypes (mu) and beta coefficient for each of the RBF neurons, and the matrix of output weights between the RBF neurons and the output nodes.
 
-There are many possible approaches to selecting the prototypes and their variances. The following [paper](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&ved=0CEoQFjAC&url=http%3A%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fdownload%3Fdoi%3D10.1.1.109.312%26rep%3Drep1%26type%3Dpdf&ei=1MoKUr7LDqLE2wWfm4HACQ&usg=AFQjCNGmgdkvHCL3Oq33Sz7Xwl6DJ_XBkQ&sig2=t1s_yc9Dag3Xpntaxgo5gw&bvm=bv.50500085,d.b2I) provides an overview of common approaches to training RBFNs. I read through it to familiarize myself with some of the details of RBF training, and chose specific approaches from it that made the most sense to me.
+There are many possible approaches to selecting the prototypes and their variances. The following [paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.312&rep=rep1&type=pdf) provides an overview of common approaches to training RBFNs. I read through it to familiarize myself with some of the details of RBF training, and chose specific approaches from it that made the most sense to me.
 
 Selecting the Prototypes
 
