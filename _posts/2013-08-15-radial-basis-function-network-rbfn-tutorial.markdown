@@ -125,7 +125,7 @@ Also, each RBF neuron will produce its largest response when the input is equal 
 As we move out from the prototype vector, the response falls off exponentially. Recall from the RBFN architecture illustration that the output node for each category takes the weighted sum of _every_ RBF neuron in the network--in other words, every neuron in the network will have some influence over the classification decision. The exponential fall off of the activation function, however, means that the neurons whose prototypes are far from the input vector will actually contribute very little to the result.
 
 
-If you are interested in gaining a deeper understanding of how the Gaussian equation produces this bell curve shape, check out my post on the Gaussian Kernel.
+If you are interested in gaining a deeper understanding of how the Gaussian equation produces this bell curve shape, check out [my post on the Gaussian Kernel](http://mccormickml.com/2013/08/15/the-gaussian-kernel/).
 
 
 ### Example Dataset
@@ -149,6 +149,7 @@ It's also interesting to look at the weights used by output nodes to remove some
 
 For the category 1 output node, all of the weights for the category 2 RBF neurons are negative:
 
+{% highlight text %}
 -0.79934
 -1.26054
 -0.68206
@@ -159,8 +160,11 @@ For the category 1 output node, all of the weights for the category 2 RBF neuron
 -0.83266
 -0.82232
 -0.64140
+{% endhighlight %}
 
 And all of the weights for category 1 RBF neurons are positive:
+
+{% highlight text %}
 0.78968
 0.64239
 0.61945
@@ -171,6 +175,7 @@ And all of the weights for category 1 RBF neurons are positive:
 0.57227
 0.68786
 0.84207
+{% endhighlight %}
 
 Finally, we can plot an approximation of the decision boundary (the line where the category 1 and category 2 scores are equal).
 
