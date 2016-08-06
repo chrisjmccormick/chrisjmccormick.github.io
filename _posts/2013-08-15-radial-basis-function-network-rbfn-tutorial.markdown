@@ -21,7 +21,7 @@ tags:
 
 A Radial Basis Function Network (RBFN) is a particular type of neural network. In this article, I'll be describing it's use as a non-linear classifier.
 
-Generally, when people talk about neural networks or "Artificial Neural Networks" they are referring to the [Multilayer Perceptron](http://en.wikipedia.org/wiki/Multilayer_perceptron) (MLP). Each neuron in an MLP takes the weighted some of its input values. That is, each input value is multiplied by a coefficient, and the results are all summed together. A single MLP neuron is a simple linear classifier, but complex non-linear classifiers can be built by combining these neurons into a network.
+Generally, when people talk about neural networks or "Artificial Neural Networks" they are referring to the [Multilayer Perceptron](http://en.wikipedia.org/wiki/Multilayer_perceptron) (MLP). Each neuron in an MLP takes the weighted sum of its input values. That is, each input value is multiplied by a coefficient, and the results are all summed together. A single MLP neuron is a simple linear classifier, but complex non-linear classifiers can be built by combining these neurons into a network.
 
 To me, the RBFN approach is more intuitive than the MLP. An RBFN performs classification by measuring the input's similarity to examples from the training set. Each RBFN neuron stores a "prototype", which is just one of the examples from the training set. When we want to classify a new input, each neuron computes the Euclidean distance between the input and its prototype. Roughly speaking, if the input more closely resembles the class A prototypes than the class B prototypes, it is classified as class A.
 
