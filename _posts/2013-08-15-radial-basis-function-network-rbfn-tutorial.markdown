@@ -13,7 +13,7 @@ tags:
 - K-Means Clustering
 - Machine Learning
 - Neural Networks
-- Radial Basis Function Netowrk
+- Radial Basis Function Network
 - RBF Network
 - RBF Network Tutorial
 - RBFN

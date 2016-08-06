@@ -1,7 +1,7 @@
 ---
 author: chrisjmccormick
 comments: true
-date: 2013-08-15 16:31:55+00:00
+date: 2013-08-15 22:31:55 -0800
 layout: post
 link: https://chrisjmccormick.wordpress.com/?p=5686
 published: false
