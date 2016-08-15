@@ -26,6 +26,8 @@ I've written a number of posts related to Radial Basis Function Networks. Togeth
 
 ### Histograms of Oriented Gradients (HOG)
 
+My tutorial and Matlab code on the HOG descriptor are easily one of the most popular items on my site.
+
 * [HOG Person Detector Tutorial][hog_tutorial]
 * [HOG Descriptor Matlab Code][hog_matlab]
 * [HOG Result Clustering][hog_clustering]
@@ -36,3 +38,12 @@ I've written a number of posts related to Radial Basis Function Networks. Togeth
 
 <hr/>
 
+### Word2Vec
+
+* [Word2Vec Tutorial - The Skip-Gram Model][word2vec_skip-gram]
+* [Wor2Vec Resources][word2vec_res]
+
+[word2vec_skip-gram]: {{ site.url }}/2016/04/19/word2vec-tutorial-the-skip-gram-model/
+[word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/
+
+<hr/>
