@@ -5,8 +5,8 @@ title: Tutorials
 
 <hr/>
 
-Radial Basis Function Networks
-==============================
+### Radial Basis Function Networks
+
 I've written a number of posts related to Radial Basis Function Networks. Together, they can be taken as a multi-part tutorial to RBFNs.
 
 * Part 1 - [RBFN Basics, RBFNs for Classification][rbfn_classification]
@@ -24,14 +24,15 @@ I've written a number of posts related to Radial Basis Function Networks. Togeth
 
 <hr/>
 
-Histograms of Oriented Gradients (HOG)
-======================================
+### Histograms of Oriented Gradients (HOG)
 
 * [HOG Person Detector Tutorial][hog_tutorial]
 * [HOG Descriptor Matlab Code][hog_matlab]
+* [HOG Result Clustering][hog_clustering]
 
 [hog_tutorial]: {{ site.url }}/2013/05/09/hog-person-detector-tutorial/ "HOG Person Detector Tutorial"
 [hog_matlab]: {{ site.url }}/2013/05/09/hog-descriptor-in-matlab/ "HOG descriptor in Matlab"
+[hog_clustering]: {{ site.url }}/2013/11/07/opencv-hog-detector-result-clustering/ "HOG Detector result clustering"
 
 <hr/>
 
