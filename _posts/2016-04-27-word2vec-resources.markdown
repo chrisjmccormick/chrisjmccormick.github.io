@@ -3,6 +3,7 @@ layout: post
 title:  "Word2Vec Resources"
 date:   2016-04-27 22:00:00 -0800
 comments: true
+image: /assets/word2vec/original_paper.png
 tags: Word2Vec, NLP, word vectors
 ---
 

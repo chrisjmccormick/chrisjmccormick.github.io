@@ -3,6 +3,7 @@ layout: post
 title:  "Word2Vec Tutorial - The Skip-Gram Model"
 date:   2016-04-19 22:00:00 -0800
 comments: true
+image: /assets/word2vec/skip_gram_net_arch.png
 tags: Word2Vec, Skip Gram, tutorial, neural network, NLP, word vectors
 ---
 
