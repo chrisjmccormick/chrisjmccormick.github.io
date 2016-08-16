@@ -20,7 +20,7 @@ Another place you may have seen this trick is in unsupervised feature learning, 
 
 The Fake Task
 =============
-So now need to talk about this "fake" task that we're going to build the neural network to perform, and then we'll come back later to how this indirectly gives us those word vectors that we are really after.
+So now we need to talk about this "fake" task that we're going to build the neural network to perform, and then we'll come back later to how this indirectly gives us those word vectors that we are really after.
 
 We're going to train the neural network to tell us, for a given word in a sentence, what is the probability of each and every other word in our vocabulary appearing anywhere within a small window around the input word. For example, if you gave the trained network the word "Soviet" it's going to say that words like "Union" and "Russia" have a high probability of appearing nearby, and unrelated words like "watermelon" and "kangaroo" have a low probability. And it's going to output probabilities for every word in our vocabulary!
 
@@ -87,7 +87,12 @@ And what does it mean for two words to have similar contexts? I think you could 
 
 This can also handle stemming for you -- the network will likely learn similar word vectors for the words "ant" and "ants" because these should have similar contexts.
 
+Further Reading
+===============
+I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
+
 [skip_gram_net_arch]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
 [weight_matrix]: {{ site.url }}/assets/word2vec/word2vec_weight_matrix_lookup_table.png
 [matrix_mult_w_one_hot]: {{ site.url }}/assets/word2vec/matrix_mult_w_one_hot.png
 [output_neuron]: {{ site.url }}/assets/word2vec/output_weights_function.png
+[word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/
