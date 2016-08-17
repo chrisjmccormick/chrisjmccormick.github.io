@@ -7,6 +7,8 @@ title: Tutorials
 
 ### Radial Basis Function Networks
 
+[![RBFN Architecture][rbfn_arch_small]][rbfn_arch_small]
+
 I've written a number of posts related to Radial Basis Function Networks. Together, they can be taken as a multi-part tutorial to RBFNs.
 
 * Part 1 - [RBFN Basics, RBFNs for Classification][rbfn_classification]
@@ -16,6 +18,7 @@ I've written a number of posts related to Radial Basis Function Networks. Togeth
   * [Gaussian Kernel Regression][kernel_regression]
   * [Mahalonobis Distance][mahal_dist]
 
+[rbfn_arch_small]: {{ site.url }}/assets/rbfn/architecture_simple_small.png
 [rbfn_classification]: {{ site.url }}/2013/08/15/radial-basis-function-network-rbfn-tutorial/ "RBFN basics and classification"
 [rbfn_code]: {{ site.url }}/2013/08/16/rbf-network-matlab-code/ "Post on Matlab code for RBFN"
 [rbfn_func_approx]: {{ site.url }}/2015/08/26/rbfn-tutorial-part-ii-function-approximation/ "RBFNs for function approximation"

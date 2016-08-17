@@ -3,6 +3,7 @@ layout: post
 title:  "Latent Semantic Analysis (LSA) for Text Classification Tutorial"
 date:   2016-03-25 22:00:00 -0800
 comments: true
+image: /assets/Reuters_LSA_comp0_top10terms.png
 tags: Text Classification, Natural Language Processing, Latent Semantic Analysis, Latent Semantic Indexing, SVD, tf-idf
 ---
 
