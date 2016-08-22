@@ -10,7 +10,7 @@ In this post I'm going to describe how to get Google's *pre-trained* Word2Vec mo
 
 As an interface to word2vec, I decided to go with a Python package called gensim. gensim appears to be a popular NLP package, and has some nice documentation and tutorials, including for word2vec.
 
-You can download Google's pre-trained model [here](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing "Google's pre-trained Word2Vec model"). It's 1.5GB! It includes word vectors for a vocabulary of 3 million words and phrases. The vector length is 300 features. 
+You can download Google's pre-trained model [here](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing "Google's pre-trained Word2Vec model"). It's 1.5GB! It includes word vectors for a vocabulary of 3 million words and phrases that they trained on roughly 100 billion words from a Google News dataset. The vector length is 300 features. 
 
 Loading this model using gensim is a piece of cake; you just need to pass in the path to the model file (update the path in the code below to wherever you've placed the file).
 
@@ -31,7 +31,58 @@ This is because gensim allocates a big matrix to hold all of the word vectors, a
 
 ...that's a big matrix!
 
-Assuming you've got a 64-bit machine and a decent amount of RAM (I've got 16GB; maybe you could get away with 8GB?), your best is to switch to 64-bit Python.
+Assuming you've got a 64-bit machine and a decent amount of RAM (I've got 16GB; maybe you could get away with 8GB?), your best bet is to switch to 64-bit Python. I had a little trouble with this--see my notes down at the end of the post.
+
+# Inspecting the Model
+I have a small Python project on GitHub called [inspect_word2vec](https://github.com/chrisjmccormick/inspect_word2vec) that loads Google's model, and inspects a few different properties of it.
+
+If you'd like to browse the 3M word list in Google's pre-trained model, you can just look at the text files in the [vocabulary folder](https://github.com/chrisjmccormick/inspect_word2vec/tree/master/vocabulary) of that project. I split the word list across 50 files, and each text file contains 100,000 entries from the model. I split it up like this so your editor wouldn't completely choke (hopefully) when you try to open them. The words are stored in their original order--I haven't sorted the list alphabetically. I don't know what determined the original order.
+
+Here are some the questions I had about the vocabulary, which I answered in this project:
+
+* Does it include stop words? 
+    * Answer: Some stop words like "a", "and", "of" are *excluded*, but others like "the", "also", "should" are *included*.
+* Does it include misspellings of words?
+    * Answer: Yes. For instance, it includes both "mispelled" and "misspelled"--the latter is the correct one.
+* Does it include commonly paired words?
+    * Answer: Yes. For instance, it includes "Soviet_Union" and "New_York".
+* Does it include numbers?
+    * Answer: Not directly; e.g., you won't find "100". But it does include entries like "###MHz_DDR2_SDRAM" where I'm assuming the '#' are intended to match any digit.
+
+Here's a selection of 30 "terms" from the vocabulary. Pretty weird stuff in there!
+
+{% highlight text %}
+Al_Qods
+Surendra_Pal
+Leaflet
+guitar_harmonica
+Yeoval
+Suhardi
+VoATM
+Streaming_Coverage
+Vawda
+Lisa_Vanderpump
+Nevern
+Saleema
+Saleemi
+rbracken@centredaily.com
+yellow_wagtails
+P_&C;
+CHICOPEE_Mass._WWLP
+Gardiners_Rd
+Nevers
+Stocks_Advance_Paced
+IIT_alumnus
+Popery
+Kapumpa
+fashionably_rumpled
+WDTV_Live
+ARTICLES_##V_##W
+Yerga
+Weegs
+Paris_IPN_Euronext
+##bFM_Audio_Simon
+{% endhighlight %}
 
 64-bit Python on Windows
 ========================
