@@ -9,6 +9,9 @@ tags: Word2Vec, NLP, word vectors
 
 While researching Word2Vec, I came across a lot of different resources of varying usefullness, so I thought I'd share my collection of links and notes on what they contain.
 
+* TOC
+{:toc}
+
 Original Papers & Resources from Google Team
 ============================================
 
