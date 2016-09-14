@@ -54,12 +54,14 @@ You can also find here some pre-trained models that they have provided. Note tha
 
 Tutorials
 =========
+
 ### Alex Minnaar's Tutorials
 The best tutorials I found online were done by [Alex Minnaar](http://alexminnaar.com/). 
 
 He's since taken the tutorials down, but I have PDF copies here:
-[Part I - The Skip-Gram Model]({site.url}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_I_The_Skip-Gram_Model.pdf)
-[Part II - Continuous Bag-of-Words Model]({site.url}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf)
+
+* [Part I - The Skip-Gram Model]({site.url}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_I_The_Skip-Gram_Model.pdf)
+* [Part II - Continuous Bag-of-Words Model]({site.url}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf)
 
 ### Kaggle Word2Vec Tutorial
 [Link to tutorial](https://www.kaggle.com/c/word2vec-nlp-tutorial/)
