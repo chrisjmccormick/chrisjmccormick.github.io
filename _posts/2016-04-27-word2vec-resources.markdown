@@ -18,7 +18,7 @@ Original Papers & Resources from Google Team
 Word2Vec was presented in two initial papers released within a month of each other. The original authors are a team of researchers from Google.
 
 ### Efficient Estimation of Word Representations in Vector Space
-[Link](http://arxiv.org/pdf/1301.3781.pdf)
+[Link to paper](http://arxiv.org/pdf/1301.3781.pdf)
 
 This was the first paper, dated September 7th, 2013.
 
@@ -29,7 +29,7 @@ I believe the reason for this is that these two new models are presented more as
 A good example are the labels "projection layer" and "hidden layer" which come from the "NNLM" model. The term "projection layer" is used to refer to a middle layer of the neural network *with no activation function*, whereas "hidden layer" implies a non-linear activation. 
 
 ### Distributed Representations of Words and Phrases and their Compositionality
-[Link](http://arxiv.org/pdf/1310.4546.pdf)
+[Link to paper](http://arxiv.org/pdf/1310.4546.pdf)
 
 This was a follow-up paper, dated October 16th, 2013.
 
@@ -39,22 +39,24 @@ I haven't looked at this paper in detail yet. I know it covers a few enhancement
 * Recognizing "phrases" and treating them as single words in the model (e.g., "United_States" or "New_York").
 
 ###  Presentation on Word2Vec
-[Link](https://docs.google.com/file/d/0B7XkCwpI5KDYRWRnd1RzWXQ2TWc/edit)
+[Link to presentation](https://docs.google.com/file/d/0B7XkCwpI5KDYRWRnd1RzWXQ2TWc/edit)
 
 This was presented December 9th, 2013 at NIPS 2013 by Tomas Mikolov from Google.
 
 I think this is mainly a re-hash of the content in the two papers. Seeing it presented differently may help you pull out some additional insights, though.
 
 ### C Code Implementation
-[Link](https://code.google.com/archive/p/word2vec/)
+[Link to code](https://code.google.com/archive/p/word2vec/)
 
 The above link is to the home page for google's own Word2Vec implementation in C.
 
 You can also find here some pre-trained models that they have provided. Note that it's possible to load these pre-trained models into `gensim` if you want to work with them in Python.
 
-Kaggle Word2Vec Tutorial
-========================
-[Link](https://www.kaggle.com/c/word2vec-nlp-tutorial/)
+Tutorials
+=========
+
+### Kaggle Word2Vec Tutorial
+[Link to tutorial](https://www.kaggle.com/c/word2vec-nlp-tutorial/)
 
 This is pretty cool. It's a Kaggle competition that's really just a Python tutorial to teach you about using Word2Vec with `gensim`. It's well written and will walk you through all of the steps carefully. It does very little to explain the algorithms used, but is great on the practical implementation side.
 
@@ -83,25 +85,22 @@ Part 4:
 
 * Points to Google's Doc2Vec as a superior solution to this task, but doesn't provide implementation details.
 
-Folgert Karsdorp's Word2Vec Tutorial 
-====================================
-[Link](http://www.folgertkarsdorp.nl/word2vec-an-introduction/)
+### Folgert Karsdorp's Word2Vec Tutorial 
+[Link to tutorial](http://www.folgertkarsdorp.nl/word2vec-an-introduction/)
 
 I haven't read this tutorial in depth... It covers the Continuous Bag of Words model (instead of the Skip-Gram model). It even includes some of the backprop equations.
 
-Alex Minnaar's Tutorials
-========================
+### Alex Minnaar's Tutorials
 The best tutorials I found online were on Alex Minnaar's blog; however, he has since taken them down! I'm trying to get in touch with him to find out why.
 
-Discussions on Quora
-====================
+### Discussions on Quora
 
 * [https://www.quora.com/What-are-the-continuous-bag-of-words-and-skip-gram-architectures-in-laymans-terms](https://www.quora.com/What-are-the-continuous-bag-of-words-and-skip-gram-architectures-in-laymans-terms)
 * [https://www.quora.com/How-does-word2vec-work](https://www.quora.com/How-does-word2vec-work)
 * [https://www.quora.com/What-are-some-interesting-Word2Vec-results/answer/Omer-Levy](https://www.quora.com/What-are-some-interesting-Word2Vec-results/answer/Omer-Levy)
 
 Implementations
----------------
+===============
 The below implementations also include some tutorials; I haven't gone through them in detail yet.
 
 * Word2Vec and Doc2Vec in Python in gensim [here](http://radimrehurek.com/2013/09/deep-learning-with-word2vec-and-gensim/) and [here](http://rare-technologies.com/word2vec-tutorial/)
