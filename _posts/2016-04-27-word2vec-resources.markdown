@@ -60,8 +60,8 @@ The best tutorials I found online were done by [Alex Minnaar](http://alexminnaar
 
 He's since taken the tutorials down, but I have PDF copies here:
 
-* [Part I - The Skip-Gram Model]({site.url}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_I_The_Skip-Gram_Model.pdf)
-* [Part II - Continuous Bag-of-Words Model]({site.url}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf)
+* [Part I - The Skip-Gram Model]({{ site.url }}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_I_The_Skip-Gram_Model.pdf)
+* [Part II - Continuous Bag-of-Words Model]({{ site.url }}/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf)
 
 ### Kaggle Word2Vec Tutorial
 [Link to tutorial](https://www.kaggle.com/c/word2vec-nlp-tutorial/)
@@ -113,3 +113,10 @@ The below implementations also include some tutorials; I haven't gone through th
 * Java version from [Medallia](https://github.com/medallia/Word2VecJava)
 * Word2vec implementation in [Spark MLlib](https://spark.apache.org/docs/latest/mllib-feature-extraction.html#word2vec)
 * Word2Vec implementation / tutorial in Google's [TensorFlow](https://www.tensorflow.org/versions/r0.8/tutorials/word2vec/index.html)
+
+My Own Stuff
+============
+
+* I have my own tutorial on the skip-gram model of Word2Vec [here](http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/).
+* I created a project called [inspec_word2vec](https://github.com/chrisjmccormick/inspect_word2vec) that uses gensim in Python to load up Google's large pre-trained model, and inspect some of the details of the vocabulary.
+* I'm working on a Matlab implementation of Word2Vec, [word2vec_matlab](https://github.com/chrisjmccormick/word2vec_matlab). My goal is less about practical useage and more about understanding the model. For now, it doesn't support the most important part--actually training a Word2Vec model. What it does do currently is allow you to play with a paired-down (or, really, cleaned-up!) version of Google's pre-trained model in Matlab.
