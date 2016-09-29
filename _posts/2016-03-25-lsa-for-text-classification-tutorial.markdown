@@ -49,7 +49,7 @@ You can find a little more discussion of the interpretation of LSA [here](https:
 LSA Python Code
 ---------------
 <div class="message">
-Note: If you're less interested in learning LSA and just want to use it, you might consider checking out the nice [gensim](https://radimrehurek.com/gensim/ "gensim package for Python") package in Python, it's built specifically for working with topic-modeling techniques like LSA.
+Note: If you're less interested in learning LSA and just want to use it, you might consider checking out the nice <a href="https://radimrehurek.com/gensim/">gensim</a> package in Python, it's built specifically for working with topic-modeling techniques like LSA.
 </div>
 
 I implemented an example of document classification with LSA in Python using scikit-learn. My code is available on GitHub, you can either visit the project page [here](https://github.com/chrisjmccormick/LSA_Classification "LSA_Classification project page"), or download the source [directly](https://github.com/chrisjmccormick/LSA_Classification/archive/master.zip "LSA_Classification direct download").
