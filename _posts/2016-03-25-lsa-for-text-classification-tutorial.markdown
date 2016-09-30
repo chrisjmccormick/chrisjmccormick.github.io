@@ -23,7 +23,7 @@ The first step in LSA is actually a separate algorithm that you may already be f
 
 tf-idf is pretty simple and I won't go into it here, but the gist of it is that each position in the vector corresponds to a different word, and you represent a document by counting the number of times each word appears. Additionally, you normalize each of the word counts by the frequency of that word in your overall document collection, to give less frequent terms more weight.
 
-There's some thorough material on tf-idf in the Stanford NLP course available on YouTube [here](https://en.wikipedia.org/wiki/Tf%E2%80%93idf "Stanford NLP course on YouTube")--specifically, check out the lectures 19-1 to 19-7. Or if you prefer some (dense) reading, you can check out the tf-idf chapter of the Stanford NLP textbook [here](http://nlp.stanford.edu/IR-book/html/htmledition/scoring-term-weighting-and-the-vector-space-model-1.html "Stanford NLP textbook").
+There's some thorough material on tf-idf in the Stanford NLP course available on YouTube [here](https://www.youtube.com/watch?v=5Gz3Hp217Io&index=80&list=PL6397E4B26D00A269 "Stanford NLP course on YouTube")--specifically, check out the lectures 19-1 to 19-7. Or if you prefer some (dense) reading, you can check out the tf-idf chapter of the Stanford NLP textbook [here](http://nlp.stanford.edu/IR-book/html/htmledition/scoring-term-weighting-and-the-vector-space-model-1.html "Stanford NLP textbook").
 
 LSA
 ---
