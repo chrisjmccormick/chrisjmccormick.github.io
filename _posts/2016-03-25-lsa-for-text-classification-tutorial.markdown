@@ -23,7 +23,7 @@ The first step in LSA is actually a separate algorithm that you may already be f
 
 tf-idf is pretty simple and I won't go into it here, but the gist of it is that each position in the vector corresponds to a different word, and you represent a document by counting the number of times each word appears. Additionally, you normalize each of the word counts by the frequency of that word in your overall document collection, to give less frequent terms more weight.
 
-There's some thorough material on tf-idf in the Stanford NLP course on Coursera [here](https://class.coursera.org/nlp/lecture "Stanford NLP course on Coursera")--specifically, check out the lectures under "Week 7 - Ranked Information Retrieval". Or if you prefer some (dense) reading, you can check out the tf-idf chapter of the Stanford NLP textbook [here](http://nlp.stanford.edu/IR-book/html/htmledition/scoring-term-weighting-and-the-vector-space-model-1.html "Stanford NLP textbook").
+There's some thorough material on tf-idf in the Stanford NLP course available on YouTube [here](https://en.wikipedia.org/wiki/Tf%E2%80%93idf "Stanford NLP course on YouTube")--specifically, check out the lectures 19-1 to 19-7. Or if you prefer some (dense) reading, you can check out the tf-idf chapter of the Stanford NLP textbook [here](http://nlp.stanford.edu/IR-book/html/htmledition/scoring-term-weighting-and-the-vector-space-model-1.html "Stanford NLP textbook").
 
 LSA
 ---
@@ -34,6 +34,10 @@ Side note: "Latent Semantic Analysis (LSA)" and "Latent Semantic Indexing (LSI)"
 </div>
 
 LSA is quite simple, you just use SVD to perform dimensionality reduction on the tf-idf vectors--that's really all there is to it!
+
+<div class="message">
+If you're unfamiliar with dimensionality reduction, this topic was covered well in the Machine Learning course on Coursera. You can also find the lecture on YouTube <a href="https://www.youtube.com/watch?v=N5ynBdHqnGU">here</a>.
+</div>
 
 You might think to do this even if you had never heard of "LSA"--the tf-idf vectors tend to be long and unwieldy since they have one component for every word in the vocabulary. For instance, in my example Python code, these vectors have 10,000 components. So dimensionality reduction makes them more manageable for further operations like clustering or classification.
 
