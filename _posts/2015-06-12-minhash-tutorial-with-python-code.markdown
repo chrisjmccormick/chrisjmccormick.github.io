@@ -25,7 +25,7 @@ I first learned about this topic through Stanford’s Mining of Massive Datasets
 On to the tutorial!
 
 
-## **Set Similarity**
+## Set Similarity
 
 
 There is an interesting computing problem that arises in a number of contexts called “set similarity”.
@@ -35,7 +35,7 @@ Lets say you and I are both subscribers to Netflix, and we’ve each watched rou
 If we’ve each watched exactly 100 movies, and 50 of those were seen by both of us, then the intersection is 50 and the union is 150, so our Jaccard Similarity is 1/3.
 
 
-## **Documents as sets**
+## Documents as sets
 
 
 What seems to be the more common application of “set similarity” is the comparison of documents. One way to represent a document would be to parse it for all of its words, and represent the document as the set of all unique words it contains. In practice, you’d hash the words to integer IDs, and then maintain the set of IDs present in the document.
@@ -53,8 +53,7 @@ Another example is detecting plagiarism. The dataset used in my example code is 
 You might say that these are all applications of “near-duplicate” detection.
 
 
-## **Shingles**
-
+## Shingles
 
 A small detail here is that it is more common to parse the document by taking, for example, each possible string of three consecutive words from the document (e.g., “A small detail”, “small detail here”, “detail here is”, etc.) and hashing these strings to integers. This retains a little more of the document structure than just hashing the individual words. This technique of hashing substrings is referred to as “shingling”, and each unique string is called a “shingle”.
 
@@ -63,8 +62,7 @@ Another shingling technique that’s described in the Mining of Massive Datasets
 In the example code, I’m using three-word shingles, and it works well.
 
 
-## **Problem scale**
-
+## Problem scale
 
 So far, this all sounds pretty straight forward and manageable. Where it gets interesting is when you look at the compute requirements for doing this for a relatively large number of documents.
 
@@ -96,7 +94,7 @@ Next, the amount of time required:
 
 16 years of compute time! Good luck with that. You’d need 1,000 servers just to get the compute time down to a week. But there’s a better way…
 
-**MinHash Signatures**
+## MinHash Signatures
 
 The MinHash algorithm will provide us with a fast approximation to the Jaccard Similarity between two sets.
 
@@ -108,7 +106,7 @@ We can compare two MinHash signatures in this way much quicker than we can calcu
 
 In the example code, we have a collection of 10,000 articles which contain, on average, 250 shingles each. Computing the Jaccard similarities directly for all pairs takes 20 minutes on my PC, while generating and comparing the MinHash signatures takes only about 2 minutes and 45 seconds.
 
-**MinHash Algorithm**
+## MinHash Algorithm
 
 The MinHash algorithm is actually pretty easy to describe if you start with the implementation rather than the intuitive explanation.
 
@@ -120,9 +118,9 @@ To demystify it a bit, here is the definition of the hash function, which takes 
 [![Random Hash Eq](https://chrisjmccormick.files.wordpress.com/2015/06/random-hash-eq.png)](https://chrisjmccormick.files.wordpress.com/2015/06/random-hash-eq.png)
 
 
-The coefficients ‘a’ and ‘b’ are randomly chosen integers less than the maximum value of ‘x’. ‘c’ is a prime number slightly bigger than the maximum value of ‘x’.
+The coefficients `a` and `b` are randomly chosen integers less than the maximum value of `x`. `c` is a prime number slightly bigger than the maximum value of `x`.
 
-For different choices of ‘a’ and ‘b’, this hash function will produce a different random mapping of the values. So we have the ability to “generate” as many of these random hash functions as we want by just picking different values of ‘a’ and ‘b’.
+For different choices of `a` and `b`, this hash function will produce a different random mapping of the values. So we have the ability to “generate” as many of these random hash functions as we want by just picking different values of `a` and `b`.
 
 So here’s how you compute the MinHash signature for a given document. Generate, say, 10 random hash functions. Take the first hash function, and apply it to all of the shingle values in a document. Find the minimum hash value produced (hey, “minimum hash”, that’s the name of the algorithm!) and use it as the first component of the MinHash signature. Now take the second hash function, and again find the minimum resulting hash value, and use this as the second component. And so on.
 
@@ -132,17 +130,13 @@ We’ll use the same 10 hash functions for every document in the dataset and gen
 
 That’s it!
 
-**Why Does It Work?**
+## Why Does It Work?
 
 The reason MinHash works is that the expected value of the MinHash similarity (the number of matching components divided by the signature length) can be shown to be equal to the Jaccard similarity between the sets. We’ll demonstrate this with a simple example involving two small sets:
 
+Set A     (32, **3**, 22, 6, **15**, **11**)
 
-Set A     (32, **3, **22, 6, **15, 11**)
-
-
-
-
-Set B      (**15, **30, 7, **11,** 28, **3,** 17)
+Set B      (**15**, 30, 7, **11**, 28, **3**, 17)
 
 
 There are three items in common between the sets (highlighted in bold), and 10 unique items between the two sets. Therefore, these sets have a Jaccard similarity of 3/10.
@@ -153,9 +147,7 @@ The MinHash calculation can be thought of as taking the union of the two sets, s
 
 So if you take the union of these two sets,
 
-
-Union    (32, **3, **22, 6, **15, 11, **30, 7, 28, 17)
-
+Union    (32, **3**, 22, 6, **15**, **11**, 30, 7, 28, 17)
 
 and then randomly shuffle them, what are the odds that one of the bold items ends up first in the list? It’s given by the number of common items (3) divided by the total number of items (10), or 3/10, the same as the Jaccard similarity.
 
@@ -165,26 +157,21 @@ Now we can go back to look at the full signature. Continuing with our simple exa
 
 _The expected value of the MinHash similarity between two sets is equal to their Jaccard similarity._
 
-**Example Python Code**
+## Example Python Code
 
 You can find my example code on GitHub [here](https://github.com/chrisjmccormick/MinHash).
 
 If you’re not familiar with GitHub, fear not. Here’s the [direct link to the zip file](https://github.com/chrisjmccormick/MinHash/archive/master.zip) containing all of the code.
 
-**Notes on the history of the code**
+## Notes on the history of the code
 
 After working through this material in the MMDS course, I played with the Python code from GitHub user rahularora [here](https://github.com/rahularora/MinHash). It’s a complete implementation, but it had a couple important issues (including one fatal bug) that I’ve addressed.
 
 The most important notes:
-
-
-
 	
-  * The modulo constant in his random hash function (the variable ‘c’ in the equation above) was not a prime number. If this constant isn’t prime, the random hash produces a lot of collisions, and the algorithm doesn’t work well.
-
+  * The modulo constant in his random hash function (the variable `c` in the equation above) was not a prime number. If this constant isn’t prime, the random hash produces a lot of collisions, and the algorithm doesn’t work well.
 	
   * I’ve replaced the example dataset with a much larger one I found [here](http://www.inf.ed.ac.uk/teaching/courses/tts/assessed/assessment3.html).
-
 	
   * rahularora made use of Python dictionaries to perform the shingle hashing, but this doesn’t scale well—it got really slow for a large number of documents / shingles. I’ve replaced this with CRC32 hashing.
 
