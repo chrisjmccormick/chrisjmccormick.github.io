@@ -1,0 +1,733 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0127)https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Stereo Vision</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2010-01-05"><meta name="m-file" content="videostereo"><link rel="stylesheet" type="text/css" href="./Stereo Vision_files/style.css"></head><body data-pinterest-extension-installed="cr1.40"><div class="header"><div class="left"><a href="matlab:edit videostereo">Open videostereo.m in the Editor</a></div><div class="right"><a href="matlab:echodemo videostereo">Run in the Command Window</a></div></div><div class="content"><h1>Stereo Vision</h1><!--introduction--><p>Stereo vision is the process of recovering depth from camera images by comparing two or more views of the same scene. Simple, binocular stereo uses only two images, typically taken with parallel cameras that were separated by a horizontal distance known as the "baseline." The output of the stereo computation is a disparity map (which is translatable to a range image) which tells how far each point in the physical scene was from the camera.</p><p>In this demo, we use MATLAB® and the Video and Image Processing Blockset™ to compute the depth map between two rectified stereo images. See the <a href="matlab:showdemo(&#39;videorectification&#39;)">Image Rectification Demo</a> to learn about the details behind rectification. In this demo we use block matching, which is the standard algorithm for high-speed stereo vision in hardware systems [8]. We first explore basic block matching, and then apply dynamic programming to improve accuracy, and image pyramiding to improve speed.</p><p>This demo is similar to the Simulink <a href="matlab:showdemo(&#39;vipstereo&#39;)&gt;Disparity">Estimation for Stereo Vision Demo</a>. The main difference is that the Simulink demo does not assume it has been given rectified images, and so searches along general epipolar lines that are not necessarily parallel to the x-axis.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#1">Step 1. Read stereo image pair</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#2">Step 2. Basic block matching</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#4">Step 3. Sub-pixel estimation</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#6">Step 4. Dynamic programming</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#8">Step 5. Image Pyramiding</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#9">Step 6. Combined pyramiding and dynamic programming</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#10">Step 7. Backprojection</a></li><li><a href="https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html#12">References</a></li></ul></div><h2>Step 1. Read stereo image pair<a name="1"></a></h2><p>Here we read in the color stereo image pair and convert the images to grayscale for the matching process. Using color images may provide some improvement in accuracy, but it is more efficient to work with only one-channel images. For this we use the <tt>ImageDataTypeConverter</tt> and the <tt>ColorSpaceConverter</tt> System objects. Below we show the left camera image and a color composite of both images so that one can easily see the disparity between them.</p><pre class="codeinput">hIdtc = video.ImageDataTypeConverter;
+hCsc = video.ColorSpaceConverter(<span class="string">'Conversion'</span>,<span class="string">'RGB to intensity'</span>);
+leftI3chan = step(hIdtc,imread(<span class="string">'vipstereo_hallwayLeft.png'</span>));
+leftI = step(hCsc,leftI3chan);
+rightI3chan = step(hIdtc,imread(<span class="string">'vipstereo_hallwayRight.png'</span>));
+rightI = step(hCsc,rightI3chan);
+
+figure(1), clf;
+imshow(rightI3chan), title(<span class="string">'Right image'</span>);
+
+figure(2), clf;
+imshow(cat(3,rightI,leftI,leftI)), axis <span class="string">image</span>;
+title(<span class="string">'Color composite (right=red, left=cyan)'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_01.png" alt=""> <img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_02.png" alt=""> <h2>Step 2. Basic block matching<a name="2"></a></h2><p>Next we perform basic block matching. For every pixel in the right image, we extract the 7-by-7-pixel block around it and search along the same row in the left image for the block that best matches it. Here we search in a range of <img src="./Stereo Vision_files/videostereo_eq64520.png" alt="$\pm 15$"> pixels around the pixel's location in the first image, and we use the sum of absolute differences (SAD) to compare the image regions. We need only search over columns and not over rows because the images are rectified. We use the <tt>TemplateMatcher</tt> System object to perform this block matching between each block and the region of interest.</p><pre class="codeinput">Dbasic = zeros(size(leftI), <span class="string">'single'</span>);
+disparityRange = 15;
+<span class="comment">% Selects (2*halfBlockSize+1)-by-(2*halfBlockSize+1) block.</span>
+halfBlockSize = 3;
+blockSize = 2*halfBlockSize+1;
+<span class="comment">% Allocate space for all template matchers.</span>
+tmats = cell(blockSize);
+<span class="comment">% Scan over all rows.</span>
+<span class="keyword">for</span> m=1:size(leftI,1)
+    <span class="comment">% Set min/max row bounds for image block.</span>
+    minr = max(1,m-halfBlockSize);
+    maxr = min(size(leftI,1),m+halfBlockSize);
+    <span class="comment">% Scan over all columns.</span>
+    <span class="keyword">for</span> n=1:size(leftI,2)
+        minc = max(1,n-halfBlockSize);
+        maxc = min(size(leftI,2),n+halfBlockSize);
+        <span class="comment">% Compute disparity bounds.</span>
+        mind = max( -disparityRange, 1-minc );
+        maxd = min( disparityRange, size(leftI,2)-maxc );
+
+        <span class="comment">% Construct template and region of interest.</span>
+        template = rightI(minr:maxr,minc:maxc);
+        templateCenter = floor((size(template)+1)/2);
+        roi = [minr+templateCenter(1)-2 <span class="keyword">...</span>
+               minc+templateCenter(2)+mind-2 <span class="keyword">...</span>
+               1 maxd-mind+1];
+        <span class="comment">% Lookup proper TemplateMatcher object; create if empty.</span>
+        <span class="keyword">if</span> isempty(tmats{size(template,1),size(template,2)})
+            tmats{size(template,1),size(template,2)} = <span class="keyword">...</span>
+                video.TemplateMatcher(<span class="string">'ROIInputPort'</span>,true);
+        <span class="keyword">end</span>
+        thisTemplateMatcher = tmats{size(template,1),size(template,2)};
+
+        <span class="comment">% Run TemplateMatcher object.</span>
+        loc = step(thisTemplateMatcher, leftI, template, roi);
+        Dbasic(m,n) = loc(2) - roi(2) + mind;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p>In the results below, the basic block matching does well, as the correct shape of the stereo scene is recovered. However, there are noisy patches and bad depth estimates everywhere, especially on the ceiling. These are caused when no strong image features appear inside of the 7-by-7-pixel windows being compared. Then the matching process is subject to noise since each pixel chooses its disparity independently of all the other pixels.</p><p>For display purposes, we saturate the depth map to have only positive values. In general, slight angular misalignment of the stereo cameras used for image acquisition can allow both positive and negative disparities to appear validly in the depth map. In this case, however, the stereo cameras were near perfectly parallel, so the true disparities have only one sign. Thus this correction is valid.</p><pre class="codeinput">figure(3), clf;
+imshow(Dbasic,[]), axis <span class="string">image</span>, colormap(<span class="string">'jet'</span>), colorbar;
+caxis([0 disparityRange]);
+title(<span class="string">'Depth map from basic block matching'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_03.png" alt=""> <h2>Step 3. Sub-pixel estimation<a name="4"></a></h2><p>The disparity estimates returned by block matching are all integer-valued, so the above depth map exhibits contouring effects where there are no smooth transitions between regions of different disparity. This can be ameliorated by incorporating sub-pixel computation into the matching metric. Previously we only took the location of the minimum cost as the disparity, but now we take into consideration the minimum cost and the two neighboring cost values. We fit a parabola to these three values, and analytically solve for the minimum to get the sub-pixel correction.</p><pre class="codeinput">DbasicSubpixel= zeros(size(leftI), <span class="string">'single'</span>);
+tmats = cell(2*halfBlockSize+1);
+<span class="keyword">for</span> m=1:size(leftI,1)
+    <span class="comment">% Set min/max row bounds for image block.</span>
+    minr = max(1,m-halfBlockSize);
+    maxr = min(size(leftI,1),m+halfBlockSize);
+    <span class="comment">% Scan over all columns.</span>
+    <span class="keyword">for</span> n=1:size(leftI,2)
+        minc = max(1,n-halfBlockSize);
+        maxc = min(size(leftI,2),n+halfBlockSize);
+        <span class="comment">% Compute disparity bounds.</span>
+        mind = max( -disparityRange, 1-minc );
+        maxd = min( disparityRange, size(leftI,2)-maxc );
+
+        <span class="comment">% Construct template and region of interest.</span>
+        template = rightI(minr:maxr,minc:maxc);
+        templateCenter = floor((size(template)+1)/2);
+        roi = [minr+templateCenter(1)-2 <span class="keyword">...</span>
+               minc+templateCenter(2)+mind-2 <span class="keyword">...</span>
+               1 maxd-mind+1];
+        <span class="comment">% Lookup proper TemplateMatcher object; create if empty.</span>
+        <span class="keyword">if</span> isempty(tmats{size(template,1),size(template,2)})
+            tmats{size(template,1),size(template,2)} = <span class="keyword">...</span>
+                video.TemplateMatcher(<span class="string">'ROIInputPort'</span>,true,<span class="keyword">...</span>
+                <span class="string">'BestMatchNeighborhoodOutputPort'</span>,true);
+        <span class="keyword">end</span>
+        thisTemplateMatcher = tmats{size(template,1),size(template,2)};
+
+        <span class="comment">% Run TemplateMatcher object.</span>
+        [loc,a2] = step(thisTemplateMatcher, leftI, template, roi);
+        ix = single(loc(2) - roi(2) + mind);
+
+        <span class="comment">% Subpixel refinement of index.</span>
+        DbasicSubpixel(m,n) = ix - 0.5 * (a2(2,3) - a2(2,1)) <span class="keyword">...</span>
+            / (a2(2,1) - 2*a2(2,2) + a2(2,3));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p>Re-running basic block matching, we achieve the result below where the contouring effects are mostly removed and the disparity estimates are correctly refined. This is especially evident along the walls.</p><pre class="codeinput">figure(1), clf;
+imshow(DbasicSubpixel,[]), axis <span class="string">image</span>, colormap(<span class="string">'jet'</span>), colorbar;
+caxis([0 disparityRange]);
+title(<span class="string">'Basic block matching with sub-pixel accuracy'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_04.png" alt=""> <h2>Step 4. Dynamic programming<a name="6"></a></h2><p>As mentioned above, basic block matching creates a noisy disparity image. This can be improved by introducing a smoothness constraint. Basic block matching chooses the optimal disparity for each pixel based on its own cost function alone. Now we want to allow a pixel to have a disparity with possibly sub-optimal cost for it locally. This extra cost must be offset by increasing that pixel's agreement in disparity with its neighbors. In particular, we constrain each disparity estimate to lie with <img src="./Stereo Vision_files/videostereo_eq88542.png" alt="$\pm 3$"> values of its neighbors' disparities, where its neighbors are the adjacent pixels along an image row. The problem of finding the optimal disparity estimates for a row of pixels now becomes one of finding the "optimal path" from one side of the image to the other. To find this optimal path, we use the underlying block matching metric as the cost function and constrain the disparities to only change by a certain amount between adjacent pixels. This is a problem that can be solved efficiently using the technique of dynamic programming [3,4].</p><pre class="codeinput">Ddynamic = zeros(size(leftI), <span class="string">'single'</span>);
+finf = 1e3; <span class="comment">% False infinity</span>
+disparityCost = finf*ones(size(leftI,2), 2*disparityRange + 1, <span class="string">'single'</span>);
+disparityPenalty = 0.5; <span class="comment">% Penalty for disparity disagreement between pixels</span>
+<span class="comment">% Scan over all rows.</span>
+<span class="keyword">for</span> m=1:size(leftI,1)
+    disparityCost(:) = finf;
+    <span class="comment">% Set min/max row bounds for image block.</span>
+    minr = max(1,m-halfBlockSize);
+    maxr = min(size(leftI,1),m+halfBlockSize);
+    <span class="comment">% Scan over all columns.</span>
+    <span class="keyword">for</span> n=1:size(leftI,2)
+        minc = max(1,n-halfBlockSize);
+        maxc = min(size(leftI,2),n+halfBlockSize);
+        <span class="comment">% Compute disparity bounds.</span>
+        mind = max( -disparityRange, 1-minc );
+        maxd = min( disparityRange, size(leftI,2)-maxc );
+        <span class="comment">% Compute and save all matching costs.</span>
+        <span class="keyword">for</span> d=mind:maxd
+            disparityCost(n, d + disparityRange + 1) = <span class="keyword">...</span>
+                sum(sum(abs(leftI(minr:maxr,(minc:maxc)+d) <span class="keyword">...</span>
+                - rightI(minr:maxr,minc:maxc))));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% Process scanline disparity costs with dynamic programming.</span>
+    optimalIndices = zeros(size(disparityCost), <span class="string">'single'</span>);
+    cp = disparityCost(end,:);
+    <span class="keyword">for</span> j=size(disparityCost,1)-1:-1:1
+        <span class="comment">% False infinity for this level</span>
+        cfinf = (size(disparityCost,1) - j + 1)*finf;
+        <span class="comment">% Construct matrix for finding optimal move for each column</span>
+        <span class="comment">% individually.</span>
+        [v,ix] = min([cfinf cfinf cp(1:end-4)+3*disparityPenalty;
+                      cfinf cp(1:end-3)+2*disparityPenalty;
+                      cp(1:end-2)+disparityPenalty;
+                      cp(2:end-1);
+                      cp(3:end)+disparityPenalty;
+                      cp(4:end)+2*disparityPenalty cfinf;
+                      cp(5:end)+3*disparityPenalty cfinf cfinf],[],1);
+        cp = [cfinf disparityCost(j,2:end-1)+v cfinf];
+        <span class="comment">% Record optimal routes.</span>
+        optimalIndices(j,2:end-1) = (2:size(disparityCost,2)-1) + (ix - 4);
+    <span class="keyword">end</span>
+    <span class="comment">% Recover optimal route.</span>
+    [~,ix] = min(cp);
+    Ddynamic(m,1) = ix;
+    <span class="keyword">for</span> k=1:size(Ddynamic,2)-1
+        Ddynamic(m,k+1) = optimalIndices(k, <span class="keyword">...</span>
+            max(1, min(size(optimalIndices,2), round(Ddynamic(m,k)) ) ) );
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+Ddynamic = Ddynamic - disparityRange - 1;
+</pre><p>The image below shows the stereo result refined by applying dynamic programming to each row individually. Dynamic programming does introduce errors of its own by blurring the edges around object boundaries due to the smoothness constraint. Also, it does nothing to smooth ''between'' rows, which is why a striation pattern now appears on the left side foreground chair. Despite these limitations, the result is significantly improved, with the noise along the walls and ceiling nearly completely removed, and with many of the foreground objects being better reconstructed.</p><pre class="codeinput">figure(3), clf;
+imshow(Ddynamic,[]), axis <span class="string">image</span>, colormap(<span class="string">'jet'</span>), colorbar;
+caxis([0 disparityRange]);
+title(<span class="string">'Block matching with dynamic programming'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_05.png" alt=""> <h2>Step 5. Image Pyramiding<a name="8"></a></h2><p>While dynamic programming can improve the accuracy of the stereo image, basic block matching is still an expensive operation, and dynamic programming only adds to the burden. One solution is to use image pyramiding and telescopic search to guide the block matching [5,7]. With the full-size image, we had to search over a <img src="./Stereo Vision_files/videostereo_eq64520.png" alt="$\pm 15$">-pixel range to properly detect the disparities in the image. If we had down-sized the image by a factor of two, however, this search could have been reduced to <img src="./Stereo Vision_files/videostereo_eq90007.png" alt="$\pm 7$"> pixels on an image a quarter of the area, meaning this step would cost a factor of 8 less. Then we use the disparity estimates from this down-sized operation to seed the search on the larger image, and therefore we only need to search over a smaller range of disparities.</p><p>The below example performs this telescoping stereo matching using a three-level image pyramid. We use the <tt>Pyramid</tt> and <tt>GeometricScaler</tt> System objects, and we have wrapped up the preceding block matching code into the function <a href="matlab:edit(fullfile(matlabroot,&#39;toolbox&#39;,&#39;vipblks&#39;,&#39;vipdemos&#39;,&#39;vipstereo_blockmatch.m&#39;))"><tt>vipstereo_blockmatch.m</tt></a> for simplicity. The disparity search range is only <img src="./Stereo Vision_files/videostereo_eq88542.png" alt="$\pm 3$"> pixels at each level, making it over 5x faster to compute than basic block matching. Yet the results compare favorably.</p><pre class="codeinput"><span class="comment">% Construct a three-level pyramid</span>
+pyramids = cell(1,4);
+pyramids{1}.L = leftI;
+pyramids{1}.R = rightI;
+<span class="keyword">for</span> i=2:length(pyramids)
+    hPyr = video.Pyramid(<span class="string">'PyramidLevel'</span>,1);
+    pyramids{i}.L = single(step(hPyr,pyramids{i-1}.L));
+    pyramids{i}.R = single(step(hPyr,pyramids{i-1}.R));
+<span class="keyword">end</span>
+<span class="comment">% Declare original search radius as +/-4 disparities for every pixel.</span>
+smallRange = single(3);
+disparityMin = repmat(-smallRange, size(pyramids{end}.L));
+disparityMax = repmat( smallRange, size(pyramids{end}.L));
+<span class="comment">% Do telescoping search over pyramid levels.</span>
+<span class="keyword">for</span> i=length(pyramids):-1:1
+    Dpyramid = vipstereo_blockmatch(pyramids{i}.L,pyramids{i}.R, <span class="keyword">...</span>
+        disparityMin,disparityMax,<span class="keyword">...</span>
+        false,true,3);
+
+    <span class="keyword">if</span> i &gt; 1
+        <span class="comment">% Scale disparity values for next level.</span>
+        hGsca = video.GeometricScaler(<span class="keyword">...</span>
+            <span class="string">'InterpolationMethod'</span>,<span class="string">'Nearest neighbor'</span>,<span class="keyword">...</span>
+            <span class="string">'SizeMethod'</span>,<span class="string">'Number of output rows and columns'</span>,<span class="keyword">...</span>
+            <span class="string">'Size'</span>,size(pyramids{i-1}.L));
+        Dpyramid = 2*step(hGsca, Dpyramid);
+        <span class="comment">% Maintain search radius of +/-smallRange.</span>
+        disparityMin = Dpyramid - smallRange;
+        disparityMax = Dpyramid + smallRange;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+figure(3), clf;
+imshow(Dpyramid,[]), colormap(<span class="string">'jet'</span>), colorbar, axis <span class="string">image</span>;
+caxis([0 disparityRange]);
+title(<span class="string">'Four-level pyramid block matching'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_06.png" alt=""> <h2>Step 6. Combined pyramiding and dynamic programming<a name="9"></a></h2><p>Finally we merge the above techniques and run dynamic programming along with image pyramiding, where the dynamic programming is run on the disparity estimates output by every pyramid level. The results compare well with the highest-quality results we have obtained so far, and are still achieved at a reduced computational burden versus basic block matching.</p><p>It is also possible to use sub-pixel methods with dynamic programming, and we show the results of all three techniques in the second image. As before, sub-pixeling reduces contouring effects and clearly improves accuracy. The previous code has been bundled into <a href="matlab:edit(fullfile(matlabroot,&#39;toolbox&#39;,&#39;vipblks&#39;,&#39;vipdemos&#39;,&#39;vipstereo_blockmatch_combined.m&#39;))"><tt>vipstereo_blockmatch_combined.m</tt></a>, which exposes all of the options previously presented as parameter-value pairs.</p><pre class="codeinput">DpyramidDynamic = vipstereo_blockmatch_combined(leftI,rightI, <span class="keyword">...</span>
+    <span class="string">'NumPyramids'</span>,3, <span class="string">'DisparityRange'</span>,4, <span class="string">'DynamicProgramming'</span>,true);
+figure(3), clf;
+imshow(DpyramidDynamic,[]), axis(<span class="string">'image'</span>), colorbar, colormap <span class="string">jet</span>;
+caxis([0 disparityRange]);
+title(<span class="string">'3-level pyramid with dynamic programming'</span>);
+
+DdynamicSubpixel = vipstereo_blockmatch_combined(leftI,rightI, <span class="keyword">...</span>
+    <span class="string">'NumPyramids'</span>,3, <span class="string">'DisparityRange'</span>,4, <span class="string">'DynamicProgramming'</span>,true, <span class="keyword">...</span>
+    <span class="string">'Subpixel'</span>, true);
+figure(4), clf;
+imshow(DdynamicSubpixel,[]), axis <span class="string">image</span>, colormap(<span class="string">'jet'</span>), colorbar;
+caxis([0 disparityRange]);
+title(<span class="string">'Pyramid with dynamic programming and sub-pixel accuracy'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_07.png" alt=""> <img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_08.png" alt=""> <h2>Step 7. Backprojection<a name="10"></a></h2><p>With a stereo depth map and knowledge of the intrinsic parameters of the camera, it is possible to backproject image pixels into 3D points [1,2]. One way to compute the camera intrinsics is with the MATLAB Camera Calibration Toolbox [6] from the California Institute of Technology®. Such a tool will produce an intrinsics matrix, K, of the form:</p><pre>K = [focal_length_x          skew_x  camera_center_x;
+                  0  focal_length_y  camera_center_y;
+                  0               0                1];</pre><p>This relates 3D world coordinates to homogenized camera coordinates via:</p><p><img src="./Stereo Vision_files/videostereo_eq74515.png" alt="$$[x_{camera} \, y_{camera} \, 1]^T = K \cdot [x_{world} \, y_{world} \, z_{world}]^T$$"></p><p>With the intrinsics matrix, we can backproject each image pixel into a 3D ray that describes all the world points that could have been projected onto that pixel on the image. This leaves unknown the distance of that point to the camera. This is provided by the disparity measurements of the stereo depth map as:</p><p><img src="./Stereo Vision_files/videostereo_eq15052.png" alt="$$z_{world} = focal\_length \cdot \frac{1 + stereo\_baseline}{disparity}$$"></p><p>Note that unitless pixel disparities cannot be used directly in this equation. Also, if the stereo baseline (the distance between the two cameras) is not well-known, it introduces more unknowns. Thus we transform this equation into the general form:</p><p><img src="./Stereo Vision_files/videostereo_eq01517.png" alt="$$z_{world} = a + \frac{b}{disparity}$$"></p><p>We solve for the two unknowns via least squares by collecting a few corresponding depth and disparity values from the scene and using them as tie points. The full technique is demonstrated below.</p><pre class="codeinput"><span class="comment">% Camera intrinsics matrix</span>
+K = [409.4433         0  204.1225
+            0  416.0865  146.4133
+            0         0    1.0000];
+<span class="comment">% Create a sub-sampled grid for backprojection.</span>
+dec = 2;
+[X,Y] = meshgrid(1:dec:size(leftI,2),1:dec:size(leftI,1));
+P = K\[X(:)'; Y(:)'; ones(1,numel(X), <span class="string">'single'</span>)];
+Disp = max(0,DdynamicSubpixel(1:dec:size(leftI,1),1:dec:size(leftI,2)));
+hMedF = video.MedianFilter2D(<span class="string">'NeighborhoodSize'</span>,[5 5]);
+Disp = step(hMedF,Disp); <span class="comment">% Median filter to smooth out noise.</span>
+<span class="comment">% Derive conversion from disparity to depth with tie points:</span>
+knownDs = [15   9   2]'; <span class="comment">% Disparity values in pixels</span>
+knownZs = [4  4.5 6.8]';
+<span class="comment">% World z values in meters based on scene measurements.</span>
+ab = [1./knownDs ones(size(knownDs), <span class="string">'single'</span>)] \ knownZs; <span class="comment">% least squares</span>
+<span class="comment">% Convert disparity to z (distance from camera)</span>
+ZZ = ab(1)./Disp(:)' + ab(2);
+<span class="comment">% Threshold to [0,8] meters.</span>
+ZZdisp = min(8,max(0, ZZ ));
+Pd = bsxfun(@times,P,ZZ);
+<span class="comment">% Remove near points</span>
+bad = Pd(3,:)&gt;8 | Pd(3,:)&lt;3;
+Pd = Pd(:,~bad);
+</pre><p>In the reprojection, the walls, ceiling, and floor all appear mutually orthogonal, and the scene is well reconstructed. Since camera calibration also gives intrinsics with units, we can assign units to the backprojected points. The dimensions of the plot are given in meters, and one can verify that the sizes of objects and the scene appear correct.</p><pre class="codeinput"><span class="comment">% Collect quantized colors for point display</span>
+Colors = rightI3chan(1:dec:size(rightI,1),1:dec:size(rightI,2),:);
+Colors = reshape(Colors,[size(Colors,1)*size(Colors,2) size(Colors,3)]);
+Colors = Colors(~bad,:);
+cfac = 20;
+C8 = round(cfac*Colors);
+[U,I,J] = unique(C8,<span class="string">'rows'</span>);
+C8 = C8/cfac;
+
+figure(2), clf, hold <span class="string">on</span>, axis <span class="string">equal</span>;
+<span class="keyword">for</span> i=1:size(U,1)
+    plot3(-Pd(1,J==i),-Pd(3,J==i),-Pd(2,J==i),<span class="string">'.'</span>,<span class="string">'Color'</span>,C8(I(i),:));
+<span class="keyword">end</span>
+view(161,14), grid <span class="string">on</span>;
+xlabel(<span class="string">'x (meters)'</span>), ylabel(<span class="string">'z (meters)'</span>), zlabel(<span class="string">'y (meters)'</span>);
+</pre><img vspace="5" hspace="5" src="./Stereo Vision_files/videostereo_09.png" alt=""> <h2>References<a name="12"></a></h2><p>[1] Trucco, E; Verri, A. "Introductory Techniques for 3-D Computer Vision." Prentice Hall, 1998.</p><p>[2] Hartley, R; Zisserman, A. "Multiple View Geometry in Computer Vision." Cambridge University Press, 2003.</p><p>[3] Veksler, O. "Stereo Correspondence by Dynamic Programming on a Tree." University of Western Ontario.</p><p>[4] Park, CS; Park, HW. "A robust stereo disparity estimation using adaptive window search and dynamic programming search." Pattern Recognition, 2000.</p><p>[5] Thevenaz, P; Ruttimann, UE; Unser, M. "A Pyramid Approach to Subpixel Registration Based on Intensity." IEEE Transactions on Image Processing (1998) Vol. 7, No. 1.</p><p>[6] Bouguet, JY. "Camera Calibration Toolbox for Matlab." Computational Vision at the California Institute of Technology®. <a href="http://www.vision.caltech.edu/bouguetj/calib_doc/">http://www.vision.caltech.edu/bouguetj/calib_doc/</a></p><p>[7] Koschan, A; Rodehorst, V; Spiller, K. "Color Stereo Vision Using Hierarchical Block Matching and Active Color Illumination." Pattern Recognition, 1996.</p><p>[8] Ambrosch, K; Kubinger, W; Humenberger, M; Steininger, A. "Flexible Hardware-Based Stereo Matching." EURASIP Journal on Embedded Systems, 2008.</p><p class="footer">Copyright 2004-2009 The MathWorks, Inc.<br>
+          Published with MATLAB® 7.10</p><p class="footer" id="trademarks">MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.</p></div><!--
+##### SOURCE BEGIN #####
+%% Stereo Vision
+% Stereo vision is the process of recovering depth from camera images by
+% comparing two or more views of the same scene. Simple, binocular stereo
+% uses only two images, typically taken with parallel cameras that were
+% separated by a horizontal distance known as the "baseline." The output of
+% the stereo computation is a disparity map (which is translatable to a
+% range image) which tells how far each point in the physical scene was
+% from the camera.
+%
+% In this demo, we use MATLAB(R) and the Video and Image Processing
+% Blockset(TM) to compute the depth map between two rectified stereo
+% images. See the 
+% <matlab:showdemo('videorectification') Image Rectification Demo>
+% to learn about the details behind rectification. In this demo we use
+% block matching, which is the standard algorithm for high-speed stereo
+% vision in hardware systems [8]. We first explore basic block matching,
+% and then apply dynamic programming to improve accuracy, and image
+% pyramiding to improve speed.
+%
+% This demo is similar to the Simulink
+% <matlab:showdemo('vipstereo')>Disparity Estimation for Stereo Vision Demo>.
+% The main difference is that the Simulink demo does not assume it has been
+% given rectified images, and so searches along general epipolar lines that
+% are not necessarily parallel to the x-axis.
+%
+%  Copyright 2004-2009 The MathWorks, Inc.
+%  $Revision: 1.1.6.1 $Date: 2009/11/16 22:41:33 $
+
+%% Step 1. Read stereo image pair
+% Here we read in the color stereo image pair and convert the images to
+% grayscale for the matching process. Using color images may provide some
+% improvement in accuracy, but it is more efficient to work with only 
+% one-channel images. For this we use the |ImageDataTypeConverter| and the 
+% |ColorSpaceConverter| System objects. Below we show the left camera image
+% and a color composite of both images so that one can easily see the
+% disparity between them.
+
+hIdtc = video.ImageDataTypeConverter;
+hCsc = video.ColorSpaceConverter('Conversion','RGB to intensity');
+leftI3chan = step(hIdtc,imread('vipstereo_hallwayLeft.png'));
+leftI = step(hCsc,leftI3chan);
+rightI3chan = step(hIdtc,imread('vipstereo_hallwayRight.png'));
+rightI = step(hCsc,rightI3chan);
+
+figure(1), clf;
+imshow(rightI3chan), title('Right image');
+
+figure(2), clf;
+imshow(cat(3,rightI,leftI,leftI)), axis image;
+title('Color composite (right=red, left=cyan)');
+
+
+%% Step 2. Basic block matching
+% Next we perform basic block matching. For every pixel in the right
+% image, we extract the 7-by-7-pixel block around it and search along the
+% same row in the left image for the block that best matches it. Here we
+% search in a range of $\pm 15$ pixels around the pixel's location in the
+% first image, and we use the sum of absolute differences (SAD) to compare
+% the image regions. We need only search over columns and not over rows
+% because the images are rectified. We use the |TemplateMatcher| System
+% object to perform this block matching between each block and the
+% region of interest.
+
+Dbasic = zeros(size(leftI), 'single');
+disparityRange = 15;
+% Selects (2*halfBlockSize+1)-by-(2*halfBlockSize+1) block.
+halfBlockSize = 3;
+blockSize = 2*halfBlockSize+1;
+% Allocate space for all template matchers.
+tmats = cell(blockSize);
+% Scan over all rows.
+for m=1:size(leftI,1)
+    % Set min/max row bounds for image block.
+    minr = max(1,m-halfBlockSize);
+    maxr = min(size(leftI,1),m+halfBlockSize);
+    % Scan over all columns.
+    for n=1:size(leftI,2)
+        minc = max(1,n-halfBlockSize);
+        maxc = min(size(leftI,2),n+halfBlockSize);
+        % Compute disparity bounds.
+        mind = max( -disparityRange, 1-minc );
+        maxd = min( disparityRange, size(leftI,2)-maxc );
+
+        % Construct template and region of interest.
+        template = rightI(minr:maxr,minc:maxc);
+        templateCenter = floor((size(template)+1)/2);
+        roi = [minr+templateCenter(1)-2 ...
+               minc+templateCenter(2)+mind-2 ...
+               1 maxd-mind+1];
+        % Lookup proper TemplateMatcher object; create if empty.
+        if isempty(tmats{size(template,1),size(template,2)})
+            tmats{size(template,1),size(template,2)} = ...
+                video.TemplateMatcher('ROIInputPort',true);
+        end
+        thisTemplateMatcher = tmats{size(template,1),size(template,2)};
+        
+        % Run TemplateMatcher object.
+        loc = step(thisTemplateMatcher, leftI, template, roi);
+        Dbasic(m,n) = loc(2) - roi(2) + mind;
+    end
+end
+
+%%
+% In the results below, the basic block matching does well, as the correct
+% shape of the stereo scene is recovered. However, there are noisy patches
+% and bad depth estimates everywhere, especially on the ceiling. These are
+% caused when no strong image features appear inside of the 7-by-7-pixel
+% windows being compared. Then the matching process is subject to
+% noise since each pixel chooses its disparity independently of all the
+% other pixels.
+%
+% For display purposes, we saturate the depth map to have only positive
+% values. In general, slight angular misalignment of the stereo cameras
+% used for image acquisition can allow both positive and negative
+% disparities to appear validly in the depth map. In this case, however,
+% the stereo cameras were near perfectly parallel, so the true disparities
+% have only one sign. Thus this correction is valid.
+
+figure(3), clf;
+imshow(Dbasic,[]), axis image, colormap('jet'), colorbar;
+caxis([0 disparityRange]);
+title('Depth map from basic block matching');
+
+
+%% Step 3. Sub-pixel estimation
+% The disparity estimates returned by block matching are all
+% integer-valued, so the above depth map exhibits contouring effects where
+% there are no smooth transitions between regions of different disparity.
+% This can be ameliorated by incorporating sub-pixel computation into the
+% matching metric. Previously we only took the location of the minimum cost
+% as the disparity, but now we take into consideration the minimum cost and
+% the two neighboring cost values. We fit a parabola to these three values,
+% and analytically solve for the minimum to get the sub-pixel correction.
+
+DbasicSubpixel= zeros(size(leftI), 'single');
+tmats = cell(2*halfBlockSize+1);
+for m=1:size(leftI,1)
+    % Set min/max row bounds for image block.
+    minr = max(1,m-halfBlockSize);
+    maxr = min(size(leftI,1),m+halfBlockSize);
+    % Scan over all columns.
+    for n=1:size(leftI,2)
+        minc = max(1,n-halfBlockSize);
+        maxc = min(size(leftI,2),n+halfBlockSize);
+        % Compute disparity bounds.
+        mind = max( -disparityRange, 1-minc );
+        maxd = min( disparityRange, size(leftI,2)-maxc );
+        
+        % Construct template and region of interest.
+        template = rightI(minr:maxr,minc:maxc);
+        templateCenter = floor((size(template)+1)/2);
+        roi = [minr+templateCenter(1)-2 ...
+               minc+templateCenter(2)+mind-2 ...
+               1 maxd-mind+1];
+        % Lookup proper TemplateMatcher object; create if empty.
+        if isempty(tmats{size(template,1),size(template,2)})
+            tmats{size(template,1),size(template,2)} = ...
+                video.TemplateMatcher('ROIInputPort',true,...
+                'BestMatchNeighborhoodOutputPort',true);
+        end
+        thisTemplateMatcher = tmats{size(template,1),size(template,2)};
+
+        % Run TemplateMatcher object.
+        [loc,a2] = step(thisTemplateMatcher, leftI, template, roi);
+        ix = single(loc(2) - roi(2) + mind);
+        
+        % Subpixel refinement of index.
+        DbasicSubpixel(m,n) = ix - 0.5 * (a2(2,3) - a2(2,1)) ...
+            / (a2(2,1) - 2*a2(2,2) + a2(2,3));
+    end
+end
+
+%%
+% Re-running basic block matching, we achieve the result below where the
+% contouring effects are mostly removed and the disparity estimates are
+% correctly refined. This is especially evident along the walls.
+
+figure(1), clf;
+imshow(DbasicSubpixel,[]), axis image, colormap('jet'), colorbar;
+caxis([0 disparityRange]);
+title('Basic block matching with sub-pixel accuracy');
+
+
+%% Step 4. Dynamic programming
+% As mentioned above, basic block matching creates a noisy disparity image.
+% This can be improved by introducing a smoothness constraint. Basic block
+% matching chooses the optimal disparity for each pixel based on its own
+% cost function alone. Now we want to allow a pixel to have a disparity
+% with possibly sub-optimal cost for it locally. This extra cost must be
+% offset by increasing that pixel's agreement in disparity with its
+% neighbors. In particular, we constrain each disparity estimate to lie
+% with $\pm 3$ values of its neighbors' disparities, where its neighbors
+% are the adjacent pixels along an image row. The problem of finding the
+% optimal disparity estimates for a row of pixels now becomes one of
+% finding the "optimal path" from one side of the image to the other. To
+% find this optimal path, we use the underlying block matching metric as
+% the cost function and constrain the disparities to only change by a
+% certain amount between adjacent pixels. This is a problem that can be
+% solved efficiently using the technique of dynamic programming [3,4].
+
+Ddynamic = zeros(size(leftI), 'single');
+finf = 1e3; % False infinity
+disparityCost = finf*ones(size(leftI,2), 2*disparityRange + 1, 'single');
+disparityPenalty = 0.5; % Penalty for disparity disagreement between pixels
+% Scan over all rows.
+for m=1:size(leftI,1)
+    disparityCost(:) = finf;
+    % Set min/max row bounds for image block.
+    minr = max(1,m-halfBlockSize);
+    maxr = min(size(leftI,1),m+halfBlockSize);
+    % Scan over all columns.
+    for n=1:size(leftI,2)
+        minc = max(1,n-halfBlockSize);
+        maxc = min(size(leftI,2),n+halfBlockSize);
+        % Compute disparity bounds.
+        mind = max( -disparityRange, 1-minc );
+        maxd = min( disparityRange, size(leftI,2)-maxc );
+        % Compute and save all matching costs.
+        for d=mind:maxd
+            disparityCost(n, d + disparityRange + 1) = ...
+                sum(sum(abs(leftI(minr:maxr,(minc:maxc)+d) ...
+                - rightI(minr:maxr,minc:maxc))));
+        end
+    end
+    
+    % Process scanline disparity costs with dynamic programming.
+    optimalIndices = zeros(size(disparityCost), 'single');
+    cp = disparityCost(end,:);
+    for j=size(disparityCost,1)-1:-1:1
+        % False infinity for this level
+        cfinf = (size(disparityCost,1) - j + 1)*finf;
+        % Construct matrix for finding optimal move for each column
+        % individually.
+        [v,ix] = min([cfinf cfinf cp(1:end-4)+3*disparityPenalty;
+                      cfinf cp(1:end-3)+2*disparityPenalty;
+                      cp(1:end-2)+disparityPenalty;
+                      cp(2:end-1);
+                      cp(3:end)+disparityPenalty;
+                      cp(4:end)+2*disparityPenalty cfinf;
+                      cp(5:end)+3*disparityPenalty cfinf cfinf],[],1);
+        cp = [cfinf disparityCost(j,2:end-1)+v cfinf];
+        % Record optimal routes.
+        optimalIndices(j,2:end-1) = (2:size(disparityCost,2)-1) + (ix - 4);
+    end
+    % Recover optimal route.
+    [~,ix] = min(cp);
+    Ddynamic(m,1) = ix;
+    for k=1:size(Ddynamic,2)-1
+        Ddynamic(m,k+1) = optimalIndices(k, ...
+            max(1, min(size(optimalIndices,2), round(Ddynamic(m,k)) ) ) );
+    end
+end
+Ddynamic = Ddynamic - disparityRange - 1;
+
+%%
+% The image below shows the stereo result refined by applying dynamic
+% programming to each row individually. Dynamic programming does introduce
+% errors of its own by blurring the edges around object boundaries due to
+% the smoothness constraint. Also, it does nothing to smooth ''between''
+% rows, which is why a striation pattern now appears on the left side
+% foreground chair. Despite these limitations, the result is significantly
+% improved, with the noise along the walls and ceiling nearly completely
+% removed, and with many of the foreground objects being better
+% reconstructed.
+
+figure(3), clf;
+imshow(Ddynamic,[]), axis image, colormap('jet'), colorbar;
+caxis([0 disparityRange]);
+title('Block matching with dynamic programming');
+
+%% Step 5. Image Pyramiding
+% While dynamic programming can improve the accuracy of the stereo image,
+% basic block matching is still an expensive operation, and dynamic
+% programming only adds to the burden. One solution is to use image
+% pyramiding and telescopic search to guide the block matching [5,7]. With
+% the full-size image, we had to search over a $\pm 15$-pixel range to
+% properly detect the disparities in the image. If we had down-sized the
+% image by a factor of two, however, this search could have been reduced to
+% $\pm 7$ pixels on an image a quarter of the area, meaning this step would
+% cost a factor of 8 less. Then we use the disparity estimates from this
+% down-sized operation to seed the search on the larger image, and
+% therefore we only need to search over a smaller range of disparities.
+%
+% The below example performs this telescoping stereo matching using a
+% three-level image pyramid. We use the |Pyramid| and |GeometricScaler|
+% System objects, and we have wrapped up the preceding block matching code
+% into the function
+% <matlab:edit(fullfile(matlabroot,'toolbox','vipblks','vipdemos','vipstereo_blockmatch.m')) |vipstereo_blockmatch.m|>
+% for simplicity. The disparity search range is only $\pm 3$ pixels at each
+% level, making it over 5x faster to compute than basic block matching. Yet
+% the results compare favorably.
+
+% Construct a three-level pyramid
+pyramids = cell(1,4);
+pyramids{1}.L = leftI;
+pyramids{1}.R = rightI;
+for i=2:length(pyramids)
+    hPyr = video.Pyramid('PyramidLevel',1);
+    pyramids{i}.L = single(step(hPyr,pyramids{i-1}.L));
+    pyramids{i}.R = single(step(hPyr,pyramids{i-1}.R));
+end
+% Declare original search radius as +/-4 disparities for every pixel.
+smallRange = single(3);
+disparityMin = repmat(-smallRange, size(pyramids{end}.L));
+disparityMax = repmat( smallRange, size(pyramids{end}.L));
+% Do telescoping search over pyramid levels.
+for i=length(pyramids):-1:1
+    Dpyramid = vipstereo_blockmatch(pyramids{i}.L,pyramids{i}.R, ...
+        disparityMin,disparityMax,...
+        false,true,3);
+    
+    if i > 1
+        % Scale disparity values for next level.
+        hGsca = video.GeometricScaler(...
+            'InterpolationMethod','Nearest neighbor',...
+            'SizeMethod','Number of output rows and columns',...
+            'Size',size(pyramids{i-1}.L));
+        Dpyramid = 2*step(hGsca, Dpyramid);
+        % Maintain search radius of +/-smallRange.
+        disparityMin = Dpyramid - smallRange;
+        disparityMax = Dpyramid + smallRange;
+    end
+end
+
+figure(3), clf;
+imshow(Dpyramid,[]), colormap('jet'), colorbar, axis image;
+caxis([0 disparityRange]);
+title('Four-level pyramid block matching');
+
+
+%% Step 6. Combined pyramiding and dynamic programming
+% Finally we merge the above techniques and run dynamic programming along
+% with image pyramiding, where the dynamic programming is run on the
+% disparity estimates output by every pyramid level. The results compare
+% well with the highest-quality results we have obtained so far, and are
+% still achieved at a reduced computational burden versus basic block
+% matching.
+%
+% It is also possible to use sub-pixel methods with dynamic programming,
+% and we show the results of all three techniques in the second image. As
+% before, sub-pixeling reduces contouring effects and clearly improves
+% accuracy. The previous code has been bundled into
+% <matlab:edit(fullfile(matlabroot,'toolbox','vipblks','vipdemos','vipstereo_blockmatch_combined.m')) |vipstereo_blockmatch_combined.m|>,
+% which exposes all of the options previously presented as parameter-value
+% pairs.
+
+DpyramidDynamic = vipstereo_blockmatch_combined(leftI,rightI, ...
+    'NumPyramids',3, 'DisparityRange',4, 'DynamicProgramming',true);
+figure(3), clf;
+imshow(DpyramidDynamic,[]), axis('image'), colorbar, colormap jet;
+caxis([0 disparityRange]);
+title('3-level pyramid with dynamic programming');
+
+DdynamicSubpixel = vipstereo_blockmatch_combined(leftI,rightI, ...
+    'NumPyramids',3, 'DisparityRange',4, 'DynamicProgramming',true, ...
+    'Subpixel', true);
+figure(4), clf;
+imshow(DdynamicSubpixel,[]), axis image, colormap('jet'), colorbar;
+caxis([0 disparityRange]);
+title('Pyramid with dynamic programming and sub-pixel accuracy');
+
+
+%% Step 7. Backprojection
+% With a stereo depth map and knowledge of the intrinsic parameters of the
+% camera, it is possible to backproject image pixels into 3D points [1,2].
+% One way to compute the camera intrinsics is with the MATLAB Camera
+% Calibration Toolbox [6] from the California Institute of Technology(R).
+% Such a tool will produce an intrinsics matrix, K, of the form:
+%
+%  K = [focal_length_x          skew_x  camera_center_x;
+%                    0  focal_length_y  camera_center_y;
+%                    0               0                1];
+%
+% This relates 3D world coordinates to homogenized camera coordinates via:
+%
+% $$[x_{camera} \, y_{camera} \, 1]^T = K \cdot [x_{world} \, y_{world} \, z_{world}]^T$$
+%
+% With the intrinsics matrix, we can backproject each image pixel into a 3D
+% ray that describes all the world points that could have been projected
+% onto that pixel on the image. This leaves unknown the distance of that
+% point to the camera. This is provided by the disparity measurements of
+% the stereo depth map as:
+%
+% $$z_{world} = focal\_length \cdot \frac{1 + stereo\_baseline}{disparity}$$
+%
+% Note that unitless pixel disparities cannot be used directly in this
+% equation. Also, if the stereo baseline (the distance between the two
+% cameras) is not well-known, it introduces more unknowns. Thus we
+% transform this equation into the general form:
+%
+% $$z_{world} = a + \frac{b}{disparity}$$
+%
+% We solve for the two unknowns via least squares by collecting
+% a few corresponding depth and disparity values from the scene and using
+% them as tie points. The full technique is demonstrated below.
+
+% Camera intrinsics matrix
+K = [409.4433         0  204.1225
+            0  416.0865  146.4133
+            0         0    1.0000];
+% Create a sub-sampled grid for backprojection.
+dec = 2;
+[X,Y] = meshgrid(1:dec:size(leftI,2),1:dec:size(leftI,1));
+P = K\[X(:)'; Y(:)'; ones(1,numel(X), 'single')];
+Disp = max(0,DdynamicSubpixel(1:dec:size(leftI,1),1:dec:size(leftI,2)));
+hMedF = video.MedianFilter2D('NeighborhoodSize',[5 5]);
+Disp = step(hMedF,Disp); % Median filter to smooth out noise.
+% Derive conversion from disparity to depth with tie points:
+knownDs = [15   9   2]'; % Disparity values in pixels
+knownZs = [4  4.5 6.8]';
+% World z values in meters based on scene measurements.
+ab = [1./knownDs ones(size(knownDs), 'single')] \ knownZs; % least squares
+% Convert disparity to z (distance from camera)
+ZZ = ab(1)./Disp(:)' + ab(2);
+% Threshold to [0,8] meters.
+ZZdisp = min(8,max(0, ZZ ));
+Pd = bsxfun(@times,P,ZZ);
+% Remove near points
+bad = Pd(3,:)>8 | Pd(3,:)<3;
+Pd = Pd(:,~bad);
+
+%%
+% In the reprojection, the walls, ceiling, and floor all appear mutually
+% orthogonal, and the scene is well reconstructed. Since camera calibration
+% also gives intrinsics with units, we can assign units to the
+% backprojected points. The dimensions of the plot are given in meters, and
+% one can verify that the sizes of objects and the scene appear correct.
+
+% Collect quantized colors for point display
+Colors = rightI3chan(1:dec:size(rightI,1),1:dec:size(rightI,2),:);
+Colors = reshape(Colors,[size(Colors,1)*size(Colors,2) size(Colors,3)]);
+Colors = Colors(~bad,:);
+cfac = 20;
+C8 = round(cfac*Colors);
+[U,I,J] = unique(C8,'rows');
+C8 = C8/cfac;
+
+figure(2), clf, hold on, axis equal;
+for i=1:size(U,1)
+    plot3(-Pd(1,J==i),-Pd(3,J==i),-Pd(2,J==i),'.','Color',C8(I(i),:));
+end
+view(161,14), grid on;
+xlabel('x (meters)'), ylabel('z (meters)'), zlabel('y (meters)');
+
+%% References
+% [1] Trucco, E; Verri, A. "Introductory Techniques for 3-D Computer
+% Vision." Prentice Hall, 1998.
+% 
+% [2] Hartley, R; Zisserman, A. "Multiple View Geometry in Computer
+% Vision." Cambridge University Press, 2003.
+%
+% [3] Veksler, O. "Stereo Correspondence by Dynamic Programming on a Tree."
+% University of Western Ontario.
+%
+% [4] Park, CS; Park, HW. "A robust stereo disparity estimation using
+% adaptive window search and dynamic programming search." Pattern
+% Recognition, 2000.
+%
+% [5] Thevenaz, P; Ruttimann, UE; Unser, M. "A Pyramid Approach to Subpixel
+% Registration Based on Intensity." IEEE Transactions on Image Processing
+% (1998) Vol. 7, No. 1.
+%
+% [6] Bouguet, JY. "Camera Calibration Toolbox for Matlab." Computational
+% Vision at the California Institute of Technology(R).
+% http://www.vision.caltech.edu/bouguetj/calib_doc/
+%
+% [7] Koschan, A; Rodehorst, V; Spiller, K. "Color Stereo Vision Using
+% Hierarchical Block Matching and Active Color Illumination." Pattern
+% Recognition, 1996.
+%
+% [8] Ambrosch, K; Kubinger, W; Humenberger, M; Steininger, A. "Flexible
+% Hardware-Based Stereo Matching." EURASIP Journal on Embedded Systems,
+% 2008.
+
+
+displayEndOfDemoMessage(mfilename)
+
+##### SOURCE END #####
+--><span style="border-radius: 2px; text-indent: 20px; width: auto; padding: 0px 4px 0px 0px; text-align: center; font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 11px; line-height: 20px; font-family: &quot;Helvetica Neue&quot;, Helvetica, sans-serif; color: rgb(255, 255, 255); background: url(&quot;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMzBweCIgd2lkdGg9IjMwcHgiIHZpZXdCb3g9Ii0xIC0xIDMxIDMxIj48Zz48cGF0aCBkPSJNMjkuNDQ5LDE0LjY2MiBDMjkuNDQ5LDIyLjcyMiAyMi44NjgsMjkuMjU2IDE0Ljc1LDI5LjI1NiBDNi42MzIsMjkuMjU2IDAuMDUxLDIyLjcyMiAwLjA1MSwxNC42NjIgQzAuMDUxLDYuNjAxIDYuNjMyLDAuMDY3IDE0Ljc1LDAuMDY3IEMyMi44NjgsMC4wNjcgMjkuNDQ5LDYuNjAxIDI5LjQ0OSwxNC42NjIiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+PHBhdGggZD0iTTE0LjczMywxLjY4NiBDNy41MTYsMS42ODYgMS42NjUsNy40OTUgMS42NjUsMTQuNjYyIEMxLjY2NSwyMC4xNTkgNS4xMDksMjQuODU0IDkuOTcsMjYuNzQ0IEM5Ljg1NiwyNS43MTggOS43NTMsMjQuMTQzIDEwLjAxNiwyMy4wMjIgQzEwLjI1MywyMi4wMSAxMS41NDgsMTYuNTcyIDExLjU0OCwxNi41NzIgQzExLjU0OCwxNi41NzIgMTEuMTU3LDE1Ljc5NSAxMS4xNTcsMTQuNjQ2IEMxMS4xNTcsMTIuODQyIDEyLjIxMSwxMS40OTUgMTMuNTIyLDExLjQ5NSBDMTQuNjM3LDExLjQ5NSAxNS4xNzUsMTIuMzI2IDE1LjE3NSwxMy4zMjMgQzE1LjE3NSwxNC40MzYgMTQuNDYyLDE2LjEgMTQuMDkzLDE3LjY0MyBDMTMuNzg1LDE4LjkzNSAxNC43NDUsMTkuOTg4IDE2LjAyOCwxOS45ODggQzE4LjM1MSwxOS45ODggMjAuMTM2LDE3LjU1NiAyMC4xMzYsMTQuMDQ2IEMyMC4xMzYsMTAuOTM5IDE3Ljg4OCw4Ljc2NyAxNC42NzgsOC43NjcgQzEwLjk1OSw4Ljc2NyA4Ljc3NywxMS41MzYgOC43NzcsMTQuMzk4IEM4Ljc3NywxNS41MTMgOS4yMSwxNi43MDkgOS43NDksMTcuMzU5IEM5Ljg1NiwxNy40ODggOS44NzIsMTcuNiA5Ljg0LDE3LjczMSBDOS43NDEsMTguMTQxIDkuNTIsMTkuMDIzIDkuNDc3LDE5LjIwMyBDOS40MiwxOS40NCA5LjI4OCwxOS40OTEgOS4wNCwxOS4zNzYgQzcuNDA4LDE4LjYyMiA2LjM4NywxNi4yNTIgNi4zODcsMTQuMzQ5IEM2LjM4NywxMC4yNTYgOS4zODMsNi40OTcgMTUuMDIyLDYuNDk3IEMxOS41NTUsNi40OTcgMjMuMDc4LDkuNzA1IDIzLjA3OCwxMy45OTEgQzIzLjA3OCwxOC40NjMgMjAuMjM5LDIyLjA2MiAxNi4yOTcsMjIuMDYyIEMxNC45NzMsMjIuMDYyIDEzLjcyOCwyMS4zNzkgMTMuMzAyLDIwLjU3MiBDMTMuMzAyLDIwLjU3MiAxMi42NDcsMjMuMDUgMTIuNDg4LDIzLjY1NyBDMTIuMTkzLDI0Ljc4NCAxMS4zOTYsMjYuMTk2IDEwLjg2MywyNy4wNTggQzEyLjA4NiwyNy40MzQgMTMuMzg2LDI3LjYzNyAxNC43MzMsMjcuNjM3IEMyMS45NSwyNy42MzcgMjcuODAxLDIxLjgyOCAyNy44MDEsMTQuNjYyIEMyNy44MDEsNy40OTUgMjEuOTUsMS42ODYgMTQuNzMzLDEuNjg2IiBmaWxsPSIjYmQwODFjIj48L3BhdGg+PC9nPjwvc3ZnPg==&quot;) 3px 50% / 14px 14px no-repeat rgb(189, 8, 28); position: absolute; opacity: 1; z-index: 8675309; display: none; cursor: pointer; border: none; -webkit-font-smoothing: antialiased; top: 9513px; left: 25px;">Save</span></body></html>
