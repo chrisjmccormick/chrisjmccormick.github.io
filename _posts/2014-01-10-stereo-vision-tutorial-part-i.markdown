@@ -18,7 +18,7 @@ tags:
 
 This tutorial provides an introduction to calculating a disparity map from two rectified stereo images, and includes example MATLAB code and images. 
 
-_A note on this tutorial: This tutorial is based on one provided by Mathworks a while back. It's no longer on their website, but I've found an archived version [here](https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html). If that goes down for some reason, I've also saved it as a PDF [here]({{ site.url }}/assets/StereoVision/Stereo Vision - Mathworks Example Article.pdf) You can find my code and the example images at the bottom of this post; the code I provide does not have any dependencies on the computer vision toolbox._
+_A note on this tutorial: This tutorial is based on one provided by Mathworks a while back. It's no longer on their website, but I've found an archived version [here](https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html). If that goes down for some reason, I've also saved it as a PDF [here]({{ site.url }}/assets/StereoVision/Stereo Vision - Mathworks Example Article.pdf). You can find my code and the example images at the bottom of this post; the code I provide does not have any dependencies on the computer vision toolbox._
 
 ### Simple Block Matching
 
@@ -129,3 +129,5 @@ Note that the block matching process is extremely slow. It takes roughly 5 minut
 ### Update, October 2016 - Where's Part II?
 
 For those looking for Part II of this tutorial, I'm sorry, it may never come. But! Before you lose hope! You *can* go look at the original material that I was using to understand this stuff. I found an archived copy of the original Mathworks article [here](https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html). If that goes down for some reason, I've also saved it as a PDF [here]({{ site.url }}/assets/StereoVision/Stereo Vision - Mathworks Example Article.pdf).
+
+Finally, I do have my own commented version of the Dynamic Programming code which I can share with you [here]({{ site.url }}/assets/StereoVision/stereoDisparityDP.m).
