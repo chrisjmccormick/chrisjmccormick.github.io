@@ -32,10 +32,10 @@ When I say "nearby", we'll actually be using a fixed "window size" that's a para
 We're going to train the neural network to do this by feeding it word pairs found in our training documents. The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
 
 <div class="message">
-<a href="https://disqus.com/by/calvinku/">Calvin Ku</a> pointed out a slight mistake I made here--the correct interpretation of the outputs of the model is slightly different from what I've said.
-
+<a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/#comment-2959829834">Calvin Ku</a> pointed out a slight mistake I made here--the correct interpretation of the outputs of the model is slightly different from what I've said.
+<br/>
 Here is the more technically correct explanation: Let's say you take all the words within the window around the input word, and then pick one of them at random. The output values represent, for each word, the probability that the word you picked is that word.
-
+<br/>
 Here's an example. Let's say in our training corpus, every occurrence of the word 'York' is preceded by the word 'New'. That is, at least according to the training data, there is a 100% probability that 'New' will be in the vicinity of 'York'. However, if we take the words in the vicinity of 'York' and randomly pick one of them, the probability of it being 'New' <em>is not</em> 100%; you may have picked one of the other words in the vicinity.
 
 </div>
