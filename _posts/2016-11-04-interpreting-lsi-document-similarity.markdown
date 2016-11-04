@@ -166,5 +166,5 @@ Sample Code
 You can find all of the Python code for the example I've discussed in my [simsearch](https://github.com/chrisjmccormick/simsearch) project on GitHub. Follow the instructions in the README to get it going. Note that there are a few dependencies you may have to grab if you don't already have them, such as `gensim` and `nltk`.
 
 [tf-idf_conversion]: {{ site.url }}/assets/lsi/tf-idf_conversion.png
-[LSI_projection]: {{ site.url }}/assets/lsi/lsi_projection.png
+[LSI_projection]: {{ site.url }}/assets/lsi/LSI_projection.png
 
