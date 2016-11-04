@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Interpreting LSI Document Similarity"
-date:   2016-11-03 22:00:00 -0800
+date:   2016-11-04 22:00:00 -0800
 comments: true
 tags: 
 ---
@@ -137,15 +137,19 @@ $$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{j=1}^{5000}\left \sum_{i
 
 We did it! We've managed to express the similarity between documents 1 and 2 as a sum of 5,000 terms. Now we can sort these terms to see which words in document 1 are contributing *most* to the total similarity.
 
+If you want to look at just the contribution from a specific word \\( j \\) from document 1:
+
+$$ sim ( {j} ) =  \sum_{i=1}^{100} \frac{    U_{ij}x_{j}^{(1)}z_{i}^{(2)}    }{  \left \| z^{(1)} \right \| \left \| z^{(2)} \right \|      } $$
+
+Or, in vector form:
+
+$$ sim ( {j} ) =  \frac{  U_{*j} \cdot x_{j}^{(1)} \cdot z^{(2)}  }{  \left \| z^{(1)} \right \| \cdot \left \| z^{(2)} \right \|   } $$
+
+Sample Code
+===========
+You can find all of the Python code for the example I've discussed in my [simsearch](https://github.com/chrisjmccormick/simsearch) project on GitHub. Follow the instructions in the README to get it going. Note that there are a few dependencies you may have to grab if you don't already have them, such as `gensim` and `nltk`.
 
 
 ![sample_clip_and_song]
-
-
-<div class="message">
-TODO - I'm just using small integers for the offsets here. In practice, the offset values are in terms of ?? (samples?)
-</div>
-
-So how do we align them? If you calculate the difference between the offset values, you’ll notice that the "diff" is the same for all of the matching keypoints!
 
 [sample_clip_and_song]: {{ site.url }}/assets/Dejavu/Sample_Clip_And_Original_Song.png
