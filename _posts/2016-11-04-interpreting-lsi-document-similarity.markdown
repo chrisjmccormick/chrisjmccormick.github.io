@@ -3,7 +3,8 @@ layout: post
 title:  "Interpreting LSI Document Similarity"
 date:   2016-11-04 22:00:00 -0800
 comments: true
-tags: 
+image: /assets/lsi/lsi_projection.png
+tags: Latent Semantic Indexing, LSI, tf-idf, Natural Language Processing, NLP, Concept Search
 ---
 In this post I'm sharing a technique I've found for showing which words in a piece of text _contribute most_ to its similarity with another piece of text when using Latent Semantic Indexing (LSI) to represent the two documents. This has proven valuable to me in debugging bad search results from "concept search" using LSI. You'll find the equations for the technique as well as example Python code. 
 
@@ -22,6 +23,12 @@ Impact of Each Word on Similarity
 Turns out it's possible to look at the impact of individual words on the total LSI similarity, allowing you to interpret the results some. 
 
 First, a little refresher on how LSI works. The first step in comparing the two pieces of text is to produce tf-idf vectors for them, which contain one element per word in the vocabulary. These tf-idf vectors are then projected down to, e.g., 100 topics with LSI. Finally, the two LSI vectors are compared using Cosine Similarity, which produces a value between 0.0 and 1.0. 
+
+![tf-idf_conversion]
+[tf-idf_conversion]: {{ site.url }}/assets/lsi/tf-idf_conversion.png
+
+![LSI_projection]
+[LSI_projection]: {{ site.url }}/assets/lsi/lsi_projection.png
 
 Given that the tf-idf vectors contain a separate component for each word, it seemed reasonable to me to ask, "How much does each word contribute, positively or negatively, to the final similarity value?" 
 
@@ -95,7 +102,7 @@ $$ sim ( {j} ) =  \frac{  U_{*j} \cdot x_{j}^{(1)} \cdot z^{(2)}  }{  \left \| z
 * \\( U_{*j} \\) is the column for the word \\( j \\). This is \[100 x 1\]
 * \\( x_{j}^{(1)} \\) is the tf-idf value in document 1 for word \\( j \\).
 * \\( z^{(2)} \\) is the \[100 x 1\] LSI vector for document 2.
-* \\( \left \| z^{(1)} \right \| \\) and \\( \left \| z^{(2)} \right \| \\) are the magnitudes of the two LSI vectors (recall that the Cosine Similarity involves normalizing the LSI vectors--dividing them by their magnitudes).
+* \\( \left\| z^{(1)} \right\| \\) and \\( \left\| z^{(2)} \right\| \\) are the magnitudes of the two LSI vectors (recall that the Cosine Similarity involves normalizing the LSI vectors--dividing them by their magnitudes).
 
 Derivation
 ==========
