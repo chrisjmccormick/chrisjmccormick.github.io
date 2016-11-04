@@ -4,7 +4,7 @@ title:  "Interpreting LSI Document Similarity"
 date:   2016-11-04 22:00:00 -0800
 comments: true
 image: /assets/lsi/lsi_projection.png
-tags: Latent Semantic Indexing, LSI, tf-idf, Natural Language Processing, NLP, Concept Search
+tags: Latent Semantic Indexing, LSI, tf-idf, Natural Language Processing, NLP, Concept Search, Semantic Search
 ---
 In this post I'm sharing a technique I've found for showing which words in a piece of text _contribute most_ to its similarity with another piece of text when using Latent Semantic Indexing (LSI) to represent the two documents. This has proven valuable to me in debugging bad search results from "concept search" using LSI. You'll find the equations for the technique as well as example Python code. 
 
@@ -24,11 +24,9 @@ Turns out it's possible to look at the impact of individual words on the total L
 
 First, a little refresher on how LSI works. The first step in comparing the two pieces of text is to produce tf-idf vectors for them, which contain one element per word in the vocabulary. These tf-idf vectors are then projected down to, e.g., 100 topics with LSI. Finally, the two LSI vectors are compared using Cosine Similarity, which produces a value between 0.0 and 1.0. 
 
-![tf-idf_conversion]
-[tf-idf_conversion]: {{ site.url }}/assets/lsi/tf-idf_conversion.png
+[![tf-idf Conversion][tf-idf_conversion]][tf-idf_conversion]
 
-![LSI_projection]
-[LSI_projection]: {{ site.url }}/assets/lsi/lsi_projection.png
+[![LSI Projection][LSI_projection]][LSI_projection]
 
 Given that the tf-idf vectors contain a separate component for each word, it seemed reasonable to me to ask, "How much does each word contribute, positively or negatively, to the final similarity value?" 
 
@@ -167,4 +165,6 @@ Sample Code
 ===========
 You can find all of the Python code for the example I've discussed in my [simsearch](https://github.com/chrisjmccormick/simsearch) project on GitHub. Follow the instructions in the README to get it going. Note that there are a few dependencies you may have to grab if you don't already have them, such as `gensim` and `nltk`.
 
+[tf-idf_conversion]: {{ site.url }}/assets/lsi/tf-idf_conversion.png
+[LSI_projection]: {{ site.url }}/assets/lsi/lsi_projection.png
 
