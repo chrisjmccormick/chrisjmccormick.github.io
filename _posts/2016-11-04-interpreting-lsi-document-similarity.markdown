@@ -15,11 +15,13 @@ I'm basing the project on the awesome "topic modeling" package `gensim` in Pytho
 
 It also contains a working example based on the public domain work *Matthew Henry's Commentary on the Bible* (which comes from the early 1700s!). I'll show you some of that example a little farther down.
 
-Confusing Results
-=================
-So far, the quality of the search results has been pretty hit-or-miss. For the really bad results, I'm left wondering, what went wrong?! Why does LSI think these two pieces of text are related? How can I interpret this match?
+So far, though, the quality of the search results with my journals has been pretty hit-or-miss. For the really bad results, I'm left wondering, what went wrong?! Why does LSI think these two pieces of text are related? How can I interpret this match?
 
-The first step in comparing the two pieces of text is to produce tf-idf vectors for them, which contain one element per word in the vocabulary. These tf-idf vectors are then projected down to, e.g., 100 topics with LSI. Finally, the two LSI vectors are compared using Cosine Similarity, which produces a value between 0.0 and 1.0. 
+Impact of Each Word on Similarity
+=================================
+Turns out it's possible to look at the impact of individual words on the total LSI similarity, allowing you to interpret the results some. 
+
+First, a little refresher on how LSI works. The first step in comparing the two pieces of text is to produce tf-idf vectors for them, which contain one element per word in the vocabulary. These tf-idf vectors are then projected down to, e.g., 100 topics with LSI. Finally, the two LSI vectors are compared using Cosine Similarity, which produces a value between 0.0 and 1.0. 
 
 Given that the tf-idf vectors contain a separate component for each word, it seemed reasonable to me to ask, "How much does each word contribute, positively or negatively, to the final similarity value?" 
 
@@ -31,13 +33,18 @@ Instead of asking how the word 'sabbath' in *both* documents contributes to the 
 
 I've shared the equations for this technique down in the next section. But first let's look at the working result! 
 
-In my simsearch project, I've included an example with Matthew Henry's Commentary on the Bible. I take a section of the commentary on Genesis 2 which talks about the seventh day of creation, when God rested, and use this to search against the rest of the commentary. The top result is a great match--it's commentary on Exodus 20, where God gives Moses the fourth commandment to remember the Sabbath, a day of rest.
+Working Example
+===============
 
-Using the technique I worked out, you can see how each word contributes to the total similarity value of 0.954.
+In my simsearch project, I've included an example with Matthew Henry's Commentary on the Bible. I take a section of the commentary on Genesis 2 which talks about the seventh day of creation, when God rested, and use this to search against the rest of the commentary. The top result is a great match--it's commentary on Exodus 20, where God gives Moses the fourth commandment to remember the Sabbath, a day of rest. Definitely conceptually similar.
+
+Using the technique I worked out, you can see how each word contributes to the total similarity value of 0.954 between these two pieces of text.
 
 Here are the top 10 words in "document 1" (the commentary on Genesis) that contribute most to the similarity. If you add up *all* the terms, they sum to 0.954.
 
 {% highlight text %}
+Total similarity: 0.954
+Breakdown by word:
      sabbath    0.354
          day    0.315
       honour    0.032
@@ -54,6 +61,8 @@ Here are the top 10 words in "document 1" (the commentary on Genesis) that contr
 You can do the same for "document 2" (the commentary on the Ten Commandments). Again, if you sum all terms you get the total similarity of 0.954.
 
 {% highlight text %}
+Total similarity: 0.954
+Breakdown by word:
      sabbath    0.423
          day    0.250
         work    0.034
@@ -67,8 +76,10 @@ You can do the same for "document 2" (the commentary on the Ten Commandments). A
          ...
 {% endhighlight %}
    
-Equation
-========
+Note how the results are a little different taken from the perspective of document 1 vs. document 2. This is the compromise I mentioned earlier--you have to look at the two documents separately.   
+   
+Equation for the Technique
+==========================
 First, let's define our variables.
 
 * \\( x^{(1)} \\) and \\( x^{(2)} \\) are the tf-idf vectors representing the two documents. 
@@ -97,9 +108,9 @@ We want to look at the individual contribution of each word to our final similar
 
 $$ z_{i} = \sum_{j=1}^{5000} U_{ij}x_{j} $$
 
-<message>
+<div class="message">
 For all of these equations, I will use `i` to iterate over the 100 topics in the LSI vectors, and `j` to iterate over the 5,000 words in the tf-idf vectors.
-</message>
+</div>
 
 To calculate the similarity between our two documents, we compare their LSI vectors using the cosine similarity. 
 
@@ -129,7 +140,7 @@ $$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{i=1}^{100}\left ( \frac{
 
 By the distributive property, we can then move the \\( z_{i}^{(2)} \\) term into the sum:
 
-$$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{i=1}^{100}\left \sum_{j=1}^{5000} \frac{    U_{ij}x_{j}^{(1)}z_{i}^{(2)}    }{  \left \| z^{(1)} \right \| \left \| z^{(2)} \right \|      } $$
+$$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{i=1}^{100} \sum_{j=1}^{5000} \frac{    U_{ij}x_{j}^{(1)}z_{i}^{(2)}    }{  \left \| z^{(1)} \right \| \left \| z^{(2)} \right \|      } $$
 
 Finally, by the commutative property of addition, we're allowed to switch the order of those two sums:
 
@@ -150,6 +161,3 @@ Sample Code
 You can find all of the Python code for the example I've discussed in my [simsearch](https://github.com/chrisjmccormick/simsearch) project on GitHub. Follow the instructions in the README to get it going. Note that there are a few dependencies you may have to grab if you don't already have them, such as `gensim` and `nltk`.
 
 
-![sample_clip_and_song]
-
-[sample_clip_and_song]: {{ site.url }}/assets/Dejavu/Sample_Clip_And_Original_Song.png
