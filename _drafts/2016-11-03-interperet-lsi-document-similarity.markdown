@@ -31,19 +31,63 @@ Instead of asking how the word 'sabbath' in *both* documents contributes to the 
 
 I've shared the equations for this technique down in the next section. But first let's look at the working result! 
 
-In my simsearch project, I've included an example with Matthew Henry's Commentary. I take a section of the commentary on Genesis 2 which talks about the seventh day of creation, when God rested, and use this to search against the rest of the commentary. The top result is a good match--it's commentary on Exodus 20, where God gives Moses the commandment 
+In my simsearch project, I've included an example with Matthew Henry's Commentary on the Bible. I take a section of the commentary on Genesis 2 which talks about the seventh day of creation, when God rested, and use this to search against the rest of the commentary. The top result is a great match--it's commentary on Exodus 20, where God gives Moses the fourth commandment to remember the Sabbath, a day of rest.
 
+Using the technique I worked out, you can see how each word contributes to the total similarity value of 0.954.
+
+Here are the top 10 words in "document 1" (the commentary on Genesis) that contribute most to the similarity. If you add up *all* the terms, they sum to 0.954.
+
+{% highlight text %}
+     sabbath    0.354
+         day    0.315
+      honour    0.032
+        work    0.027
+        rest    0.027
+        holy    0.024
+        week    0.015
+     blessed    0.014
+     seventh    0.013
+        days    0.012
+         ...
+{% endhighlight %}
+
+You can do the same for "document 2" (the commentary on the Ten Commandments). Again, if you sum all terms you get the total similarity of 0.954.
+
+{% highlight text %}
+     sabbath    0.423
+         day    0.250
+        work    0.034
+     seventh    0.032
+        rest    0.017
+        days    0.016
+     blessed    0.016
+        holy    0.010
+    blessing    0.009
+  sanctified    0.009
+         ...
+{% endhighlight %}
    
+Equation
+========
+First, let's define our variables.
 
-
-
-I've had some successful searches that have been encouraging and exciting, but plenty others that seemed way-off.
-
-So, the ability to understand the matches seems really important for tuning the system. What words between the two documents are contributing most to the similarity?
-
-Let \\( x^{(1)} \\) and \\( x^{(2)} \\) be the tf-idf vectors representing the two documents. And let \\( z^{(1)} \\) and \\( z^{(2)} \\) be the corresponding LSI vectors for these two documents. representing the two documents.
+* \\( x^{(1)} \\) and \\( x^{(2)} \\) are the tf-idf vectors representing the two documents. 
+* \\( z^{(1)} \\) and \\( z^{(2)} \\) are the corresponding LSI vectors for these two documents. 
 
 To cut down on the number of variables, let's assume that we have a vocabulary of 5,000 words (so our tf-idf vectors are 5,000 components long), and that we are using LSI with 100 topics (so our LSI vectors are 100 components long). 
+
+To calculate how much word \\( j \\) from document 1 contributes to the total similarity, we can use the following equation.
+
+$$ sim ( {j} ) =  \frac{  U_{*j} \cdot x_{j}^{(1)} \cdot z^{(2)}  }{  \left \| z^{(1)} \right \| \cdot \left \| z^{(2)} \right \|   } $$
+
+* \\( U \\) is the LSI project matrix which is \[100 x 5,000\].
+* \\( U_{*j} \\) is the column for the word \\( j \\). This is \[100 x 1\]
+* \\( x_{j}^{(1)} \\) is the tf-idf value in document 1 for word \\( j \\).
+* \\( z^{(2)} \\) is the \[100 x 1\] LSI vector for document 2.
+* \\( \left \| z^{(1)} \right \| \\) and \\( \left \| z^{(2)} \right \| \\) are the magnitudes of the two LSI vectors (recall that the Cosine Similarity involves normalizing the LSI vectors--dividing them by their magnitudes).
+
+Derivation
+==========
 
 To convert the tf-idf vector into an LSI vector, we just take the product of the \[100 x 5,000\] LSI projection matrix \\( U \\) and the \[5,000 x 1\] tfidf vector \\( x \\):
 
@@ -52,6 +96,10 @@ $$ z = U \cdot x $$
 We want to look at the individual contribution of each word to our final similarity, so let's expand the dot-product into the element-wise equation:
 
 $$ z_{i} = \sum_{j=1}^{5000} U_{ij}x_{j} $$
+
+<message>
+For all of these equations, I will use `i` to iterate over the 100 topics in the LSI vectors, and `j` to iterate over the 5,000 words in the tf-idf vectors.
+</message>
 
 To calculate the similarity between our two documents, we compare their LSI vectors using the cosine similarity. 
 
