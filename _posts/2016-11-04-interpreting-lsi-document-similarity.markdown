@@ -133,7 +133,7 @@ $$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{i=1}^{100}\left \sum_{j=
 
 Finally, by the commutative property of addition, we're allowed to switch the order of those two sums:
 
-$$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{j=1}^{5000}\left \sum_{i=1}^{100} \frac{    U_{ij}x_{j}^{(1)}z_{i}^{(2)}    }{  \left \| z^{(1)} \right \| \left \| z^{(2)} \right \|      } $$
+$$ sim_{cos} \left ( x^{(1)},  z^{(2)} \right ) = \sum_{j=1}^{5000} \sum_{i=1}^{100} \frac{    U_{ij}x_{j}^{(1)}z_{i}^{(2)}    }{  \left \| z^{(1)} \right \| \left \| z^{(2)} \right \|      } $$
 
 We did it! We've managed to express the similarity between documents 1 and 2 as a sum of 5,000 terms. Now we can sort these terms to see which words in document 1 are contributing *most* to the total similarity.
 
