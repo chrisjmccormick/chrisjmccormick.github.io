@@ -37,11 +37,16 @@ You can also find this code (along with an example that validates it's correctne
 
 import numpy
 
-# Our routine takes a dataset `D` (e.g., a list of vectors), a threshold 
-# distance `eps`, and a required number of points `MinPts`.
-# It will return a list of cluster labels. -1 means noise, then the clusters
-# are numbered starting from 1.
-def DBSCAN(D, eps, MinPts):
+def MyDBSCAN(D, eps, MinPts):
+    """
+    Cluster the dataset `D` using the DBSCAN algorithm.
+    
+    MyDBSCAN takes a dataset `D` (a list of vectors), a threshold distance
+    `eps`, and a required number of points `MinPts`.
+    
+    It will return a list of cluster labels. The label -1 means noise, and then
+    the clusters are numbered starting from 1.
+    """
  
     # This list will hold the final cluster assignment for each point in D.
     # There are two reserved values:
@@ -82,62 +87,97 @@ def DBSCAN(D, eps, MinPts):
         # Otherwise, if there are at least MinPts nearby, use this point as the 
         # seed for a new cluster.    
         else: 
+           # Get the next cluster label.
            C += 1
-           expandCluster(D, labels, NeighborPts, C, eps, MinPts)
+           
+           # Assing the label to our seed point.
+           labels[P] = C
+           
+           # Grow the cluster from the seed point.
+           growCluster(D, labels, P, C, eps, MinPts)
     
     # All data has been clustered!
     return labels
 
-# This function is called to grow a new cluster C from a seed point P. It 
-# begins with the neighbors of P `NeighborPts`. It runs until it finds ALL of 
-# the points that belong to cluster C.
-def expandCluster(D, labels, NeighborPts, C, eps, MinPts):
-       
-    # Look at each neighbor of P (neighbors are referred to as Pn). 
-    # NeighborPts will be used as a FIFO queue of points to search--that is, it
-    # will grow as we discover new branch points for the cluster. The FIFO
-    # behavior is accomplished by using a while-loop rather than a for-loop.
-    # In NeighborPts, the points are represented by their index in the original
-    # dataset.
+
+def growCluster(D, labels, P, C, eps, MinPts):
+    """
+    Grow a new cluster with label `C` from the seed point `P`.
+    
+    This function searches through the dataset to find all points that belong
+    to this new cluster. When this function returns, cluster `C` is complete.
+    
+    Parameters:
+      `D`      - The dataset (a list of vectors)
+      `labels` - List storing the cluster labels for all dataset points
+      `P`      - Index of the seed point for this new cluster
+      `C`      - The label for this new cluster.  
+      `eps`    - Threshold distance
+      `MinPts` - Minimum required number of neighbors
+    """
+
+    # SearchQueue is a FIFO queue of points to evaluate. It will only ever 
+    # contain points which belong to cluster C (and have already been labeled
+    # as such).
+    #
+    # The points are represented by their index values (not the actual vector).
+    #
+    # The FIFO queue behavior is accomplished by appending new points to the
+    # end of the list, and using a while-loop rather than a for-loop.
+    SearchQueue = [P]
+
+    # For each point in the queue:
+    #   1. Determine whether it is a branch or a leaf
+    #   2. For branch points, add their unclaimed neighbors to the search queue
     i = 0
-    while i < len(NeighborPts):    
+    while i < len(SearchQueue):    
         
         # Get the next point from the queue.        
-        Pn = NeighborPts[i]
-       
-        # If Pn was labelled NOISE during the seed search, then we
-        # know it's not a branch point (it doesn't have enough neighbors), so
-        # make it a leaf point of cluster C and move on.
-        if labels[Pn] == -1:
-           labels[Pn] = C
+        P = SearchQueue[i]
+
+        # Find all the neighbors of P
+        NeighborPts = regionQuery(D, P, eps)
         
-        # Otherwise, if Pn isn't already claimed, claim it as part of C.
-        elif labels[Pn] == 0:
-            # Add Pn to cluster C (Assign cluster label C).
-            labels[Pn] = C
-            
-            # Find all the neighbors of Pn
-            PnNeighborPts = regionQuery(D, Pn, eps)
-            
-            # If Pn has at least MinPts neighbors, it's a branch point!
-            # Add all of its neighbors to the FIFO queue to be searched. 
-            if len(PnNeighborPts) >= MinPts:
-                NeighborPts = NeighborPts + PnNeighborPts
-            # If Pn *doesn't* have enough neighbors, then it's a leaf point.
-            # Don't queue up it's neighbors as expansion points.
-            #else:
-                # Do nothing                
-                #NeighborPts = NeighborPts               
+        # If the number of neighbors is below the minimum, then this is a leaf
+        # point and we move to the next point in the queue.
+        if len(NeighborPts) < MinPts:
+            i += 1
+            continue
         
+        # Otherwise, we have the minimum number of neighbors, and this is a 
+        # branch point.
+            
+        # For each of the neighbors...
+        for Pn in NeighborPts:
+           
+            # If Pn was labelled NOISE during the seed search, then we
+            # know it's not a branch point (it doesn't have enough 
+            # neighbors), so make it a leaf point of cluster C and move on.
+            if labels[Pn] == -1:
+               labels[Pn] = C
+            # Otherwise, if Pn isn't already claimed, claim it as part of
+            # C and add it to the search queue.   
+            elif labels[Pn] == 0:
+                # Add Pn to cluster C.
+                labels[Pn] = C
+                
+                # Add Pn to the SearchQueue.
+                SearchQueue.append(Pn)
+            
         # Advance to the next point in the FIFO queue.
         i += 1        
     
     # We've finished growing cluster C!
 
-# This function calculates the distance between a point P and every other point
-# in the dataset, and then returns only those points which are within a
-# threshold distance `eps`.
+
 def regionQuery(D, P, eps):
+    """
+    Find all points in dataset `D` within distance `eps` of point `P`.
+    
+    This function calculates the distance between a point P and every other 
+    point in the dataset, and then returns only those points which are within a
+    threshold distance `eps`.
+    """
     neighbors = []
     
     # For each point in the dataset...
@@ -148,6 +188,5 @@ def regionQuery(D, P, eps):
            neighbors.append(Pn)
             
     return neighbors
-
 {% endhighlight %}
 
