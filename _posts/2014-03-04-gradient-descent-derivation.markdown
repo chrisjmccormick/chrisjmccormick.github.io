@@ -22,7 +22,7 @@ This material assumes some familiarity with linear regression, and is primarily 
 
 I am making use of the same notation as the Coursera course, so it will be most helpful for students of that course.
 
-For linear regression, we have a linear hypothesis function, \\( h\left( {x} \right) = {\theta}_{0} + {\theta}_{1}x \\). We want to find the values of \\({\theta}_{0} \\) and \\({\theta}_{1} \\) which provide the best fit of our hypothesis to a training set. The training set examples are labeled x, y, where x is the input value and y is the output. The ith training example is labeled as \\( {x}^{\left( i \right)} \\), \\( {y}^{\left( i \right)} \\). Do not confuse this as an exponent! It just means that this is the ith training example.
+For linear regression, we have a linear hypothesis function, \\( h \left (  x  \right ) = \theta_{0} + \theta_{1}x \\). We want to find the values of \\({\theta}_{0} \\) and \\({\theta}_{1} \\) which provide the best fit of our hypothesis to a training set. The training set examples are labeled x, y, where x is the input value and y is the output. The ith training example is labeled as \\( {x}^{\left ( i \right )} \\), \\( {y}^{\left( i \right)} \\). Do not confuse this as an exponent! It just means that this is the ith training example.
 
 
 Testing Mathjax...
