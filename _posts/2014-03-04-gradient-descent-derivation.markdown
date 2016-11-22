@@ -118,7 +118,8 @@ Note in the above example that gradient descent will never actually converge on 
 
 The MSE cost function includes multiple variables, so let's look at one more simple minimization example before going back to the cost function.
 
-Let's take the function \\( J\left( \theta \right) = { \theta }_{1}^{2} + { \theta }_{2}^{2} \\)
+Let's take the function:
+$$ J\left( \theta \right) = { \theta }_{1}^{2} + { \theta }_{2}^{2} $$
 
 When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for \\({\theta}_{1} \\) uses the partial derivative of J with respect to \\({\theta}_{1} \\). A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to \\({\theta}_{1} \\), we just treat \\({\theta}_{2} \\) as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
 
