@@ -22,7 +22,7 @@ This material assumes some familiarity with linear regression, and is primarily 
 
 I am making use of the same notation as the Coursera course, so it will be most helpful for students of that course.
 
-For linear regression, we have a linear hypothesis function, \\( h\left( {x} \right) = {\theta}_{0} + {\theta}_{1}x \\). We want to find the values of \\({\theta}_{0} \\) and \\({\theta}_{1} \\) which provide the best fit of our hypothesis to a training set. The training set examples are labeled x, y, where x is the input value and y is the output. The ith training example is labeled as \\( {x}^{\left( i \right)} \\), \\( {y}^{\left( i \right)} \\). Do not confuse this as an exponent! It just means that this is the ith training example.
+For linear regression, we have a linear hypothesis function, h(x) = Ѳ0 + Ѳ1*x. We want to find the values of Ѳ0 and Ѳ1 which provide the best fit of our hypothesis to a training set. The training set examples are labeled x, y, where x is the input value and y is the output. The ith training example is labeled as x^(i), y^(i). Do not confuse this as an exponent! It just means that this is the ith training example.
 
 
 ### MSE Cost Function
@@ -118,9 +118,9 @@ Note in the above example that gradient descent will never actually converge on 
 
 The MSE cost function includes multiple variables, so let's look at one more simple minimization example before going back to the cost function.
 
-Let's take the function \\( J\left( \theta \right) = { \theta }_{1}^{2} + { \theta }_{2}^{2} \\)
+Let's take the function J(Ѳ) = Ѳ1^2 + Ѳ2^2
 
-When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for \\({\theta}_{1} \\) uses the partial derivative of J with respect to \\({\theta}_{1} \\). A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to \\({\theta}_{1} \\), we just treat \\({\theta}_{2} \\) as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
+When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for Ѳ1 uses the partial derivative of J with respect to Ѳ1. A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to Ѳ1, we just treat Ѳ2 as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
 
 ![](https://lh5.googleusercontent.com/-JqtzTcb3o_4/UxUZCnD-hgI/AAAAAAAABm8/S2fXW1KKL-M/w585-h675-no/TwoVariableUpdate.png)
 
