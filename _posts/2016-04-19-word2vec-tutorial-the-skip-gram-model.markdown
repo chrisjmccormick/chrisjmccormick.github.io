@@ -23,13 +23,13 @@ The Fake Task
 =============
 So now we need to talk about this "fake" task that we're going to build the neural network to perform, and then we'll come back later to how this indirectly gives us those word vectors that we are really after.
 
-We're going to train the neural network to do the following. Given a specific word in the middle of a sentence, randomly select another nearby word (e.g., three words ahead, or two words back, etc. within a user-defined window size). The network is going to tell us the probability for every word in our vocabulary of being the "nearby word" that we chose.
+We're going to train the neural network to do the following. Given a specific word in the middle of a sentence (the input word), look at the words nearby and pick one at random. The network is going to tell us the probability for every word in our vocabulary of being the "nearby word" that we chose.
 
-<div class="message"> The "window size" is a parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total).</div>
+<div class="message"> When I say "nearby", there is actually a "window size" parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total).</div>
 
 The output probabilities are going to relate to how likely it is find each vocabulary word nearby our input word. For example, if you gave the trained network the input word "Soviet", the output probabilities are going to be much higher for words like "Union" and "Russia" than for unrelated words like "watermelon" and "kangaroo".
 
-We'll train the neural network to do this by feeding it word pairs found in our training documents. The below example shows some of the training samples (word pairs) we would take from the sentence "The quick brown fox jumps over the lazy dog." I've used a small window size of 2 just for the example. 
+We'll train the neural network to do this by feeding it word pairs found in our training documents. The below example shows some of the training samples (word pairs) we would take from the sentence "The quick brown fox jumps over the lazy dog." I've used a small window size of 2 just for the example. The word highlighted in blue is the input word.
 
 [![Training Data][training_data]][training_data]
 
@@ -44,13 +44,15 @@ First of all, you know you can't feed a word just as a text string to a neural n
 
 We're going to represent an input word like "ants" as a one-hot vector. This vector will have 10,000 components (one for every word in our vocabulary) and we'll place a "1" in the position corresponding to the word "ants", and 0s in all of the other positions.
 
-The output of the network is a single vector containing, for every word in our vocabulary, the probability that each word would appear near the input word. 
+The output of the network is a single vector (also with 10,000 components) containing, for every word in our vocabulary, the probability that a randomly selected nearby word is that vocabulary word. 
 
 Here's the architecture of our neural network.
 
 [![Skip-gram Neural Network Architecture][skip_gram_net_arch]][skip_gram_net_arch]
 
 There is no activation function on the hidden layer neurons, but the output neurons use softmax. We'll come back to this later.
+
+When *training* this network on word pairs, the input is a one-hot vector representing the input word and the training output <em>is also a one-hot vector</em> representing the output word. But when you evaluate the trained network on an input word, the output vector will actually be a probability distribution (i.e., a bunch of floating point values, *not* a one-hot vector).
 
 The Hidden Layer
 ================
