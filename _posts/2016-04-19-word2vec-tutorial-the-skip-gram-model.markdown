@@ -23,22 +23,17 @@ The Fake Task
 =============
 So now we need to talk about this "fake" task that we're going to build the neural network to perform, and then we'll come back later to how this indirectly gives us those word vectors that we are really after.
 
-We're going to train the neural network to tell us, for a given word in a sentence, what is the probability of each and every other word in our vocabulary appearing anywhere within a small window around the input word. For example, if you gave the trained network the word "Soviet" it's going to say that words like "Union" and "Russia" have a high probability of appearing nearby, and unrelated words like "watermelon" and "kangaroo" have a low probability. And it's going to output probabilities for every word in our vocabulary!
+We're going to train the neural network to do the following. Given a specific word in the middle of a sentence, randomly select another nearby word (e.g., three words ahead, or two words back, etc. within a user-defined window size). The network is going to tell us the probability for every word in our vocabulary of being the "nearby word" that we chose.
 
-<div class="message">
-When I say "nearby", we'll actually be using a fixed "window size" that's a parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total).
-</div>
+<div class="message"> The "window size" is a parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total).</div>
 
-We're going to train the neural network to do this by feeding it word pairs found in our training documents. The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
+The output probabilities are going to relate to how likely it is find each vocabulary word nearby our input word. For example, if you gave the trained network the input word "Soviet", the output probabilities are going to be much higher for words like "Union" and "Russia" than for unrelated words like "watermelon" and "kangaroo".
 
-<div class="message">
-<a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/#comment-2959829834">Calvin Ku</a> pointed out a slight mistake I made here--the correct interpretation of the outputs of the model is slightly different from what I've said.
-<br/>
-Here is the more technically correct explanation: Let's say you take all the words within the window around the input word, and then pick one of them at random. The output values represent, for each word, the probability that the word you picked is that word.
-<br/>
-Here's an example. Let's say in our training corpus, every occurrence of the word 'York' is preceded by the word 'New'. That is, at least according to the training data, there is a 100% probability that 'New' will be in the vicinity of 'York'. However, if we take the words in the vicinity of 'York' and randomly pick one of them, the probability of it being 'New' <em>is not</em> 100%; you may have picked one of the other words in the vicinity.
+We'll train the neural network to do this by feeding it word pairs found in our training documents. The below example shows some of the training samples (word pairs) we would take from the sentence "The quick brown fox jumps over the lazy dog." I've used a small window size of 2 just for the example. 
 
-</div>
+[![Training Data][training_data]][training_data]
+
+The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
 
 Model Details
 =============
@@ -87,6 +82,12 @@ Here's an illustration of calculating the output of the output neuron for the wo
 
 [![Behavior of the output neuron][output_neuron]][output_neuron]
 
+<div class="message">
+Note that neural network does not know anything about the offset of the output word relative to the input word. It <em>does not</em> learn a different set of probabilities for the word before the input versus the word after. 
+
+To understand the implication, let's say that in our training corpus, <em>every single occurrence</em> of the word 'York' is preceded by the word 'New'. That is, at least according to the training data, there is a 100% probability that 'New' will be in the vicinity of 'York'. However, if we take the 10 words in the vicinity of 'York' and randomly pick one of them, the probability of it being 'New' <em>is not</em> 100%; you may have picked one of the other words in the vicinity.
+</div>
+
 Intuition
 =========
 Ok, are you ready for an exciting bit of insight into this network? 
@@ -101,6 +102,7 @@ Further Reading
 ===============
 I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
 
+[training_data]: {{ site.url }}/assets/word2vec/training_data.png
 [skip_gram_net_arch]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
 [weight_matrix]: {{ site.url }}/assets/word2vec/word2vec_weight_matrix_lookup_table.png
 [matrix_mult_w_one_hot]: {{ site.url }}/assets/word2vec/matrix_mult_w_one_hot.png
