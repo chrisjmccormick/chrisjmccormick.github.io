@@ -100,7 +100,11 @@ And what does it mean for two words to have similar contexts? I think you could 
 
 This can also handle stemming for you -- the network will likely learn similar word vectors for the words "ant" and "ants" because these should have similar contexts.
 
-Further Reading
+Next Up
+=======
+You may have noticed that the skip-gram neural network contains a huge number of weights... For our example with 300 features and a vocab of 10,000 words, that's 3M weights in the hidden layer and output layer each! Training this on a large dataset would be prohibitive, so the word2vec authors introduced a number of tweaks to make training feasible. These are covered in [part 2 of this tutorial](http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/). 
+
+Other Resources
 ===============
 I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
 
