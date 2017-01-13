@@ -3,7 +3,7 @@ layout: post
 title:  "DBSCAN Clustering"
 date:   2016-11-08 22:00:00 -0800
 comments: true
-image: 
+image: assets/dbscan/demo_screenshot.png
 tags: DBSCAN, Clustering, Density-Based Clustering
 ---
 
@@ -23,7 +23,7 @@ Noise points are identified as part of the process of selecting a new seed--if a
 
 Visualization
 =============
-Naftali Harris has created a great web-based [visualization](https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/) of running DBSCAN on a 2-dimensional dataset. Try clicking on the "Smiley" dataset and hitting the GO button. Very cool!
+Naftali Harris has created a great web-based [visualization](https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/) of running DBSCAN on a 2-dimensional dataset. Try clicking on the "Smiley" dataset and hitting the GO button. (That's where the image from this post came from). Very cool!
 
 Algorithm in Python
 ===================
