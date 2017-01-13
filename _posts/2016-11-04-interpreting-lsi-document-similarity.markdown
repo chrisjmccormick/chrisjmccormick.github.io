@@ -3,7 +3,7 @@ layout: post
 title:  "Interpreting LSI Document Similarity"
 date:   2016-11-04 22:00:00 -0800
 comments: true
-image: /assets/lsi/lsi_projection.png
+image: /assets/lsi/LSI_projection.png
 tags: Latent Semantic Indexing, LSI, tf-idf, Natural Language Processing, NLP, Concept Search, Semantic Search
 ---
 In this post I'm sharing a technique I've found for showing which words in a piece of text _contribute most_ to its similarity with another piece of text when using Latent Semantic Indexing (LSI) to represent the two documents. This has proven valuable to me in debugging bad search results from "concept search" using LSI. You'll find the equations for the technique as well as example Python code. 
