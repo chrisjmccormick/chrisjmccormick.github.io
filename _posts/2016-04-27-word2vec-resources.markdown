@@ -33,10 +33,13 @@ A good example are the labels "projection layer" and "hidden layer" which come f
 
 This was a follow-up paper, dated October 16th, 2013.
 
-I haven't looked at this paper in detail yet. I know it covers a few enhancements to Word2Vec (which are also implemented in `gensim`):
+This paper adds a few more innovations which address the high compute cost of training the skip-gram model on a large dataset. These added tweaks are fundamental to the word2vec algorithm, and are implemented in Google's C version as well as the Python implementation in `gensim`.
 
-* Subsampling common words (that is, eliminating some training samples) to speed up training.
-* Recognizing "phrases" and treating them as single words in the model (e.g., "United_States" or "New_York").
+These innovations are:
+1. Subsampling common words (that is, eliminating some training samples).
+2. "Negative Sampling" - A modification of the optimization objective which causes each training sample to update only a small percentage of the model's weights.
+
+Additionally, they point out the value in recognizing common "phrases" and treating them as single words in the model (e.g., "United_States" or "New_York").
 
 ###  Presentation on Word2Vec
 [Link to presentation](https://docs.google.com/file/d/0B7XkCwpI5KDYRWRnd1RzWXQ2TWc/edit)
@@ -118,5 +121,6 @@ My Own Stuff
 ============
 
 * I have my own tutorial on the skip-gram model of Word2Vec [here](http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/).
+* [Part 2](http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/) of my tutorial covers subsampling of frequent words and the Negative Sampling technique.
 * I created a project called [inspec_word2vec](https://github.com/chrisjmccormick/inspect_word2vec) that uses gensim in Python to load up Google's large pre-trained model, and inspect some of the details of the vocabulary.
 * I'm working on a Matlab implementation of Word2Vec, [word2vec_matlab](https://github.com/chrisjmccormick/word2vec_matlab). My goal is less about practical useage and more about understanding the model. For now, it doesn't support the most important part--actually training a Word2Vec model. What it does do currently is allow you to play with a paired-down (or, really, cleaned-up!) version of Google's pre-trained model in Matlab.
