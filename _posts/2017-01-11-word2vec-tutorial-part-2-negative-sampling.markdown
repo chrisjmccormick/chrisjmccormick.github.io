@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Word2Vec Tutorial Part 2"
+title:  "Word2Vec Tutorial Part 2 - Negative Sampling"
 date:   2017-01-11 22:00:00 -0800
 comments: true
 image: /assets/word2vec/original_paper.png
@@ -61,7 +61,7 @@ Note how these two effects help address the two problems stated above.
 
 The Word2Vec paper defines the following function to calculate a probability for *discarding* a particular word. $w_i$ is the word, $t$ is a threshold set at ${10}^{-5}$, and $f(w_i)$ is the number of times the word occurs in the corpus.
  
-$$P(w_i) = 1 - \sqrt{\frac{t}{f(w_i)}}$$
+$$ P(w_i) = 1 - \sqrt{\frac{t}{f(w_i)}} $$
 
 I would recommend looking at the published C code implementation, however, to see what they did there.
 
@@ -90,7 +90,7 @@ Essentially, the probability for selecting a word as a negative sample is relate
 
 In the word2vec C implementation, you can see the equation for this probability. Each word is given a weight equal to it's frequency (word count) raised to the 3/4 power. The probability for a selecting a word is just it's weight divided by the sum of weights for all words.
 
-$$P(w_i) = \frac{{f(w_i)}^{3/4}}{\sum_{j=0}^{n}\left(  {f(w_j)}^{3/4} \right) }$$
+$$ P(w_i) = \frac{{f(w_i)}^{3/4}}{\sum_{j=0}^{n}\left(  {f(w_j)}^{3/4} \right) } $$
 
 The way this selection is implemented in the C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word's index appears in the table is given by $P(w_i) * table_size$. Then, to actually select a negative sample, you just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, you're more likely to pick those.
 
