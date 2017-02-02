@@ -57,6 +57,14 @@ So to write our own code using the mlpack libraries, we just need libmlpack-dev.
 sudo apt-get install libmlpack-dev
 {% endhighlight %}
 
+This will install mlpack and all of the libraries it depends on. Except one, apparently--you'll also need to install Boost:
+
+{% highlight text %}
+sudo apt-get install libboost-all-dev
+{% endhighlight %}
+
+Maybe Boost was left out of the dependency list because it's so commonly used? I don't know.
+
 Install location
 ================
 Something that left me pretty confused from the installation was that I had no idea where mlpack was installed to. (Mainly, I wanted to know this because I assumed it would have installed some example source files for me somewhere, but I learned later that it doesn’t include any.)
@@ -83,6 +91,8 @@ Linux usually starts you out in your ‘home’ directory, e.g. /home/chrismcc/.
 Compiling and Running an Example
 ================================
 As a first example, we'll use the [sample code](http://mlpack.org/docs/mlpack-git/doxygen.php?doc=sample.html) from the mlpack site for doing a nearest neighbor search.
+
+Save the following source code in a file called knn_example.cpp:
 
 {% highlight cpp %}
 #include <mlpack/core.hpp>
@@ -113,6 +123,40 @@ int main()
 }
 {% endhighlight %}
 
+And save this toy dataset as data.csv:
 
+{% highlight text %}
+3,3,3,3,0
+3,4,4,3,0
+3,4,4,3,0
+3,3,4,3,0
+3,6,4,3,0
+2,4,4,3,0
+2,4,4,1,0
+3,3,3,2,0
+3,4,4,2,0
+3,4,4,2,0
+3,3,4,2,0
+3,6,4,2,0
+2,4,4,2,0
+{% endhighlight %}
 
+To compile the example, you'll use g++ (the C++ equivalent of gcc).
+
+{% highlight text %}
+g++ knn_example.cpp -o knn_example -std=c++11 -larmadillo -lmlpack -lboost_serialization
+{% endhighlight %}
+
+* knn_example.cpp - The code to compile.
+* -o knn_example - The binary (executable) to output.
+* -std=c++11 - mlpack documentation says you need to set this flag.
+* -larmadillo -lmlpack -lboost_serialization - The "-l" flag tells the linker to look for these libraries.
+
+Finally, to run the example, execute the binary:
+
+{% highlight text %}
+$ ./knn_example
+{% endhighlight %}
+
+You're up and running!
 
