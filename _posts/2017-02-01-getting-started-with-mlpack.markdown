@@ -92,34 +92,99 @@ Compiling and Running an Example
 ================================
 As a first example, we'll use the [sample code](http://mlpack.org/docs/mlpack-git/doxygen.php?doc=sample.html) from the mlpack site for doing a nearest neighbor search.
 
+This very simple example takes a dataset of vectors and finds the nearest neighbor for each data point. It uses the dataset both as the reference and the query vectors.
+
+I've taken their original example and added some detailed comments to explain what's going on.
+
+Relevant Documentation:
+
+* [NeighborSearch](http://www.mlpack.org/docs/mlpack-2.0.2/doxygen.php?doc=classmlpack_1_1neighbor_1_1NeighborSearch.html)
+  * [Constructor](http://www.mlpack.org/docs/mlpack-2.0.2/doxygen.php?doc=classmlpack_1_1neighbor_1_1NeighborSearch.html#a16cb809195a197f551abd71517b4e724)
+  * [Search](http://www.mlpack.org/docs/mlpack-2.0.2/doxygen.php?doc=classmlpack_1_1neighbor_1_1NeighborSearch.html#a9fa8cb63a20f46a13eda80009e72fd09)
+* [data::Load](http://www.mlpack.org/docs/mlpack-2.0.2/doxygen.php?doc=namespacemlpack_1_1data.html#ae8cd401ac166a40e1e836f752814402b)
+
 Save the following source code in a file called knn_example.cpp:
 
 {% highlight cpp %}
+/*
+ * ======== knn_example.cpp =========
+ * This very simple example takes a dataset of vectors and finds the nearest 
+ * neighbor for each data point. It uses the dataset both as the reference and
+ * the query vectors.
+ *
+ * mlpack documentation is here:
+ * http://www.mlpack.org/docs/mlpack-2.0.2/doxygen.php
+ */
+
 #include <mlpack/core.hpp>
 #include <mlpack/methods/neighbor_search/neighbor_search.hpp>
+
 using namespace mlpack;
 using namespace mlpack::neighbor; // NeighborSearch and NearestNeighborSort
 using namespace mlpack::metric; // ManhattanDistance
+
 int main()
 {
-  // Load the data from data.csv (hard-coded).  Use CLI for simple command-line
-  // parameter handling.
-  arma::mat data;
-  data::Load("data.csv", data, true);
-  // Use templates to specify that we want a NeighborSearch object which uses
-  // the Manhattan distance.
-  NeighborSearch<NearestNeighborSort, ManhattanDistance> nn(data);
-  // Create the object we will store the nearest neighbors in.
-  arma::Mat<size_t> neighbors;
-  arma::mat distances; // We need to store the distance too.
-  // Compute the neighbors.
-  nn.Search(1, neighbors, distances);
-  // Write each neighbor and distance using Log.
-  for (size_t i = 0; i < neighbors.n_elem; ++i)
-  {
-    std::cout << "Nearest neighbor of point " << i << " is point "
+    // Armadillo is a C++ linear algebra library; mlpack uses its matrix data type.
+    arma::mat data;
+    
+    /*
+     * Load the data from a file. mlpack does not provide an example dataset, 
+     * so I've included a tiny one.
+     *
+     * 'data' is a helper class in mlpack that facilitates saving and loading 
+     * matrices and models.
+     *
+     * Pass the filename, matrix to hold the data, and set fatal = true to have
+     * it throw an exception if there is an issue.
+     *
+     * 'Load' excepts comma-separated and tab-separated text files, and will 
+     * infer the format.
+     */
+    data::Load("data.csv", data, true);
+    
+    /* 
+     * Create a NeighborSearch model. The parameters of the model are specified
+     * with templates:
+     *  - Sorting method: "NearestNeighborSort" - This class sorts by increasing
+     *    distance.
+     *  - Distance metric: "ManhattanDistance" - The L1 distance, sum of absolute
+     *    distances.
+     *
+     * Pass the reference dataset (the vectors to be searched through) to the
+     * constructor.
+     */
+    NeighborSearch<NearestNeighborSort, ManhattanDistance> nn(data);
+    
+    /*
+     * Create the matrices to hold the results of the search. 
+     *   neighbors [k  x  n] - Indeces of the nearest neighbor(s). 
+     *                         One column per data query vector and one row per
+     *                        'k' neighbors.
+     *   distances [k  x  n] - Calculated distance values.
+     *                         One column per data query vector and one row per
+     *                        'k' neighbors.
+     */
+    arma::Mat<size_t> neighbors;
+    arma::mat distances; 
+    
+    /*
+     * Find the nearest neighbors. 
+     *
+     * If no query vectors are provided (as is the case here), then the 
+     * reference vectors are searched against themselves.
+     *
+     * Specify the number of neighbors to find, k = 1, and provide matrices
+     * to hold the result indeces and distances.
+     */ 
+    nn.Search(1, neighbors, distances);
+    
+    // Print out each neighbor and its distance.
+    for (size_t i = 0; i < neighbors.n_elem; ++i)
+    {
+        std::cout << "Nearest neighbor of point " << i << " is point "
         << neighbors[i] << " and the distance is " << distances[i] << ".\n";
-  }
+    }
 }
 {% endhighlight %}
 
@@ -144,19 +209,40 @@ And save this toy dataset as data.csv:
 To compile the example, you'll use g++ (the C++ equivalent of gcc).
 
 {% highlight text %}
-g++ knn_example.cpp -o knn_example -std=c++11 -larmadillo -lmlpack -lboost_serialization
+$ g++ knn_example.cpp -o knn_example -std=c++11 -larmadillo -lmlpack -lboost_serialization
 {% endhighlight %}
 
 * knn_example.cpp - The code to compile.
 * -o knn_example - The binary (executable) to output.
 * -std=c++11 - mlpack documentation says you need to set this flag.
 * -larmadillo -lmlpack -lboost_serialization - The "-l" flag tells the linker to look for these libraries.
+  * armadillo is a linear algebra library that mlpack uses.
 
 Finally, to run the example, execute the binary:
 
 {% highlight text %}
 $ ./knn_example
 {% endhighlight %}
+
+<div class="message">
+Don't leave out the "./"! In Windows, you can just type the name of an executable in the current directory and hit enter and it will run. In Linux, if you want to do the same you need to prepend the "./".
+</div>
+
+And you should see the following example:
+Nearest neighbor of point 0 is point 7 and the distance is 1.
+Nearest neighbor of point 1 is point 2 and the distance is 0.
+Nearest neighbor of point 2 is point 1 and the distance is 0.
+Nearest neighbor of point 3 is point 10 and the distance is 1.
+Nearest neighbor of point 4 is point 11 and the distance is 1.
+Nearest neighbor of point 5 is point 12 and the distance is 1.
+Nearest neighbor of point 6 is point 12 and the distance is 1.
+Nearest neighbor of point 7 is point 10 and the distance is 1.
+Nearest neighbor of point 8 is point 9 and the distance is 0.
+Nearest neighbor of point 9 is point 8 and the distance is 0.
+Nearest neighbor of point 10 is point 9 and the distance is 1.
+Nearest neighbor of point 11 is point 4 and the distance is 1.
+Nearest neighbor of point 12 is point 9 and the distance is 1.
+
 
 You're up and running!
 
