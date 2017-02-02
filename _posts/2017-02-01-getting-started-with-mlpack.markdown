@@ -228,7 +228,9 @@ $ ./knn_example
 Don't leave out the "./"! In Windows, you can just type the name of an executable in the current directory and hit enter and it will run. In Linux, if you want to do the same you need to prepend the "./".
 </div>
 
-And you should see the following example:
+And you should see the following output:
+
+```
 Nearest neighbor of point 0 is point 7 and the distance is 1.
 Nearest neighbor of point 1 is point 2 and the distance is 0.
 Nearest neighbor of point 2 is point 1 and the distance is 0.
@@ -242,7 +244,7 @@ Nearest neighbor of point 9 is point 8 and the distance is 0.
 Nearest neighbor of point 10 is point 9 and the distance is 1.
 Nearest neighbor of point 11 is point 4 and the distance is 1.
 Nearest neighbor of point 12 is point 9 and the distance is 1.
-
+```
 
 You're up and running!
 
