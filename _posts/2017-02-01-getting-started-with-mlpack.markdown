@@ -3,11 +3,11 @@ layout: post
 title:  "Getting Started with mlpack"
 date:   2017-02-01 7:00:00 -0800
 comments: true
-image: 
-tags: mlpack, C++, Linux
+image: assets/mlpack.png
+tags: mlpack, C++, Linux, knn
 ---
 
-I’ve recently needed to perform a benchmarking experiment with k-NN in C++, so I found [mlpack] (mlpack.org) as what appears to be a popular and high-performance machine learning library in C++.
+I’ve recently needed to perform a benchmarking experiment with k-NN in C++, so I found [mlpack](http://www.mlpack.org) as what appears to be a popular and high-performance machine learning library in C++.
 
 I’m not a very strong Linux user (though I’m working on it!), so I actually had a lot of trouble getting up and going with mlpack, despite their documentation. 
 
