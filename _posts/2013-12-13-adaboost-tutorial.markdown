@@ -43,7 +43,7 @@ After each classifier is trained, the classifier's weight is calculated based on
 ### Formal Definition
 
 
-To learn about AdaBoost, I read through a tutorial written by one of the original authors of the algorithm, Robert Schapire. The tutorial is available [here](www.cs.princeton.edu/picasso/mats/schapire02boosting_schapire.pdf).
+To learn about AdaBoost, I read through a tutorial written by one of the original authors of the algorithm, Robert Schapire. The tutorial is available [here](http://rob.schapire.net/papers/explaining-adaboost.pdf).
 
 Below, I've tried to offer some intuition into the relevant equations.
 
