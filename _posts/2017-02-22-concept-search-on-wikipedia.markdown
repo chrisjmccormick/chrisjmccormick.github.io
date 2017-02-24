@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Building a text corpus from Wikipedia"
+title:  "Concept Search on Wikipedia"
 date:   2017-02-22 7:00:00 -0800
 comments: true
 image: assets/wikipedia/banner.png
@@ -107,9 +107,10 @@ If you search by the article 'Topic model' using their web app, the results don'
 It's interesting to look at the top words per topic. You can see the top 10 words for each of the 300 learned topics [here](https://github.com/chrisjmccormick/wiki-sim-search/blob/master/topic_words.txt).
 
 Some of them make sense:
-Topic #37: democratic, republican, trump, hillary, racing, airport, pt, huckabee, obama, clinton,
-Topic #51: ef, tornado, tropical, airport, church, damage, utc, storm, url, fc, 
-Topic #114: forests, stm, broadleaf, shrublands, estero, subtropical, palearctic, grasslands, moist, utc,
+
+* Topic #37: democratic, republican, trump, hillary, racing, airport, pt, huckabee, obama, clinton,
+* Topic #51: ef, tornado, tropical, airport, church, damage, utc, storm, url, fc, 
+* Topic #114: forests, stm, broadleaf, shrublands, estero, subtropical, palearctic, grasslands, moist, utc,
 
 But I'd say most of the topics are pretty confusing. There are a lot of words that show up which don't seem like they should be nearly so important. For example:
 
