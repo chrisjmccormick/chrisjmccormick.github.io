@@ -7,7 +7,7 @@ image: /assets/word2vec/original_paper.png
 tags: Word2Vec, NLP, word vectors, negative sampling
 ---
 
-In part 2 of the word2vec tutorial, I’ll cover a few additional modifications to the basic skip-gram model which are important for actually making it feasible to train.
+In part 2 of the word2vec tutorial (here's [part 1](http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/)), I’ll cover a few additional modifications to the basic skip-gram model which are important for actually making it feasible to train.
 
 When you read the tutorial on the skip-gram model for Word2Vec, you may have noticed something--it’s a huge neural network! 
 
