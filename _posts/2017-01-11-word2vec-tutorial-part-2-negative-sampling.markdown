@@ -59,11 +59,31 @@ Note how these two effects help address the two problems stated above.
 
 ### Sampling rate
 
-The Word2Vec paper defines the following function to calculate a probability for *discarding* a particular word. \\( w_i \\) is the word, \\( t \\) is a threshold set at \\( {10}^{-5} \\), and \\( f(w_i) \\) is the number of times the word occurs in the corpus.
- 
-$$ P(w_i) = 1 - \sqrt{\frac{t}{f(w_i)}} $$
+The word2vec C code implements an equation for calculating a probability with which to keep a given word in the vocabulary.
 
-I would recommend looking at the published C code implementation, however, to see what they did there.
+\\( w_i \\) is the word, \\( z(w_i) \\) is the fraction of the total words in the corpus that are that word. For example, if the word "peanut" occurs 1,000 times in a 1 billion word corpus, then z('peanut') = 1E-6. 
+
+There is also a parameter in the code named 'sample' which controls how much subsampling occurs, and the default value is 0.001. Smaller values of 'sample' mean words are less likely to be kept.
+
+\\( P(w_i) \\) is the probability of *keeping* the word: 
+
+$$ P(w_i) = (\sqrt{\frac{z(w_i)}{0.001}} + 1) \cdot \frac{0.001}{z(w_i)} $$
+ 
+You can plot this quickly in Google to see the shape.
+
+[![Plot of subsampling function][subsample_plot]][subsample_plot]
+
+No single word should be a very large percentage of the corpus, so we want to look at pretty small values on the x-axis. 
+
+Here are some interesting points in this function (again this is using the default sample value of 0.001).
+
+* \\( P(w_i) = 1.0 \\) (100% chance of being kept) when \\( z(w_i) <= 0.0026 \\).
+  * This means that only words which represent more than 0.26% of the total words will be subsampled.
+* \\( P(w_i) = 0.5 \\) (50% chance of being kept) when \\( z(w_i) = 0.00746 \\). 
+* \\( P(w_i) = 0.033 \\) (3.3% chance of being kept) when \\( z(w_i) = 1.0 \\).
+  * That is, if the corpus consisted entirely of word \\( w_i \\), which of course is ridiculous.
+
+<div class="message">You may notice that the paper defines this function a little differently than what's implemented in the C code, but I figure the C implementation is the more authoritative version.</div>  
 
 Negative Sampling
 =================
@@ -95,6 +115,7 @@ $$ P(w_i) = \frac{  {f(w_i)}^{3/4}  }{\sum_{j=0}^{n}\left(  {f(w_j)}^{3/4} \righ
 The way this selection is implemented in the C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word's index appears in the table is given by \\( P(w_i) \\) * table_size. Then, to actually select a negative sample, you just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, you're more likely to pick those.
 
 [training_data]: {{ site.url }}/assets/word2vec/training_data.png
+[subsample_plot]: {{ site.url }}/assets/word2vec/subsample_func_plot.png
 
 
 
