@@ -114,9 +114,14 @@ $$ P(w_i) = \frac{  {f(w_i)}^{3/4}  }{\sum_{j=0}^{n}\left(  {f(w_j)}^{3/4} \righ
 
 The way this selection is implemented in the C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word's index appears in the table is given by \\( P(w_i) \\) * table_size. Then, to actually select a negative sample, you just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, you're more likely to pick those.
 
+## Other Resources
+For the most detailed and accurate explanation of word2vec, you should check out the C code. I've published an extensively commented (but otherwise unaltered) version of the code [here](https://github.com/chrisjmccormick/word2vec_commented).
+
+I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
+
 [training_data]: {{ site.url }}/assets/word2vec/training_data.png
 [subsample_plot]: {{ site.url }}/assets/word2vec/subsample_func_plot.png
-
+[word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/
 
 
 
