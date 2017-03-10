@@ -64,13 +64,13 @@ You will also need to define a column vector 'categories' which just lists the c
 
 Here are links to each of the functions, with a short description of what each does. There is also a simple example usage at the end.
 
-[getVecsPerCat.m](https://dl.dropboxusercontent.com/u/94180423/getVecsPerCat.m) - Counts the number of vectors belonging to each category.
+[getVecsPerCat.m](https://www.dropbox.com/s/c97ibrlum5qom75/getVecsPerCat.m?dl=0) - Counts the number of vectors belonging to each category.
 
-[computeFoldSizes.m](https://dl.dropboxusercontent.com/u/94180423/computeFoldSizes.m) - Pre-compute the size of each of the n folds for each category. The number of folds might not divide evenly into the number of vectors, so this function handles distributing the remainder across the folds.
+[computeFoldSizes.m](https://www.dropbox.com/s/5c9aeufxildijcx/computeFoldSizes.m?dl=0) - Pre-compute the size of each of the n folds for each category. The number of folds might not divide evenly into the number of vectors, so this function handles distributing the remainder across the folds.
 
-[randSortAndGroup.m](https://dl.dropboxusercontent.com/u/94180423/randSortAndGroup.m) - Sorts the vectors by category, and randomizes the order of the vectors within each category.
+[randSortAndGroup.m](https://www.dropbox.com/s/wdavzcosu3k7s51/randSortAndGroup.m?dl=0) - Sorts the vectors by category, and randomizes the order of the vectors within each category.
 
-[getFoldVectors.m](https://dl.dropboxusercontent.com/u/94180423/getFoldVectors.m) - For the specified round of cross-validation, selects X_train, y_train (the vectors to use for training, with their associated categories) and X_val, y_val (the vectors to use for validation, with their associated categories).
+[getFoldVectors.m](https://www.dropbox.com/s/hocy73dky01mjg5/getFoldVectors.m?dl=0) - For the specified round of cross-validation, selects X_train, y_train (the vectors to use for training, with their associated categories) and X_val, y_val (the vectors to use for validation, with their associated categories).
 
 After calling getFoldVectors, it's up to you to perform the actual training, and compute your validation accuracy on the validation vectors. Below is some sample code for using the above functions, but note that it ommits the actual training and validation steps.
 

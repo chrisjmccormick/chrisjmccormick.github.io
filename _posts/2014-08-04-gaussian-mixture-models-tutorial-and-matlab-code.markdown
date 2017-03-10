@@ -99,7 +99,7 @@ The prior probability of cluster j, denoted as phi, is calculated as the average
 
 I've implemented Expectation Maximization for both a 1D and a 2D example. Run 'GMMExample_1D.m' and 'GMMExample_2D.m', respectively. The 1D example is easier to follow, but the 2D example can be extended to n-dimensional data.
 
-[GMM Example Code](https://dl.dropboxusercontent.com/u/94180423/GMM_Examples_v2014_08_04.zip)
+[GMM Example Code](https://www.dropbox.com/s/8w8k6jde792j9co/GMM_Examples_v2014_08_04.zip?dl=0)
 
 If you are simply interested in using GMMs and don't care how they're implemented, you might consider using the vlfeat implementation, which includes a nice tutorial [here](http://www.vlfeat.org/overview/gmm.html). Or if you are using Octave, there may be an open-source version of Matlab's 'fitgmdist' function from their Statistics Toolbox.
 
