@@ -122,12 +122,17 @@ Simply save the following three files to a single directory, and cd to that dire
 
 Note that the block matching process is extremely slow. It takes roughly 5 minutes to complete on my 3.4GHz Intel i7. This is partly due to the high disparity values present in the "Cones" images vs. the Matlab example. Also, the image pyramid technique discussed later on in the Mathworks tutorial should reduce the compute cost significantly.
 
-  * [left.png](https://dl.dropboxusercontent.com/u/94180423/left.png)
-  * [right.png](https://dl.dropboxusercontent.com/u/94180423/right.png)
-  * [stereoDisparity.m](https://dl.dropboxusercontent.com/u/94180423/stereoDisparity.m)
+  * [left.png][left]
+  * [right.png][right]
+  * stereoDisparity.m: [Matlab][matlab] | [Octave][octave]
 
 ### Update, October 2016 - Where's Part II?
 
 For those looking for Part II of this tutorial, I'm sorry, it may never come. But! Before you lose hope! You *can* go look at the original material that I was using to understand this stuff. I found an archived copy of the original Mathworks article [here](https://lost-contact.mit.edu/afs/cs.stanford.edu/pkg/matlab-r2010a/matlab/r2010a/toolbox/vipblks/vipdemos/html/videostereo.html). If that goes down for some reason, I've also saved it as a PDF [here]({{ site.url }}/assets/StereoVision/Stereo Vision - Mathworks Example Article.pdf).
 
 Finally, I do have my own commented version of the Dynamic Programming code which I can share with you [here]({{ site.url }}/assets/StereoVision/stereoDisparityDP.m).
+
+[left]: {{ site.url }}/assets/StereoVision/left.png
+[right]: {{ site.url }}/assets/StereoVision/right.png
+[matlab]: {{ site.url }}/assets/StereoVision/stereoDisparity.m
+[octave]: {{ site.url }}/assets/StereoVision/Octave/stereoDisparity.m
