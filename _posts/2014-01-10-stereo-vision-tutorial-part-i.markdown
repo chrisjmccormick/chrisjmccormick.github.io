@@ -124,7 +124,7 @@ Note that the block matching process is extremely slow. It takes roughly 5 minut
 
   * [left.png][left]
   * [right.png][right]
-  * stereoDisparity.m: [Matlab][matlab] | [Octave][octave]
+  * stereoDisparity.m: [Matlab][matlab] &#124; [Octave][octave]
 
 ### Update, October 2016 - Where's Part II?
 
