@@ -132,4 +132,4 @@ Specifically, here's what my zip file contains:
   * 'CNN_Illustrations.pptx' - The powerpoint slides containing the illustrations in this post.
   * 'cnn_100epochs.mat' - A CNN trained on the MNIST dataset for 100 epochs. It gets 98.92% on the test set.
 
-[example_code]: {{ site.url }}/assets/CNN_with_comments_2015_01_10.zip
+[example_code]: {{ site.url }}/assets/cnn/CNN_with_comments_2015_01_10.zip
