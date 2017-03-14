@@ -121,28 +121,15 @@ This feature vector is then classified using simple linear classifiers (one per 
 
 To get the example code, first download the DeepLearnToolbox from its [GitHub page](https://github.com/rasmusbergpalm/DeepLearnToolbox). It's just a directory of MATLAB functions, so there's nothing special you need to do to install it other than adding it to your path.
 
-Then, you can download my commented / documented code [here](https://dl.dropboxusercontent.com/u/94180423/CNN_with_comments_2015_01_10.zip) and replace the corresponding files.
+Then, you can download my commented / documented code [here][example_code] and replace the corresponding files.
 
 Specifically, here's what my zip file contains:
 
-
-
 	
   * A documented and slightly-reworked version of the MNIST CNN example, 'test_example_cnn.m'.
-
-	
   * Documented and commented versions of 'cnnff.m', 'cnnsetup.m', 'cnntest.m', and 'cnntrain.m'
-
-	
-    * I did not document the key training function 'cnnbp.m', which calculates the gradients, or 'cnnapplygrads.m', which updates the parameter values using the gradients. Sorry!
-
-
-
-
-	
+    * I did not document the key training function 'cnnbp.m', which calculates the gradients, or 'cnnapplygrads.m', which updates the parameter values using the gradients. Sorry!	
   * 'CNN_Illustrations.pptx' - The powerpoint slides containing the illustrations in this post.
-
-	
   * 'cnn_100epochs.mat' - A CNN trained on the MNIST dataset for 100 epochs. It gets 98.92% on the test set.
 
-
+[example_code]: {{ site.url }}/assets/CNN_with_comments_2015_01_10.zip
