@@ -112,7 +112,8 @@ There may be some insight gained from looking at [Gaussian Kernel Regression](ht
 
 ## Matlab Code
 
-
-RBFN for function approximation [example code](https://dl.dropboxusercontent.com/u/94180423/RBFN_Example_v2015_08_26.zip).
+RBFN for function approximation [example code][example_code].
 
 I've added the function approximation code to my existing RBFN classification example. For function approximation, you can run 'runRBFNFuncApproxExample.m'. It uses many of the same functions as the classification RBFN, except that you train the RBFN with 'trainFuncApproxRBFN.m' and evaluate it with 'evaluateFuncApproxRBFN.m'.
+
+[example_code]: {{ site.url }}/assets/rbfn/RBFN_Example_v2015_08_26.zip
