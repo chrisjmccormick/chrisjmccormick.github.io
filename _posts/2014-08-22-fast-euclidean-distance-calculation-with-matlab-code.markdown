@@ -72,7 +72,7 @@ No more for-loop! Because we are using linear algebra software here (MATLAB) tha
 ### MATLAB Example
 
 
-I've uploaded [a MATLAB script](https://dl.dropboxusercontent.com/u/94180423/fastL2Example.m) which generates 10,000 random vectors of length 256 and calculates the L2 distance between them and 1,000 models. Running in Octave on my Core i5 laptop, the sum-of-squared-differences approach takes about 50 seconds whereas the matrix multiplication approach takes about 2 seconds.
+I've uploaded [a MATLAB script][example_code] which generates 10,000 random vectors of length 256 and calculates the L2 distance between them and 1,000 models. Running in Octave on my Core i5 laptop, the sum-of-squared-differences approach takes about 50 seconds whereas the matrix multiplication approach takes about 2 seconds.
 
 
 ### Fast Distance Comparisons
@@ -97,3 +97,5 @@ The following figure shows the derivation of the above equivalence.
 [![FastL2ComparisonDerivation](http://chrisjmccormick.files.wordpress.com/2014/08/fastl2comparisonderivation.png)](https://chrisjmccormick.files.wordpress.com/2014/08/fastl2comparisonderivation.png)
 
 There is one additional modification we can make to this equation, which is to divide both sides by -2. This moves the 2 over to the pre-calculated term. Note that it also flips the comparison sign, so where we were previously looking for the minimum value, we are now looking for the maximum.
+
+[example_code]: {{ site.url }}/assets/fastL2/fastL2Example.m
