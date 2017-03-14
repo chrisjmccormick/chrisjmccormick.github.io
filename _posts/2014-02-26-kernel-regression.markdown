@@ -159,7 +159,7 @@ You can read my post on RBF Networks for classification [here](http://chrisjmcco
 
 The following zip file contains two example scripts: 'run2DExample.m' and 'run3DExample.m' which run regression on the datasets in this post.
 
-[Example Code](https://dl.dropboxusercontent.com/u/94180423/GaussianKernelRegression_v2014_02_25.zip)
+[Example Code][example_code]
 
 The implementation of regression in run2DExample is easier to understand, but is limited to 2D datasets. In the 3D example (with the sombrero function) the implementation is generalized to work for inputs with any number of dimensions.
 
@@ -176,3 +176,4 @@ Again, thank you to [Youngmok Yun](http://youngmok.com/); I started with his exa
   * Kernel Regression is a form of [Non-Parametric Regression](http://en.wikipedia.org/wiki/Nonparametric_regression).
 
 
+[example_code]: {{ site.url }}/assets/GaussianKernelRegression/GaussianKernelRegression_v2014_02_25.zip
