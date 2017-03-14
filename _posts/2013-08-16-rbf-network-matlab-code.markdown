@@ -59,10 +59,7 @@ For function approximation, look at 'runRBFNFuncApproxExample.m'. It uses a lot 
 
 **Update: Revision 1.4**
 
-[RBFN Example Code](https://dl.dropboxusercontent.com/u/94180423/RBFN_Example_v2015_08_26.zip)
-
-
-
+[RBFN Example Code][example_2015_08_26]
 	
   * Added example code for function approximation.
 
@@ -72,7 +69,7 @@ For function approximation, look at 'runRBFNFuncApproxExample.m'. It uses a lot 
 
 
 	
-  * Version 1.3 - [RBFN Example Code - Version 2014_08_18](https://dl.dropboxusercontent.com/u/94180423/RBFN_Example_v2014_08_18.zip)
+  * Version 1.3 - [RBFN Example Code - Version 2014_08_18][example_2014_08_18]
 
 	
     * Fixed the print statements for Matlab users--replaced double quotes with single quotes.
@@ -84,7 +81,7 @@ For function approximation, look at 'runRBFNFuncApproxExample.m'. It uses a lot 
 
 
 	
-  * Version 1.2 - [RBFN Example Code  - Version 2014_04_08](https://dl.dropboxusercontent.com/u/94180423/RBFN_Example_v2014_04_08.zip)
+  * Version 1.2 - [RBFN Example Code  - Version 2014_04_08][example_2014_04_08]
 
 	
     * Removed calls to the Octave 'rows' function.
@@ -101,27 +98,17 @@ For function approximation, look at 'runRBFNFuncApproxExample.m'. It uses a lot 
 
 
 	
-  * Version 1.1 - [RBFN Example Code - Version 2014_02_14](https://dl.dropboxusercontent.com/u/94180423/RBFN_Example_v2014_02_14.zip)
-
-
-
-
-	
+  * Version 1.1 - [RBFN Example Code - Version 2014_02_14][example_2014_02_14]
     * A number of people had trouble loading the included dataset.mat file in Matlab, so I replaced it with a .csv file instead.
-
-	
     * There is now a 'trainRBFN' function which encompasses the RBFN training process.
-
-	
     * The 'trainRBFN' function is set up to handle any number of categories. The original example code was hardcoded to two categories.
-
-	
     * It is possible for k-Means to choose cluster centers which end up with no members. It's impossible to calculate a beta value for an empty cluster, so the code now removes empty clusters before moving on to calculate the beta values.
 
-
-
-
 	
-  * Version 1.0 -** **[RBFN Example Code - Version 2013_08_16](https://dl.dropboxusercontent.com/u/94180423/RBFN_Example_v2013_08_16.zip)
+  * Version 1.0 -** **[RBFN Example Code - Version 2013_08_16][example_2013_08_16]
 
-
+[example_2013_08_16]: {{ site.url }}/assets/rbfn/RBFN_Example_v2013_08_16.zip
+[example_2014_02_14]: {{ site.url }}/assets/rbfn/RBFN_Example_v2014_02_14.zip
+[example_2014_04_08]: {{ site.url }}/assets/rbfn/RBFN_Example_v2014_04_08.zip
+[example_2014_08_18]: {{ site.url }}/assets/rbfn/RBFN_Example_v2014_08_18.zip
+[example_2015_08_26]: {{ site.url }}/assets/rbfn/RBFN_Example_v2015_08_26.zip
