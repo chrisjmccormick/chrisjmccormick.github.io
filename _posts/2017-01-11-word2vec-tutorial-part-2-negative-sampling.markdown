@@ -29,11 +29,11 @@ Word Pairs and "Phrases"
 ========================
 The authors pointed out that a word pair like "Boston Globe" (a newspaper) has a much different meaning than the individual words "Boston" and "Globe". So it makes sense to treat "Boston Globe", wherever it occurs in the text, as a single word with its own word vector representation.
 
-Their paper doesn't go in to detail about how they performed phrase detection, other than to say that it was a "data driven" approach.
-
-You can see the results, though, in their published model, which was trained on 100 billion words from a Google News dataset. The addition of phrases to the model swelled the vocabulary size to 3 million words! 
+You can see the results in their published model, which was trained on 100 billion words from a Google News dataset. The addition of phrases to the model swelled the vocabulary size to 3 million words! 
 
 If you're interested in their resulting vocabulary, I poked around it a bit and published a post on it [here](http://mccormickml.com/2016/04/12/googles-pretrained-word2vec-model-in-python/). You can also just browse their vocabulary [here](https://github.com/chrisjmccormick/inspect_word2vec/tree/master/vocabulary).
+
+I haven't had a chance to investigate their method of phrase detection, but it is covered in the "Learning Phrases" section of their [paper](http://arxiv.org/pdf/1310.4546.pdf). I'm also told the code is available in word2phrase.c of their published code [here](https://code.google.com/archive/p/word2vec/).
 
 <div class="message">One thought I had for an alternate phrase recognition strategy would be to use the titles of all Wikipedia articles as your vocabulary.</div>
 
@@ -111,6 +111,8 @@ Essentially, the probability for selecting a word as a negative sample is relate
 In the word2vec C implementation, you can see the equation for this probability. Each word is given a weight equal to it's frequency (word count) raised to the 3/4 power. The probability for a selecting a word is just it's weight divided by the sum of weights for all words.
 
 $$ P(w_i) = \frac{  {f(w_i)}^{3/4}  }{\sum_{j=0}^{n}\left(  {f(w_j)}^{3/4} \right) } $$
+
+The decision to raise the frequency to the 3/4 power appears to be empirical; in their paper they say it outperformed other functions. You can look at the shape of the function--just type this into google: "plot y = x^(3/4) and y = x" and then zoom in on the range x = [0, 1]. It has a slight curve that increases the value a little.
 
 The way this selection is implemented in the C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word's index appears in the table is given by \\( P(w_i) \\) * table_size. Then, to actually select a negative sample, you just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, you're more likely to pick those.
 
