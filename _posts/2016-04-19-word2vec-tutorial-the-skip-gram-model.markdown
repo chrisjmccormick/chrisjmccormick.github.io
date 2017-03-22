@@ -59,6 +59,10 @@ The Hidden Layer
 
 For our example, we're going to say that we're learning word vectors with 300 features. So the hidden layer is going to be represented by a weight matrix with 10,000 rows (one for every word in our vocabulary) and 300 columns (one for every hidden neuron).
 
+<div class="message">
+300 features is what Google used in their published model trained on the Google news dataset (you can download it from <a href="https://code.google.com/archive/p/word2vec/">here</a>). The number of features is a "hyper parameter" that you would just have to tune to your application (that is, try different values and see what yields the best results).
+</div>
+
 If you look at the *rows* of this weight matrix, these are actually what will be our word vectors!
 
 [![Hidden Layer Weight Matrix][weight_matrix]][weight_matrix]
