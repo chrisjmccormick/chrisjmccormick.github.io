@@ -47,24 +47,17 @@ If we simply expand the square term:
 
 Then we can re-write our MATLAB code as follows (see the attached MATLAB script for a commented version of this).
 
+{% highlight matlab %}
 
 XX = sum(X.^2, 2);
 
-
-
-
 XC = X * C';
-
-
-
 
 CC = sum(C.^2, 2)';
 
-
-
-
 dists = sqrt(bsxfun(@plus, CC, bsxfun(@minus, XX, 2*XC)));
 
+{% endhighlight %}
 
 No more for-loop! Because we are using linear algebra software here (MATLAB) that has been optimized for matrix multiplications, we will see a massive speed-up in this implementation over the sum-of-squared-differences approach.
 
