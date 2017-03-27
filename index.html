@@ -4,6 +4,7 @@ title: Home
 ---
 
 <div class="posts">
+  
   {% for post in paginator.posts %}
   <article class="post">
     <!-- Post title -->
@@ -13,19 +14,23 @@ title: Home
       </a>
     </h1>
     
-    <!-- Comment count -->
-    <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread"></a>
-    
-    
+    <!-- Date of the post -->
     <time datetime="{{ post.date | date_to_xmlschema }}" class="post-date">{{ post.date | date_to_string }}</time>
     
+    <!-- Post image -->
     {% if post.image %}
     <img src="{{ post.image }}" />
     {% endif %}
     
+    <!-- Show an excerpt from the article -->
     {{ post.excerpt }}
+    
+    <!-- Comment count -->
+    <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread"></a>
+    
   </article>
   {% endfor %}
+  
 </div>
 
 <div class="pagination">
