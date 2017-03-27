@@ -25,13 +25,14 @@ function z = evaluateFuncApproxRBFN(Centers, betas, Theta, normalize, input)
     phis = getRBFActivations(Centers, betas, input);
     
     % Normalize the neuron activations.  
-    if (normalize)
+    % If the sum of the activations is zero, then don't normalize.
+    if (normalize && (sum(phis) ~= 0))        
         phis = phis ./ sum(phis);
     end
     
     % Add a 1 to the beginning of the activations vector for the bias term.
     phis = [1; phis];
-    
+        
     % Multiply the activations by the weights and take the sum. 
     z = Theta' * phis;
         
