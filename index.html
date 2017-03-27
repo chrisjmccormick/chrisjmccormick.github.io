@@ -7,7 +7,7 @@ title: Home
   {% for post in paginator.posts %}
   <article class="post">
     <h1 class="post-title">
-      <a href="{{ site.baseurl }}{{ post.url }}">
+      <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread">
         {{ post.title }}
       </a>
     </h1>
@@ -34,3 +34,6 @@ title: Home
     <span class="pagination-item newer">Newer</span>
   {% endif %}
 </div>
+
+<!-- Code for comment counts -->
+<script id="dsq-count-scr" src="//mccormickml.disqus.com/count.js" async></script>
