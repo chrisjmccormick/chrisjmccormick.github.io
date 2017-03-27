@@ -144,7 +144,9 @@ To move from equation [1.1] to [1.2], we need to apply two basic derivative rule
 
 Moving from [1.2] to [1.3], we apply both the power rule and the chain rule:
 
-[![PowerRule](http://chrisjmccormick.files.wordpress.com/2014/03/powerrule.png)](http://chrisjmccormick.files.wordpress.com/2014/03/powerrule.png)
+[![Power Rule][power_rule]][power_rule]
+
+[![Chain Rule][chain_rule]][chain_rule]
 
 Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except Ѳ0 are treated as constants (Ѳ1, x, and y).
 
@@ -156,16 +158,12 @@ Equation [1.4] gives us the partial derivative of the MSE cost function with res
 
 
 ### One Half Mean Squared Error
-
-
 In Andrew Ng's Machine Learning course, there is one small modification to this derivation. We multiply our MSE cost function by 1/2 so that when we take the derivative, the 2s cancel out. Multiplying the cost function by a scalar does not affect the location of its minimum, so we can get away with this.
 
 Alternatively, you could think of this as folding the 2 into the learning rate. It makes sense to leave the 1/m term, though, because we want the same learning rate (alpha) to work for different training set sizes (m).
 
 
 ### Final Update Rules
-
-
 Altogether, we have the following definition for gradient descent over our cost function.
 
 [![GradientDescentOfMSETable](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)
@@ -178,4 +176,6 @@ Note that each update of the theta variables is averaged over the training set. 
 
 This means that the statistics of your training set are being taken into account during the learning process. An outlier training example (or even a mislabeled / corrupted example) is going to have less influence over the final weights because it is one voice versus many.
 
+[power_rule]: {{ site.url }}/assets/GradientDescent/PowerRule.png
+[chain_rule]: {{ site.url }}/assets/GradientDescent/ChainRule.png
 
