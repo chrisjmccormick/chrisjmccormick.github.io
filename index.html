@@ -6,13 +6,19 @@ title: Home
 <div class="posts">
   {% for post in paginator.posts %}
   <article class="post">
+    <!-- Post title -->
     <h1 class="post-title">
-      <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread">
+      <a href="{{ site.baseurl }}{{ post.url }}">
         {{ post.title }}
       </a>
     </h1>
-
+    
+    <!-- Comment count -->
+    <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread"></a>
+    
+    
     <time datetime="{{ post.date | date_to_xmlschema }}" class="post-date">{{ post.date | date_to_string }}</time>
+    
     {% if post.image %}
     <img src="{{ post.image }}" />
     {% endif %}
