@@ -53,8 +53,4 @@ The convolution is similar, except that you flip the mask matrix vertically then
 
 Neither the video lecture nor the slides explicitly explain the _practical_ importance of the distinction between convolution and correlation.  What's more, all of the applications of image masks that I have seen (Gaussian filter, and Laplacian of Gaussian filter), it is always convolution which is used, even though the masks are symmetrical and rotating them has no effect!
 
-Fortunately, I found the following site which does explain the distinction:
-
-http://www.imagemagick.org/Usage/convolve/#convolve_vs_correlate
-
-It sounds like the distinction is important when you have an asymmetrical mask, which I have not encountered yet.
+Fortunately, I found [this site](http://www.imagemagick.org/Usage/convolve/#convolve_vs_correlate) which does explain the distinction. The distinction is only important when you have an asymmetrical mask, as you might find, for example, in a Convolutional Neural Network. When the mask is asymmetrical, then only the convolution has the Commutative and Associative Properties that you expect from multiplication--the correlation does not.
