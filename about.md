@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 <div class="message">
-<strong>Nearist is currently looking for a US-based machine learning consultant or contractor!</strong><br/>
+<strong><a href="http://www.nearist.io">Nearist</a> is currently looking for a US-based machine learning consultant or contractor!</strong><br/>
  
 We are looking for someone to provide additional support in my current role as a machine learning applications engineer. Specifically, we need someone who can:<br/>
 
