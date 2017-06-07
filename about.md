@@ -6,6 +6,21 @@ permalink: /about/
 
 ![Profile picture][profile_pic]
 
+<div class="message">
+<strong>Nearist is currently looking for a US-based machine learning consultant or contractor!</strong>
+ 
+We are looking for someone to provide additional support in my current role as a machine learning applications engineer. Specifically, we need someone who can:
+
+<ol> 
+  <li>Participate in our meetings with customers.</li>
+  <li>Understand the customer’s application and the machine learning algorithms they are using.</li>
+  <li>Help determine how best to apply Nearist’s hardware to the application.</li>
+  <li>Implement small experiments or proof-of-concepts in Python.</li>
+</ol>
+
+We’re estimating roughly 10hrs./wk. If you’re interested, please contact me at chris@nearist.io.
+</div>
+
 Hi! I’m a software and research engineer currently working for a startup named [Nearist](http://www.nearist.io). 
 
 At Nearist, we are developing a unique hardware architecture for accelerating data mining algorithms that are based on distance calculations (such as Euclidean distance or Cosine distance). Specifically, we are targeting performance-constrained applications of k-Nearest Neighbor search and clustering algorithms such as k-Means.
@@ -28,18 +43,5 @@ Contact
 =======
 
 I always enjoy talking with other people who share an interest in machine learning and related topics; feel free to contact me at chris@nearist.io, though please understand and forgive me if I don't manage to reply. 
-
-{% highlight text %}
-Nearist is currently looking for a US-based machine learning consultant or contractor!
- 
-We are looking for someone to provide additional support in my current role as a machine learning applications engineer. Specifically, we need someone who can:
- 
-1. Participate in our meetings with customers.
-2. Understand the customer’s application and the machine learning algorithms they are using.
-3. Help determine how best to apply Nearist’s hardware to the application. 
-4. Implement small experiments or proof-of-concepts in Python.
- 
-We’re estimating roughly 10hrs./wk. If you’re interested, please contact me at chris@nearist.io.
-{% endhighlight %}
 
 [profile_pic]: https://chrisjmccormick.files.wordpress.com/2012/12/chrisprofile_portrait_300px.jpg
