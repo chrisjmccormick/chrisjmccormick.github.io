@@ -5,9 +5,9 @@ permalink: /about/
 ---
 
 <div class="message">
-<strong><a href="http://www.nearist.io">Nearist</a> is currently looking for a US-based machine learning consultant or contractor!</strong><br/>
+<strong><a href="http://www.nearist.io">Nearist</a> is currently looking for a US-based machine learning consultant or contractor!</strong><br/><br/>
  
-We are looking for someone to provide additional support in my current role as a machine learning applications engineer. Specifically, we need someone who can:<br/>
+We are looking for someone to provide additional support in my current role as a machine learning applications engineer. Specifically, we need someone who can:<br/><br/>
 
 <ol> 
   <li>Participate in our meetings with customers.</li>
@@ -15,7 +15,7 @@ We are looking for someone to provide additional support in my current role as a
   <li>Help determine how best to apply Nearist’s hardware to the application.</li>
   <li>Implement small experiments or proof-of-concepts in Python.</li>
 </ol>
-<br/>
+
 We’re estimating roughly 10hrs./wk. If you’re interested, please contact me at chris@nearist.io.
 </div>
 
