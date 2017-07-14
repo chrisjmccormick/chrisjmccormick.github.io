@@ -33,7 +33,15 @@ You can see the results in their published model, which was trained on 100 billi
 
 If you're interested in their resulting vocabulary, I poked around it a bit and published a post on it [here](http://mccormickml.com/2016/04/12/googles-pretrained-word2vec-model-in-python/). You can also just browse their vocabulary [here](https://github.com/chrisjmccormick/inspect_word2vec/tree/master/vocabulary).
 
-I haven't had a chance to investigate their method of phrase detection, but it is covered in the "Learning Phrases" section of their [paper](http://arxiv.org/pdf/1310.4546.pdf). I'm also told the code is available in word2phrase.c of their published code [here](https://code.google.com/archive/p/word2vec/).
+Phrase detection is covered in the "Learning Phrases" section of their [paper](http://arxiv.org/pdf/1310.4546.pdf). They shared their implementation in word2phrase.c--I've shared a commented (but otherwise unaltered) copy of this code [here](https://github.com/chrisjmccormick/word2vec_commented/blob/master/word2phrase.c).
+
+I don't think their phrase detection approach is a key contribution of their paper, but I'll share a little about it anyway since it's pretty straightforward.
+
+Each pass of their tool only looks at combinations of 2 words, but you can run it multiple times to get longer phrases. So, the first pass will pick up the phrase "New_York", and then running it again will pick up "New_York_City" as a combination of "New_York" and "City".  
+
+The tool counts the number of times each combination of two words appears in the training text, and then these counts are used in an equation to determine which word combinations to turn into phrases. The equation is designed to make phrases out of words which occur together often relative to the number of individual occurrences. It also favors phrases made of infrequent words in order to avoid making phrases out of common words like "and the" or "this is".
+
+You can see more details about their equation in my code comments [here](https://github.com/chrisjmccormick/word2vec_commented/blob/master/word2phrase.c#L389).
 
 <div class="message">One thought I had for an alternate phrase recognition strategy would be to use the titles of all Wikipedia articles as your vocabulary.</div>
 
