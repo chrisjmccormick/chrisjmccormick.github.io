@@ -129,6 +129,8 @@ For the most detailed and accurate explanation of word2vec, you should check out
 
 I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
 
+McCormick, C. (2017, January 11). *Word2Vec Tutorial Part 2 - Negative Sampling*. Retrieved from http://www.mccormickml.com
+
 [training_data]: {{ site.url }}/assets/word2vec/training_data.png
 [subsample_plot]: {{ site.url }}/assets/word2vec/subsample_func_plot.png
 [word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/

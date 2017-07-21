@@ -112,6 +112,9 @@ Other Resources
 ===============
 I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
 
+McCormick, C. (2016, April 19). *Word2Vec Tutorial - The Skip-Gram Model*. Retrieved from http://www.mccormickml.com
+
+
 [training_data]: {{ site.url }}/assets/word2vec/training_data.png
 [skip_gram_net_arch]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
 [weight_matrix]: {{ site.url }}/assets/word2vec/word2vec_weight_matrix_lookup_table.png
