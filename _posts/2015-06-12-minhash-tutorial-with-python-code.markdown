@@ -174,5 +174,6 @@ The most important notes:
   * I’ve replaced the example dataset with a much larger one I found [here](http://www.inf.ed.ac.uk/teaching/courses/tts/assessed/assessment3.html).
 	
   * rahularora made use of Python dictionaries to perform the shingle hashing, but this doesn’t scale well—it got really slow for a large number of documents / shingles. I’ve replaced this with CRC32 hashing.
-McCormick, C. (2015, June 12). *MinHash Tutorial with Python Code*. Retrieved from http://www.mccormickml.com
 
+### Cite
+McCormick, C. (2015, June 12). *MinHash Tutorial with Python Code*. Retrieved from http://www.mccormickml.com
