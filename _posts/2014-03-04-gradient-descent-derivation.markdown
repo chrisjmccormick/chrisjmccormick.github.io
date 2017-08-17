@@ -154,7 +154,7 @@ Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as f
 
 Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, Ѳ0. Now we must also take the partial derivative of the MSE function with respect to Ѳ1. The only difference is in the final step, where we take the partial derivative of the error:
 
-[![ThetaOneDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetaonederivativeoferror.png)](http://chrisjmccormick.files.wordpress.com/2014/03/thetaonederivativeoferror.png)
+[![Derivative of the error with respect to Theta_1][ThetaOneDerivativeOfError]][ThetaOneDerivativeOfError]
 
 
 ### One Half Mean Squared Error
@@ -176,6 +176,7 @@ Note that each update of the theta variables is averaged over the training set. 
 
 This means that the statistics of your training set are being taken into account during the learning process. An outlier training example (or even a mislabeled / corrupted example) is going to have less influence over the final weights because it is one voice versus many.
 
+[ThetaOneDerivativeOfError]: {{ site.url }}/assets/GradientDescent/ThetaOneDerivativeOfError.png
 [power_rule]: {{ site.url }}/assets/GradientDescent/PowerRule.png
 [chain_rule]: {{ site.url }}/assets/GradientDescent/ChainRule.png
 
