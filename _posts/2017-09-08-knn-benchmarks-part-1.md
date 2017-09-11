@@ -42,17 +42,17 @@ Over this series of benchmarks, there are multiple aspects to k-NN performance t
 
 This first benchmarking post will focus on just the first two--latency and throughput.
 
-## The contenders
+## The Contenders
 We evaluated three different k-NN implementations:
 
 * k-NN in scikit-learn on a desktop PC (as a baseline)
 * GPU acceleration with a Tesla K80
 * A prototype version of Nearist’s Vector Search Accelerator (VSX), which uses a custom hardware architecture.
 
-### Brute-force with scikit-learn
+### Desktop CPU
 The first platform was simply a brute-force search using the k-NN implementation in scikit-learn in Python, running on a desktop PC, which has a 4th generation Intel i7 4770 (from around 2013) with 16GB of RAM. This was intended merely to serve as a baseline for comparison of the other two platforms.
 
-### knn-cuda on a Tesla K80 at Amazon
+### Nvidia Tesla K80 GPU
 
 #### knn-cuda library
 There don’t appear to be many publicly available kNN GPU implementations; of those, knn-cuda appears to be the most established option. 
@@ -61,12 +61,12 @@ Like the Nearist VSX, knn-cuda uses a brute-force method--that is, it calculates
 
 A note on engineering effort with knn-cuda: While we were able to perform our experiments with the knn-cuda library as-is, the authors note that it “was written in the context of a Ph.D. thesis” and that it “should be adapted to the problem and to the specifications of the GPU used.” That is to say, knn-cuda doesn’t necessarily provide an off-the-shelf implementation of k-NN that is ready for a production application--some further work by a CUDA engineer is required to make best use of the GPU.
 
-#### Tesla K80 and Amazon P2 instance
+#### Amazon P2 instance
 Amazon started offering the P2 instances containing Tesla K80s at the end of 2016. GPU users will note that the K80 is now several generations old, and newer Tesla cards would achieve higher performance in our benchmark. However, we wanted to choose the platform with the lowest barrier to entry, and  Amazon instances are trusted and widely used in production applications. Amazon instances have the added benefit of scalability--the ability to increase or decrease the number of GPUs based on demand.
 
 The Tesla K80 actually includes 2 GPU chips (two NVIDIA GK210s) on a single board. CUDA does not automatically divide the computation across the two GPUs for you, however. In order to leverage both GPUs on the K80, you must divide your task across them and then consolidate the results. For this article, we have chosen to simply use a single GK210. In future articles, we plan to publish results using multiple GK210s and even multiple K80 cards.
 
-### Nearist VectorSearch Accelerator (VSX)
+### Nearist Vector Search Accelerator (VSX)
 
 The VSX Orion is a rack-mounted server appliance that fits in a 4U space. Inside the server are PCIe cards which contain Nearist’s custom hardware accelerators. 
 
@@ -74,7 +74,7 @@ The Orion hardware architecture takes advantage of the easy parallelism in k-NN 
 
 The VSX appliance is still in development, and today we have a much smaller scale prototype. Our prototype consists of a single PCIe card with only about 1/10th of the VCUs that the production version will have. Even this limited prototype outperformed both the CPU and GPU in our benchmark, however.
 
-## Experiment results
+## Benchmark Results
 
 ### Latency Measurements
 The following table shows the time taken (in seconds) to perform a k-NN search against the 4.2 million wikipedia articles with only a single query vector. The measurements are all averaged over 5 runs.
