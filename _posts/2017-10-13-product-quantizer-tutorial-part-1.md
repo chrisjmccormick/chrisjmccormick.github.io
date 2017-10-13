@@ -35,7 +35,7 @@ Here’s how the compression works. For our example we’re going to chop up the
 
 We’re going to run k-means clustering separately on each of these 8 matrices with k = 256. Now for each of the 8 subsections of the vector we have a set of 256 centroids--we have 8 groups of 256 centroids each.
 
-![K-Means clustering run on subvectors][k-means_clustering]
+![K-Means clustering run on subvectors][kmeans_clustering]
 
 These centroids are like “prototypes”. They represent the most commonly occurring patterns in the dataset sub-vectors.
 
