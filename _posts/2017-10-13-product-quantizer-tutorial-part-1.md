@@ -95,6 +95,6 @@ Here is the definition that will probably make more sense to an ML researcher. Y
 In general, when you're reading any of the documentation or code around the FAISS library, when you read quantizer just think k-means clustering!
 
 [image_vectors]: {{ site.url }}/assets/ProductQuantizer/image_vectors.png
-[vector_slices]: {{ site.url }}/assets/ProductQuantizer/vector_slices.png
-[kmeans_clustering]: {{ site.url }}/assets/ProductQuantizer/k-means_clustering.png
+[vector_slices]: {{ site.url }}/assets/ProductQuantizer/vector_slice.png
+[kmeans_clustering]: {{ site.url }}/assets/ProductQuantizer/kmeans_clustering.png
 [compression]: {{ site.url }}/assets/ProductQuantizer/compression.png
