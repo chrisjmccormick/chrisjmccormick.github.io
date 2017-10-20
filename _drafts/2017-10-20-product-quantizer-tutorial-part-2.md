@@ -76,109 +76,20 @@ So this is all very interesting, but so far useless. It's not buying us anything
 
 Let's bring the PQ back in to the picture. Before training our Product Quantizer, we're going to replace all of the dataset vectors with their residuals. So now our product quantizer works on residuals instead of on the original vectors.
 
-I believe what this buys us is that, by replacing all of the vectors with their offset from a nearby centroid, we've reduced the variety in the dataset. In the paper, this is described by saying that the residual vectors "have less energy" than the original.  Our limited number of codes in the PQ are now going to be more accurate because the vectors they have to describe are less distinct than they were. We're getting more bang for our buck!
+I believe what this buys us is that, by replacing all of the vectors with their offset from a nearby centroid, we've reduced the variety in the dataset. In the paper, this is described by saying that the residual vectors "have less energy" than the originals. Our limited number of codes in the PQ are now going to be more accurate because the vectors they have to describe are less distinct than they were. We're getting more bang for our buck!
 
-There is a cost to this, though. The number of partial distance tables we have to calculate has grown.
+There is a cost to this, though. Remember that the magic of Product Quantizers is that you only have to calculate a relatively small table of partial distances between the subvectors in the query vector and the subvector centroids. The rest is look-ups and summations.
+
+But now with the residuals, the query vector is different for each partition--in each partition, the residual for the query has to be re-calculated against that partition's centroid. So we have to calculate a separate distance table for each partition we probe!
+
+Apparently the trade-off is worth it, though, because the IndexIVFPQ works pretty well in practice.
+
+And that's really it. The database vectors have all been replaced by their residuals, but from the perspective of the Product Quantizer nothing's different.
+
+You could train separate PQs for each partition, but the authors decided against this because the number of partitions tends to be high, so the memory cost of storing all those codebooks is a problem. Instead, a single PQ is still learned from all of the database vectors from all partitions.
 
 
- Let's talk first about residuals  To calculate the residual for a given database vector, you just subtract it's centroid from it. Think
 
-While playing with FAISS, I used a dataset of 50,000 feature vectors representing the MNIST training set. I
+7:00p - 7:10p
 
 TODO - Do they re-organize the vectors so that the vectors in a partition are all contiguous on disk or in memory?
-
-
-
-
-
-
-
-
-A product quantizer is a type of “vector quantizer” (I’ll explain what that means later on!) which can be used to accelerate approximate nearest neighbor search. They’re of particular interest because they are a key element of the popular [Facebook AI Similarity Search (FAISS) library](https://code.facebook.com/posts/1373769912645926/faiss-a-library-for-efficient-similarity-search/) released in March 2017. In this post, I’ll be providing an explanation of a product quantizer in its most basic form, as used for implementing approximate nearest neighbors search (ANN).
-
-## Exhaustive Search with Approximate Distances
-Unlike tree-based indexes used for ANN, a k-NN search with a product quantizer still performs an “exhaustive search”, meaning that a product quantizer still requires comparing the query vector to every vector in the database. The key is that it _approximates_ and _greatly simplifies_ the distance calculations.
-
-However, it is possible to combine a product-quantizer with different pre-filtering techniques to reduce the number of comparisons performed. The FAISS library includes modes which combine the PQ approach with a pre-filtering step that isolate the search to just a portion of the overall database. I hope to write another tutorial that will cover the pre-filtering in FAISS, but in this post, I'll be focusing on just the product quantizer.
-
-## Explanation by Example
-The authors of the product quantizer approach have a background in signal processing and compression techniques, so their language and terminology probably feels foreign if your focus is machine learning. Fortunately, if you’re familiar with k-means clustering (and we dispense with all of the compression nomenclature!) you can understand the basics of product quantizers easily with an example. Afterwards, we'll come back and look at the compression terminology.
-
-## Dataset Compression
-Let’s say you have a collection of 50,000 images, and you've already performed some feature extraction with a convolutional neural network, and now you have a dataset of 50,000 feature vectors with 1,024 components each.
-
-![Image Vector Dataset][image_vectors]
-
-The first thing we’re going to do is compress our dataset. The number of vectors will stay the same, but we'll reduce the amount of storage required for each vector. Note that what we're going to do is _not the same_ as "dimensionality reduction"! This is because the compressed vectors can’t be compared to one another directly--this will become clear as we go further.
-
-Two important benefits to compressing the dataset are that (1) memory access times are generally the limiting factor on processing speed, and (2) sheer memory capacity can be a problem for big datasets.
-
-Here’s how the compression works. For our example we’re going to chop up the vectors into 8 sub-vectors, each of length 128 (8 sub vectors x 128 components = 1,024 components). This divides our dataset into 8 matrices that are [50K x 128] each.
-
-![Vectors sliced into subvectors][vector_slices]
-
-We’re going to run k-means clustering separately on each of these 8 matrices with k = 256. Now for each of the 8 subsections of the vector we have a set of 256 centroids--we have 8 groups of 256 centroids each.
-
-![K-Means clustering run on subvectors][kmeans_clustering]
-
-These centroids are like “prototypes”. They represent the most commonly occurring patterns in the dataset sub-vectors.
-
-We’re going to use these centroids to compress our 1 million vector dataset. Effectively, we’re going to replace each subregion of a vector with the closest matching centroid, giving us a vector that’s different from the original, but hopefully still close.
-
-Doing this allows us to store the vectors much more efficiently—instead of storing the original floating point values, we’re just going to store cluster ids. For each subvector, we find the closest centroid, and store the id of that centroid.
-
-Each vector is going to be replaced by a sequence of 8 centroid ids. I think you can guess how we pick the centroid ids--you take each subvector, find the closest centroid, and replace it with that centroid’s id.
-
-Note that we learn a _different set of centroids_ for each subsection. And when we replace a subvector with the id of the closest centroid, we are only comparing against the 256 centroids for _that subsection_ of the vector.
-
-Because there are only 256 centroids, we only need 8-bits to store a centroid id. Each vector, which initially was a vector of 1,024 32-bit floats (4,096 bytes) is now a sequence of eight 8-bit integers (8 bytes total per vector!).  
-
-![Compressed vector representation][compression]
-
-## Nearest Neighbor Search
-Great. We’ve compressed the vectors, but now you can’t calculate L2 distance directly on the compressed vectors--the distance between centroid ids is arbitrary and meaningless! (This is what differentiates compression from dimensionality reduction).
-
-Here’s how we perform a nearest neighbor search. It’s still going to be an exhaustive search (we’re still going to calculate a distance against all of the vectors and then sort the distances) but we’re going to be able to calculate the distances much more efficiently using just table look-ups and some addition.
-
-Let’s say we have a query vector and we want to find its nearest neighbors.
-
-One way to do this (that isn't so smart) would be to decompress the dataset vectors, and then calculate the L2 distances. That is, reconstruct the vectors by concatenating the different centroids. We're effectively going to do this, but in a much more computationally efficient way than actually decompressing the vectors.
-
-First, we’re going to calculate the squared L2 distance between each subsection of our vector and each of the 256 centroids for that subsection.
-
-This means building a table of subvector distances with 256 rows (one for each centroid) and 8 columns (one foreach subsection). How much effort is it to build this table? If you think about it, this requires the same number of math operations as computing L2 distances between our query vector and 256 dataset vectors.
-
-Once we have this table, we can start calculating approximate distance values for each of the 50K database vectors.
-
-Remember that each database vector is now just a sequence of 8 centroid ids. To calculate the approximate  distance between a given database vector and the query vector, we just use those centroid id’s to lookup the partial distances in the table, and sum those up!
-
-Does it really work to just sum up those partial values? Yes! Remember that we’re just working with squared L2 distances, meaning no square root operation. Squared L2 is calculated by summing up all of squared differences between each component, so it doesn't matter what order you perform those additions in.
-
-So this table approach gives us the same result as calculating distances against the decompressed vectors, but with much lower compute cost.
-
-The final step is the same as an ordinary nearest neighbor search—we sort the distances to find the smallest distances; these are the nearest neighbors. And that's it!
-
-## Compression Terminology
-Now that you understand how PQs work, it’s easy to go back and learn the terminology.
-
-A quantizer, in the broadest sense, is something that reduces the number of possible values that a variable has. A good example would be building a lookup table to reduce the number of colors in an image. Find the most common 256 colors, and put them in a table mapping a 24-bit RGB color value down to an 8-bit integer.
-
-When we took the first 128 values of our database vectors (the first of the 8 subsections) and clustered them to learn 256 centroids, these 256 centroids form what’s refered to as a “codebook”. Each centroid (a floating point vector with 128 components) is called a “code”.
-
-Since these centroids are what’s used to represent the database vectors, the codes are also referred to as "reproduction values” or “reconstruction values". You can reconstruct a database vector from its sequence of centroid if ids by concatenating the corresponding codes (centroids).
-
-Since we ran k-means separately on each of the 8 subsections, we actually created eight separate code books.
-
-With these 8 codebooks, though, we can combine the codes to create 256^8 possible vectors! So, in effect, we've created one very large codebook with 256^8 codes.
-
-### Vector quantizers
-We have been looking at the Product Quantizer specifically, but there is an even simpler notion of a "vector quantizer". Here is the compression-language definition: A "vector quantizer" takes a vector and "encodes" it by returning the index of a code.
-
-Here is the definition that will probably make more sense to an ML researcher. You cluster your dataset (the _full length_ vectors, no slicing here) with k-means clustering (this is "training the quantizer"). You replace each vector with the id of the cluster it's closest to (this is "encoding the vectors" or "quantizing the vectors").
-
-In general, when you're reading any of the documentation or code around the FAISS library, when you read quantizer just think k-means clustering!
-
-[image_vectors]: {{ site.url }}/assets/ProductQuantizer/image_vectors.png
-[vector_slices]: {{ site.url }}/assets/ProductQuantizer/vector_slice.png
-[kmeans_clustering]: {{ site.url }}/assets/ProductQuantizer/kmeans_clustering.png
-[compression]: {{ site.url }}/assets/ProductQuantizer/compression.png
