@@ -45,11 +45,11 @@ So here's something interesting. Let's say you replace all of the vectors in a p
 
 I think you can see this intuitively in the illustration, but let's also look at the equation. The L2 distance between two vectors 'x' and 'y', each of length 'n', is given by:
 
-$$ dist_{L2} ( {x}, {y} ) = \sqrt{\sum_{i}^{n}\left ( x_{i} - y_{i} \right )^{2}}
+$$ dist_{L2} ( {x}, {y} ) = \sqrt{\sum_{i}^{n}\left ( x_{i} - y_{i} \right )^{2}} $$
 
 What happens if we subtract a centroid vector 'c' from both 'x' and 'y'?
 
-$$ dist_{L2} (x - c, y - c) = \sqrt{\sum_{i}^{n}\left ( \left ( x_{i} - c_{i}  \right ) - \left ( y_{i} - c_{i} \right )\right )^{2}} = \sqrt{\sum_{i}^{n}\left ( x_{i} - y_{i} \right )^{2}}
+$$ dist_{L2} (x - c, y - c) = \sqrt{\sum_{i}^{n}\left ( \left ( x_{i} - c_{i}  \right ) - \left ( y_{i} - c_{i} \right )\right )^{2}} = \sqrt{\sum_{i}^{n}\left ( x_{i} - y_{i} \right )^{2}} $$
 
 The centroid components just cancel out!
 
