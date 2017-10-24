@@ -7,7 +7,7 @@ image: /assets/FAISS/residuals_one_partition.png
 tags: similarity search, FAISS, k-NN, k-nearest neighbors, k-NN search, product quantizer, approximate nearest neighbors, ANN, quantization, IndexIVFPQ, inverted file index, IVF, residuals
 ---
 
-In the previous post, I described the most basic form of a product quantizer. In this post, I'll be explaining the IndexIVFPQ index from the FAISS library. IndexIVFPQ uses a product quantizer as well as a couple additional techniques introduced in their 2011 paper. 
+In [part 1 of this tutorial](http://mccormickml.com/2017/10/13/product-quantizer-tutorial-part-1/), I described the most basic form of a product quantizer. In this post, I'll be explaining the [IndexIVFPQ index from the FAISS library](https://github.com/facebookresearch/faiss/wiki/Getting-started-tutorial), which uses a product quantizer as well as a couple additional techniques introduced in [their 2011 paper](https://lear.inrialpes.fr/pubs/2011/JDS11/jegou_searching_with_quantization.pdf). 
 
 Here is a brief summary of the two added features, followed by more detailed explanations.
 
