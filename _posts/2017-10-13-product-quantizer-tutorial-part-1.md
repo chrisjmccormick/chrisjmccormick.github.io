@@ -10,12 +10,12 @@ tags: similarity search, FAISS, k-NN, k-nearest neighbors, k-NN search, product 
 * TOC
 {:toc}
 
-A product quantizer is a type of “vector quantizer” (I’ll explain what that means later on!) which can be used to accelerate approximate nearest neighbor search. They’re of particular interest because they are a key element of the popular [Facebook AI Similarity Search (FAISS) library](https://code.facebook.com/posts/1373769912645926/faiss-a-library-for-efficient-similarity-search/) released in March 2017. In this post, I’ll be providing an explanation of a product quantizer in its most basic form, as used for implementing approximate nearest neighbors search (ANN).
+A product quantizer is a type of “vector quantizer” (I’ll explain what that means later on!) which can be used to accelerate approximate nearest neighbor search. They’re of particular interest because they are a key element of the popular [Facebook AI Similarity Search (FAISS) library](https://code.facebook.com/posts/1373769912645926/faiss-a-library-for-efficient-similarity-search/) released in March 2017. In part 1 of this tutorial, I’ll be providing an explanation of a product quantizer in its most basic form, as used for implementing approximate nearest neighbors search (ANN). Then in [part 2](http://mccormickml.com/2017/10/22/product-quantizer-tutorial-part-2/) I explain the "IndexIVFPQ" index from FAISS, which adds a couple more features on top of the basic product quantizer.
 
 ## Exhaustive Search with Approximate Distances
-Unlike tree-based indexes used for ANN, a k-NN search with a product quantizer still performs an “exhaustive search”, meaning that a product quantizer still requires comparing the query vector to every vector in the database. The key is that it _approximates_ and _greatly simplifies_ the distance calculations.
+Unlike tree-based indexes used for ANN, a k-NN search with a product quantizer alone still performs an “exhaustive search”, meaning that a product quantizer still requires comparing the query vector to every vector in the database. The key is that it _approximates_ and _greatly simplifies_ the distance calculations.
 
-However, it is possible to combine a product-quantizer with different pre-filtering techniques to reduce the number of comparisons performed. The FAISS library includes modes which combine the PQ approach with a pre-filtering step that isolate the search to just a portion of the overall database. I hope to write another tutorial that will cover the pre-filtering in FAISS, but in this post, I'll be focusing on just the product quantizer.
+(Note that the IndexIVFPQ index in FAISS _does_ perform pre-filtering of the dataset before using the product quantizer--I cover this in part 2).
 
 ## Explanation by Example
 The authors of the product quantizer approach have a background in signal processing and compression techniques, so their language and terminology probably feels foreign if your focus is machine learning. Fortunately, if you’re familiar with k-means clustering (and we dispense with all of the compression nomenclature!) you can understand the basics of product quantizers easily with an example. Afterwards, we'll come back and look at the compression terminology.
@@ -25,7 +25,7 @@ Let’s say you have a collection of 50,000 images, and you've already performed
 
 ![Image Vector Dataset][image_vectors]
 
-The first thing we’re going to do is compress our dataset. The number of vectors will stay the same, but we'll reduce the amount of storage required for each vector. Note that what we're going to do is _not the same_ as "dimensionality reduction"! This is because the compressed vectors can’t be compared to one another directly--this will become clear as we go further.
+The first thing we’re going to do is compress our dataset. The number of vectors will stay the same, but we'll reduce the amount of storage required for each vector. Note that what we're going to do is _not the same_ as "dimensionality reduction"! This is because the values in the compressed vectors are actually _symbolic_ rather than _numeric_, so we can’t compare the compressed vectors to one another _directly_.
 
 Two important benefits to compressing the dataset are that (1) memory access times are generally the limiting factor on processing speed, and (2) sheer memory capacity can be a problem for big datasets.
 
@@ -85,14 +85,10 @@ Since these centroids are what’s used to represent the database vectors, the c
 
 Since we ran k-means separately on each of the 8 subsections, we actually created eight separate code books.
 
-With these 8 codebooks, though, we can combine the codes to create 256^8 possible vectors! So, in effect, we've created one very large codebook with 256^8 codes.
+With these 8 codebooks, though, we can combine the codes to create 256^8 possible vectors! So, in effect, we've created one _very large_ codebook with 256^8 codes. Learning and storing a single codebook of that size directly is impossible, so that's the magic of the product quantizer.
 
-### Vector quantizers
-We have been looking at the Product Quantizer specifically, but there is an even simpler notion of a "vector quantizer". Here is the compression-language definition: A "vector quantizer" takes a vector and "encodes" it by returning the index of a code.
-
-Here is the definition that will probably make more sense to an ML researcher. You cluster your dataset (the _full length_ vectors, no slicing here) with k-means clustering (this is "training the quantizer"). You replace each vector with the id of the cluster it's closest to (this is "encoding the vectors" or "quantizing the vectors").
-
-In general, when you're reading any of the documentation or code around the FAISS library, when you read quantizer just think k-means clustering!
+## Pre-filtering
+In [part 2 of this tutorial](http://mccormickml.com/2017/10/22/product-quantizer-tutorial-part-2/), we'll cover the IndexIVFPQ from FAISS, which uses a product quantizer but also partitions the dataset so that you only have to search through portions of it for each query. Though FAISS was just released in 2017, the product quantizer approach and the techniques used in the IndexIVFPQ were first introduced in their popular [2011 paper](https://lear.inrialpes.fr/pubs/2011/JDS11/jegou_searching_with_quantization.pdf).
 
 [image_vectors]: {{ site.url }}/assets/ProductQuantizer/image_vectors.png
 [vector_slices]: {{ site.url }}/assets/ProductQuantizer/vector_slice.png
