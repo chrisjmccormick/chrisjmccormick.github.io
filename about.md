@@ -5,20 +5,14 @@ permalink: /about/
 ---
 
 <div class="message">
-<strong><a href="http://www.nearist.io">Nearist</a> is currently looking for a US-based machine learning consultant or contractor!</strong><br/><br/>
+<strong><a href="http://www.nearist.io">Nearist</a> is currently looking for a marketing manager!</strong><br/><br/>
  
-We are looking for someone to provide additional support in my current role as a machine learning applications engineer. Specifically, we need someone who can:<br/><br/>
+We sell acceleration-as-a-service to machine learning engineers, so we're especially keen on finding a marketing person with technical background in ML. 
 
-<ol> 
-  <li>Participate in our meetings with customers.</li>
-  <li>Understand the customer’s application and the machine learning algorithms they are using.</li>
-  <li>Help determine how best to apply Nearist’s hardware to the application.</li>
-  <li>Implement small experiments or proof-of-concepts in Python.</li>
-</ol>
+We're an early stage startup--you'd be a full-time employee getting in on the ground floor, with the opportunity to build your own marketing team. 
 
-We’re estimating roughly 10hrs./wk. If you’re interested, please contact me at chris@nearist.io.
+See our <a href="https://www.linkedin.com/jobs/cap/view/516658433/">LinkedIn job posting</a> for the full description and to apply!
 </div>
-
 
 ![Profile picture][profile_pic]
 
