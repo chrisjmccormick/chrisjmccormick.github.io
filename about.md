@@ -4,25 +4,13 @@ title: About
 permalink: /about/
 ---
 
-<div class="message">
-<strong><a href="http://www.nearist.io">Nearist</a> is currently looking for a marketing manager!</strong><br/><br/>
- 
-We sell acceleration-as-a-service to machine learning engineers, so we're especially keen on finding a marketing person with technical background in ML. 
-
-We're an early stage startup--you'd be a full-time employee getting in on the ground floor, with the opportunity to build your own marketing team. 
-
-See our <a href="https://www.linkedin.com/jobs/cap/view/516658433/">LinkedIn job posting</a> for the full description and to apply!
-</div>
-
 ![Profile picture][profile_pic]
 
-Hi! I’m a software and research engineer currently working for a startup named [Nearist](http://www.nearist.io). 
+Hi! I’m a software and research engineer at [Nearist](http://www.nearist.ai). 
 
-At Nearist, we are developing a unique hardware architecture for accelerating data mining algorithms that are based on distance calculations (such as Euclidean distance or Cosine distance). Specifically, we are targeting performance-constrained applications of k-Nearest Neighbor search and clustering algorithms such as k-Means.
+At Nearist, we have developed a unique hardware architecture for accelerating nearest neighbor search (get it? :) ), and we've deployed it as a cloud offering to create a low barrier-to-entry. We enable you to search large vector datasets at high throughputs without all the engineering effort required to develop and maintain your own system. Skip the engineering headache and get back to working on your next great AI-powered product feature!
 
-<!-- Side note: We look at applications using the L2 or Cosine distance, but our hardware actually just implements the L1 distance as an approximation. Because the L1 distance only requires subtraction and addition, we can pack a lot of our little calculator engines into a chip. -->
-
-My role is in leading our benchmarking efforts (primarily against high-end GPUs) and our application research. As we look for opportunities for our hardware across different markets, I get to investigate a wide range of algorithms and applications. And, when I can, I like to share what I learn here. I find that one of the best ways, for me, to learn a subject is to try and communicate it to others. You often don't realize what you don't know about a subject until you try and explain it to someone :).
+As we look for opportunities for our hardware across different markets, I get to investigate a wide range of algorithms and applications. And, when I can, I like to share what I learn here. I find that one of the best ways, for me, to learn a subject is to try and communicate it to others. You often don't realize what you don't know about a subject until you try and explain it to someone :).
 
 Education & Experience
 ======================
@@ -37,6 +25,6 @@ Education & Experience
 Contact
 =======
 
-I always enjoy talking with other people who share an interest in machine learning and related topics; feel free to contact me at chris@nearist.io, though please understand and forgive me if I don't manage to reply. 
+I always enjoy talking with other people who share an interest in machine learning and related topics; feel free to contact me at chris.mccormick@nearist.ai, though please understand and forgive me if I don't manage to reply. 
 
 [profile_pic]: https://chrisjmccormick.files.wordpress.com/2012/12/chrisprofile_portrait_300px.jpg
