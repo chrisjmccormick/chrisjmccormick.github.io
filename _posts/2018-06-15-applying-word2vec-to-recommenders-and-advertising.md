@@ -15,6 +15,14 @@ What researchers and companies are finding is that the time series of _online us
 
 > "Researchers from the Web Search, E-commerce and Marketplace domains have realized that just like one can train word embeddings by treating a sequence of words in a sentence as context, the same can be done for training embeddings of user actions by treating sequence of user actions as context." - Mihajlo Grbovic, Airbnb
 
+## So What?
+word2vec (and other word vector models) have revolutionized Natural Language Processing by providing much better vector representations for words than past approaches. In the same way that word embeddings revolutionized NLP, item embeddings are revolutionizing recommendations. 
+
+User activity around an item encodes many abstract qualities of that item which are difficult to capture by more direct means. For instance, how do you encode qualities like "architecture, style and feel" of an Airbnb listing?
+
+The word2vec approach has proven successful in extracting these hidden insights, and being able to compare, search, and categorize items on these abstract dimensions opens up a lot of opportunities for smarter, better recommendations. Commercially, Yahoo saw a 9% lift in CTR when applying this technique to their advertisements, and AirBNB saw a 21% lift in CTR on their Similar Listing carousel, a product that drives 99% of bookings along with search ranking.
+
+## Four Production Examples
 Every e-commerce, social media, or content sharing site has this kind of user activity, so this approach appears to have _very_ wide applicability. In the following sections I’ll summarize four publicized use cases of this technique which have been put into production:
 * Music recommendations at Spotify and Anghami
 * Listing recommendations at Airbnb
@@ -74,6 +82,8 @@ Yahoo augmented the word2vec approach with a few notable innovations. The most i
 
 I imagine this clustering technique helps eliminate the problem of recommending the equivalent of product "synonyms". That is, imagine if the system only ever recommended different versions of the same item you just bought--"You just bought _Energizer_ AA batteries? Check out these _Duracell_ AA batteries!" Not very helpful.
 
+[![Tweet from Justin Shanes on Amazon recommending humidifiers][justin_tweet]](https://twitter.com/justinshanes/status/803453049603690496?lang=en)
+
 To choose specific products in those clusters to recommend, in each cluster they find the ‘k’ most similar products to the purchased product, and recommend all of these to the user. In their experiments, they identified 20 products to recommend to the user per day. Each time a user interacts with the Yahoo Mail client, the client displays another one of the product recommendations in the form of another ad. 
 
 The paper also describes a technique called "bagging" where they assign additional weight to products which appear on the same purchase receipt.
@@ -102,6 +112,6 @@ Given the large amount of vectorized content and the large number of users for w
 
 At Nearist, we believe the efforts of machine learning teams are better spent on improving the quality of your vector representations than on solving similarity search at scale, and we’ve made it our goal to provide as much search capability as you need with minimal engineering effort. Learn more at [Nearist.ai](http://www.nearist.ai).
 
-
+[justin_tweet]: {{ site.url }}/assets/word2vec_apps/justin_shanes_tweet.png
 [spotify_user_activity]: {{ site.url }}/assets/word2vec_apps/Spotify_user_activity.png
 [airbnb_user_activity]: {{ site.url }}/assets/word2vec_apps/Airbnb_user_activity.png
