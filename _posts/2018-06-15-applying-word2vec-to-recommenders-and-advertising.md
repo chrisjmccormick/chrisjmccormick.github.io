@@ -95,6 +95,8 @@ This is a particularly fascinating application given the number of daunting chal
 
 The solution to learning vectors for queries and ads at the same time is fairly straightforward. The training data consists of user "search sessions" which consist of search queries entered, advertisements clicked, and search result links clicked. The sequence of these user actions is treated like the words in a sentence, and vectors are learned for each of them based on their context--the actions that tend to occur around them. If users often click a particular ad after entering a particular query, then we’ll learn similar vectors for the ad and the query.  All three types of actions (searches entered, ads clicked, links clicked) are part of a single "vocabulary" for the model, such that the model doesn’t really distinguish these from one another. 
 
+![Example search session][search_activity]
+
 Even though this application is focused on matching search queries and advertisements, the addition of the link clicks provides additional context to inform the other embeddings. (Though it’s not the subject of their research paper, you have to wonder whether they might use these link embeddings to help in ranking search results...)
 
 What about the scale of this problem? Surely there are too many unique queries, links, and ads for this to be feasible? This is at least partially addressed by only keeping items in the vocabulary which occur more than 10 times in the training data; they imply that this filters out a large portion of unique searches. Still, the remaining vocabulary is massive--their training set consisted of "126.2 million unique queries, 42.9 million unique ads, and 131.7 million unique links", a total of 300.8 million items. 
@@ -115,3 +117,4 @@ At Nearist, we believe the efforts of machine learning teams are better spent on
 [justin_tweet]: {{ site.url }}/assets/word2vec_apps/justin_shanes_tweet.png
 [spotify_user_activity]: {{ site.url }}/assets/word2vec_apps/Spotify_user_activity.png
 [airbnb_user_activity]: {{ site.url }}/assets/word2vec_apps/Airbnb_user_activity.png
+[search_activity]: {{ site.url }}/assets/word2vec_apps/search_activity.png
