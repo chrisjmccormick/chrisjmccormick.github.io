@@ -47,12 +47,15 @@ My tutorial and Matlab code on the HOG descriptor are easily one of the most pop
 
 * [Word2Vec Tutorial - The Skip-Gram Model][word2vec_skip-gram]
 * [Word2Vec Tutorial Part 2 - Negative Sampling][word2vec_negative_sampling]
+* [Applying word2vec to Recommenders and Advertising][word2vec_recommenders]
 * [Commented word2vec C code](https://github.com/chrisjmccormick/word2vec_commented)
 * [Wor2Vec Resources][word2vec_res]
+
 
 [skip-gram_model]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
 [word2vec_skip-gram]: {{ site.url }}/2016/04/19/word2vec-tutorial-the-skip-gram-model/
 [word2vec_negative_sampling]: {{ site.url }}/2017/01/11/word2vec-tutorial-part-2-negative-sampling/
+[word2vec_recommenders]: {{ site.url }}/2018/06/15/applying-word2vec-to-recommenders-and-advertising/
 [word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/
 
 <hr/>
