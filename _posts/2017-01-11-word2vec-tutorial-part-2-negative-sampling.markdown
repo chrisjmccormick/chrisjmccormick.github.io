@@ -127,7 +127,9 @@ The way this selection is implemented in the C code is interesting. They have a 
 ## Other Resources
 For the most detailed and accurate explanation of word2vec, you should check out the C code. I've published an extensively commented (but otherwise unaltered) version of the code [here](https://github.com/chrisjmccormick/word2vec_commented).
 
-I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
+Also, did you know that the word2vec model can also be applied to non-text data for recommender systems and ad targeting?  Instead of learning vectors from a sequence of words, you can learn vectors from a sequence of user actions. Read more about this in my new post [here](http://mccormickml.com/2018/06/15/applying-word2vec-to-recommenders-and-advertising/). 
+
+Finally, I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
 
 ### Cite
 McCormick, C. (2017, January 11). *Word2Vec Tutorial Part 2 - Negative Sampling*. Retrieved from http://www.mccormickml.com
