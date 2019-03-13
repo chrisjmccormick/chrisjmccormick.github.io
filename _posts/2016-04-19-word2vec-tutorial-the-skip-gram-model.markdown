@@ -8,7 +8,7 @@ tags: Word2Vec, Skip Gram, tutorial, neural network, NLP, word vectors
 ---
 
 <div class="message">
-<strong>UPDATE:</strong> I’m proud to announce that I’ve published my first eBook, <em><a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">The Inner Workings of word2vec</a></em>. It includes all of the material in this post series, but goes deeper with additional topics like CBOW and Hierarchical Softmax, as well as example code that demonstrates the algorithm details in action. I'm continuing to add more topics and code to the book--picking it up now entitles you to receive all future revisions. Thanks for your support!
+<strong>UPDATE:</strong> I’m proud to announce that I’ve published my first eBook, <em><a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">The Inner Workings of word2vec</a></em>. It includes all of the material in this post series, and goes deeper with additional topics like CBOW and Hierarchical Softmax. I've also created example code to go along with the book that exposes the algorithm details and let's you see them in action. Check it all out <a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">here</a>! 
 </div>
 
 This tutorial covers the skip gram neural network architecture for Word2Vec. My intention with this tutorial was to skip over the usual introductory and abstract insights about Word2Vec, and get into more of the details. Specifically here I'm diving into the skip gram neural network model.

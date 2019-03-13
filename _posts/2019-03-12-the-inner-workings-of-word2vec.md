@@ -7,7 +7,7 @@ image: /assets/word2vec/book_cover.png
 tags: Word2Vec, Skip Gram, tutorial, neural network, NLP, word vectors
 ---
 
-I’m proud to announce that I’ve published my first eBook, <em><a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">The Inner Workings of word2vec</a></em>. It includes all of the material in the popular word2vec tutorial on my blog, but goes deeper with additional topics like CBOW and Hierarchical Softmax, as well as example code that demonstrates the algorithm details in action. 
+I’m proud to announce that I’ve published my first eBook, <em><a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">The Inner Workings of word2vec</a></em>. It includes all of the material in the popular word2vec tutorial on my blog, and goes deeper with additional topics like CBOW and Hierarchical Softmax. I've also created example code to go along with the book that exposes the algorithm details and let's you see them in action. 
 
 ![Book cover][book_cover]
 
