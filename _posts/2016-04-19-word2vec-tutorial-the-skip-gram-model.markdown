@@ -7,10 +7,6 @@ image: /assets/word2vec/skip_gram_net_arch.png
 tags: Word2Vec, Skip Gram, tutorial, neural network, NLP, word vectors
 ---
 
-<div class="message">
-<strong>UPDATE:</strong> I’m proud to announce that I’ve published my first eBook, <em><a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">The Inner Workings of word2vec</a></em>. It includes all of the material in this post series, and goes deeper with additional topics like CBOW and Hierarchical Softmax. I've also created example code to go along with the book that exposes the algorithm details and let's you see them in action. Check it all out <a href="https://www.preview.nearist.ai/paid-ebook-and-tutorial">here</a>! 
-</div>
-
 This tutorial covers the skip gram neural network architecture for Word2Vec. My intention with this tutorial was to skip over the usual introductory and abstract insights about Word2Vec, and get into more of the details. Specifically here I'm diving into the skip gram neural network model.
 
 The Model
@@ -38,6 +34,10 @@ We'll train the neural network to do this by feeding it word pairs found in our 
 [![Training Data][training_data]][training_data]
 
 The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
+
+<div class="message">
+<strong>UPDATE:</strong> I’m proud to announce that I’ve published my first eBook, <em><a href="http://bit.ly/2Y1pkJg">The Inner Workings of word2vec</a></em>. It includes all of the material in this post series, and goes deeper with additional topics like CBOW and Hierarchical Softmax. I've also created example code to go along with the book that exposes the algorithm details and let's you see them in action. Check it all out <a href="http://bit.ly/2Y1pkJg">here</a>! 
+</div>
 
 Model Details
 =============
