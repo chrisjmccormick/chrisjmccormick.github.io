@@ -35,9 +35,7 @@ We'll train the neural network to do this by feeding it word pairs found in our 
 
 The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
 
-<div class="message">
-<strong>UPDATE:</strong> I’m proud to announce that I’ve published my first eBook, <em><a href="http://bit.ly/2Y1pkJg">The Inner Workings of word2vec</a></em>. It includes all of the material in this post series, and goes deeper with additional topics like CBOW and Hierarchical Softmax. I've also created example code to go along with the book that exposes the algorithm details and let's you see them in action. Check it all out <a href="http://bit.ly/2Y1pkJg">here</a>! 
-</div>
+[![The Inner Workings of word2vec][inner_workings]][http://bit.ly/2FuHcVx]
 
 Model Details
 =============
@@ -121,7 +119,7 @@ I've also created a [post][word2vec_res] with links to and descriptions of other
 ### Cite
 McCormick, C. (2016, April 19). *Word2Vec Tutorial - The Skip-Gram Model*. Retrieved from http://www.mccormickml.com
 
-
+[inner_workings]: {{ site.url }}/assets/word2vec/chris_ml_blog_cta_3.png
 [training_data]: {{ site.url }}/assets/word2vec/training_data.png
 [skip_gram_net_arch]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
 [weight_matrix]: {{ site.url }}/assets/word2vec/word2vec_weight_matrix_lookup_table.png
