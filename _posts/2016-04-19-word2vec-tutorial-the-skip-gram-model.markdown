@@ -110,11 +110,11 @@ Next Up
 =======
 You may have noticed that the skip-gram neural network contains a huge number of weights... For our example with 300 features and a vocab of 10,000 words, that's 3M weights in the hidden layer and output layer each! Training this on a large dataset would be prohibitive, so the word2vec authors introduced a number of tweaks to make training feasible. These are covered in [part 2 of this tutorial](http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/). 
 
-Did you know that the word2vec model can also be applied to non-text data for recommender systems and ad targeting?  Instead of learning vectors from a sequence of words, you can learn vectors from a sequence of user actions. Read more about this in my new post [here](http://mccormickml.com/2018/06/15/applying-word2vec-to-recommenders-and-advertising/). 
-
 Other Resources
 ===============
-I've also created a [post][word2vec_res] with links to and descriptions of other word2vec tutorials, papers, and implementations.
+[![The Inner Workings of word2vec][inner_workings_ad]](http://bit.ly/2FuHcVx)
+
+Did you know that the word2vec model can also be applied to non-text data for recommender systems and ad targeting?  Instead of learning vectors from a sequence of words, you can learn vectors from a sequence of user actions. Read more about this in my new post [here](http://mccormickml.com/2018/06/15/applying-word2vec-to-recommenders-and-advertising/). 
 
 ### Cite
 McCormick, C. (2016, April 19). *Word2Vec Tutorial - The Skip-Gram Model*. Retrieved from http://www.mccormickml.com
