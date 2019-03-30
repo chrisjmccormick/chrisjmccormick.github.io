@@ -22,11 +22,11 @@ This material assumes some familiarity with linear regression, and is primarily 
 
 I am making use of the same notation as the Coursera course, so it will be most helpful for students of that course.
 
-For linear regression, we have a linear hypothesis function, \\( h(x) = Ѳ_0 + Ѳ_1 x \\). We want to find the values of \\( Ѳ_0 \\) and \\( Ѳ_1 \\) which provide the best fit of our hypothesis to a training set. The training set examples are labeled \\( x, y \\), where \\( x \\) is the input value and \\( y \\) is the output. The ith training example is labeled as \\( x^{(i)}, y^{(i)} \\). Do not confuse this as an exponent! It just means that this is the ith training example.
+For linear regression, we have a linear hypothesis function, \\( h(x) = \theta_0 + \theta_1 x \\). We want to find the values of \\( \theta_0 \\) and \\( \theta_1 \\) which provide the best fit of our hypothesis to a training set. The training set examples are labeled \\( x, y \\), where \\( x \\) is the input value and \\( y \\) is the output. The ith training example is labeled as \\( x^{(i)}, y^{(i)} \\). Do not confuse this as an exponent! It just means that this is the ith training example.
 
 ### MSE Cost Function
 
-The cost function J for a particular choice of parameters Ѳ is the mean squared error (MSE):
+The cost function \\( J \\) for a particular choice of parameters \\( \theta \\) is the mean squared error (MSE):
 
 [![MSE_Cost_Eq](http://chrisjmccormick.files.wordpress.com/2014/02/mse_cost_eq1.png)](http://chrisjmccormick.files.wordpress.com/2014/02/mse_cost_eq1.png)
 
@@ -45,9 +45,9 @@ This minimization objective is expressed using the following notation, which sim
 
 We're going to be using gradient descent to find Ѳ that minimizes the cost. But let's forget the MSE cost function for a moment and look at gradient descent as a minimization technique in general.
 
-Let's take the much simpler function \\( J(Ѳ) = Ѳ^2 \\), and let's say we want to find the value of Ѳ which minimizes J(Ѳ).
+Let's take the much simpler function \\( J(\theta) = {\theta}^2 \\), and let's say we want to find the value of Ѳ which minimizes J(Ѳ).
 
-Gradient descent starts with a random value of Ѳ, typically \\( Ѳ = 0 \\), but since \\( Ѳ = 0 \\) is already the minimum of our function \\( Ѳ^2 \\), let's start with \\( Ѳ = 3 \\).
+Gradient descent starts with a random value of Ѳ, typically \\( \theta = 0 \\), but since \\( \theta = 0 \\) is already the minimum of our function \\( {\theta}^2 \\), let's start with \\( \theta = 3 \\).
 
 Gradient descent is an iterative algorithm which we will run many times. On each iteration, we apply the following "update rule" (the := symbol means replace theta with the value computed on the right):
 
@@ -97,13 +97,13 @@ The MSE cost function includes multiple variables, so let's look at one more sim
 
 Let's take the function:
 
-$$ J(Ѳ) = Ѳ_1^2 + Ѳ_2^2 $$
+$$ J(\theta) = {\theta_1}^2 + {\theta_2}^2  $$
 
-When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for \\( Ѳ_1 \\) uses the partial derivative of \\( J \\) with respect to \\( Ѳ_1 \\). A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to \\( Ѳ_1 \\), we just treat \\( Ѳ_2 \\) as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
+When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for \\( \theta_1 \\) uses the partial derivative of \\( J \\) with respect to \\( \theta_1 \\). A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to \\( \theta_1 \\), we just treat \\( \theta_2 \\) as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
 
 ![Two Variable Update](https://lh5.googleusercontent.com/-JqtzTcb3o_4/UxUZCnD-hgI/AAAAAAAABm8/S2fXW1KKL-M/w585-h675-no/TwoVariableUpdate.png)
 
-Note that when implementing the update rule in software, \\( Ѳ_1 \\) and \\( Ѳ_2 \\) should not be updated until _after_ you have computed the new values for both of them. Specifically, you don't want to use the new value of \\( Ѳ_1 \\) to calculate the new value of \\( Ѳ_2 \\).
+Note that when implementing the update rule in software, \\( \theta_1 \\) and \\( \theta_2 \\) should not be updated until _after_ you have computed the new values for both of them. Specifically, you don't want to use the new value of \\( \theta_1 \\) to calculate the new value of \\( \theta_2 \\).
 
 
 ### Gradient Descent of MSE
@@ -114,7 +114,7 @@ The MSE cost function is labeled as equation [1.0] below. Taking the derivative 
 
 Once again, our hypothesis function for linear regression is the following:
 
-$$ h(x) = Ѳ_0 + Ѳ_1 x $$
+$$ h(x) = \theta_0 + \theta_1 x $$
 
 I've written out the derivation below, and I explain each step in detail further down.
 
@@ -130,11 +130,11 @@ Moving from [1.2] to [1.3], we apply both the power rule and the chain rule:
 
 [![Chain Rule][chain_rule]][chain_rule]
 
-Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except \\( Ѳ_0 \\) are treated as constants ( \\( Ѳ_1 \\), \\( x \\), and \\( y \\)).
+Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except \\( \theta_0 \\) are treated as constants ( \\( \theta_1 \\), \\( x \\), and \\( y \\)).
 
 [![ThetaZeroDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)
 
-Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, \\( Ѳ_0 \\). Now we must also take the partial derivative of the MSE function with respect to \\( Ѳ_1 \\). The only difference is in the final step, where we take the partial derivative of the error:
+Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, \\( \theta_0 \\). Now we must also take the partial derivative of the MSE function with respect to \\( \theta_1 \\). The only difference is in the final step, where we take the partial derivative of the error:
 
 [![Derivative of the error with respect to Theta_1][ThetaOneDerivativeOfError]][ThetaOneDerivativeOfError]
 
