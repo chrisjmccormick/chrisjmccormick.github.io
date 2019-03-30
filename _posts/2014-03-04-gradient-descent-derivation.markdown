@@ -34,30 +34,30 @@ Where the variables used are:
 
 [![MSE_Variable_Descriptions](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)
 
-The MSE measures the average amount that the model's predictions vary from the correct values, so you can think of it as a measure of the model’s performance on the training set. The cost is higher when the model is performing poorly on the training set. The objective of the learning algorithm, then, is to find the parameters Ѳ which give the minimum possible cost J.
+The MSE measures the average amount that the model's predictions vary from the correct values, so you can think of it as a measure of the model’s performance on the training set. The cost is higher when the model is performing poorly on the training set. The objective of the learning algorithm, then, is to find the parameters \\( \theta \\) which give the minimum possible cost \\( J \\).
 
-This minimization objective is expressed using the following notation, which simply states that we want to find the Ѳ which minimizes the cost J(Ѳ).
+This minimization objective is expressed using the following notation, which simply states that we want to find the \\( \theta \\) which minimizes the cost \\( J(\theta) \\).
 
 [![Minimize_Eq](http://chrisjmccormick.files.wordpress.com/2014/02/minimize_eq.png)](http://chrisjmccormick.files.wordpress.com/2014/02/minimize_eq.png)
 
 
 ### Gradient Descent Minimization - Single Variable Example
 
-We're going to be using gradient descent to find Ѳ that minimizes the cost. But let's forget the MSE cost function for a moment and look at gradient descent as a minimization technique in general.
+We're going to be using gradient descent to find \\( \theta \\) that minimizes the cost. But let's forget the MSE cost function for a moment and look at gradient descent as a minimization technique in general.
 
-Let's take the much simpler function \\( J(\theta) = {\theta}^2 \\), and let's say we want to find the value of Ѳ which minimizes J(Ѳ).
+Let's take the much simpler function \\( J(\theta) = {\theta}^2 \\), and let's say we want to find the value of \\( \theta \\) which minimizes \\( J(\theta) \\).
 
-Gradient descent starts with a random value of Ѳ, typically \\( \theta = 0 \\), but since \\( \theta = 0 \\) is already the minimum of our function \\( {\theta}^2 \\), let's start with \\( \theta = 3 \\).
+Gradient descent starts with a random value of \\( \theta \\), typically \\( \theta = 0 \\), but since \\( \theta = 0 \\) is already the minimum of our function \\( {\theta}^2 \\), let's start with \\( \theta = 3 \\).
 
 Gradient descent is an iterative algorithm which we will run many times. On each iteration, we apply the following "update rule" (the := symbol means replace theta with the value computed on the right):
 
 [![GradientDescentUpdate](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescentupdate.png)](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescentupdate.png)
 
-Alpha is a parameter called the learning rate which we'll come back to, but for now we're going to set it to 0.1. The derivative of J(Ѳ) is simply 2Ѳ.
+Alpha is a parameter called the learning rate which we'll come back to, but for now we're going to set it to 0.1. The derivative of \\( J(\theta) \\) is simply \\( 2\theta \\).
 
 [![ExampleTerms](http://chrisjmccormick.files.wordpress.com/2014/02/exampleterms.png)](http://chrisjmccormick.files.wordpress.com/2014/02/exampleterms.png)
 
-Below is a plot of our function, J(Ѳ), and the value of Ѳ over ten iterations of gradient descent.
+Below is a plot of our function, \\( J(\theta) \\), and the value of \\( \theta \\) over ten iterations of gradient descent.
 
 [![Simple2DGradientDescent](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)
 
@@ -68,7 +68,7 @@ Below is a table showing the value of theta prior to each iteration, and the upd
 
 ### Cost Function Derivative
 
-Why does gradient descent use the derivative of the cost function? Finding the slope of the cost function at our current Ѳ value tells us two things.
+Why does gradient descent use the derivative of the cost function? Finding the slope of the cost function at our current \\( \theta \\) value tells us two things.
 
 The first is the direction to move theta in. When you look at the plot of a function, a positive slope means the function goes upward as you move right, so we want to move left in order to find the minimum. Similarly, a negative slope means the function goes downard towards the right, so we want to move right to find the minimum.
 
@@ -87,7 +87,7 @@ The only concern with using too small of a learning rate is that you will need t
 ### Convergence / Stopping Gradient Descent
 
 
-Note in the above example that gradient descent will never actually converge on the minimum, Ѳ = 0. Methods for deciding when to stop gradient descent are beyond my level of expertise, but I can tell you that when gradient descent is used in the assignments in the Coursera course, gradient descent is run for a large, fixed number of iterations (for example, 100 iterations), with no test for convergence.
+Note in the above example that gradient descent will never actually converge on the minimum, \\( \theta = 0 \\). Methods for deciding when to stop gradient descent are beyond my level of expertise, but I can tell you that when gradient descent is used in the assignments in the Coursera course, gradient descent is run for a large, fixed number of iterations (for example, 100 iterations), with no test for convergence.
 
 
 ### Gradient Descent - Multiple Variables Example
