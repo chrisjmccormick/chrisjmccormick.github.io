@@ -66,9 +66,7 @@ Below is a table showing the value of theta prior to each iteration, and the upd
 [![GradientDescentTable](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescenttable.png)](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescenttable.png)
 
 
-
 ### Cost Function Derivative
-
 
 Why does gradient descent use the derivative of the cost function? Finding the slope of the cost function at our current Ѳ value tells us two things.
 
@@ -78,7 +76,6 @@ The second is how big of a step to take. If the slope is large we want to take a
 
 
 ### The Learning Rate - Alpha
-
 
 The learning rate gives the engineer some additional control over how large of steps we make.
 
@@ -98,17 +95,18 @@ Note in the above example that gradient descent will never actually converge on 
 
 The MSE cost function includes multiple variables, so let's look at one more simple minimization example before going back to the cost function.
 
-Let's take the function J(Ѳ) = Ѳ1^2 + Ѳ2^2
+Let's take the function:
 
-When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for Ѳ1 uses the partial derivative of J with respect to Ѳ1. A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to Ѳ1, we just treat Ѳ2 as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
+$$ J(Ѳ) = Ѳ_1^2 + Ѳ_2^2 $$
 
-![](https://lh5.googleusercontent.com/-JqtzTcb3o_4/UxUZCnD-hgI/AAAAAAAABm8/S2fXW1KKL-M/w585-h675-no/TwoVariableUpdate.png)
+When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for \\( Ѳ_1 \\) uses the partial derivative of \\( J \\) with respect to \\( Ѳ_1 \\). A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to \\( Ѳ_1 \\), we just treat \\( Ѳ_2 \\) as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
 
-Note that when implementing the update rule in software, Ѳ1 and Ѳ2 should not be updated until _after_ you have computed the new values for both of them. Specifically, you don't want to use the new value of Ѳ1 to calculate the new value of Ѳ2.
+![Two Variable Update](https://lh5.googleusercontent.com/-JqtzTcb3o_4/UxUZCnD-hgI/AAAAAAAABm8/S2fXW1KKL-M/w585-h675-no/TwoVariableUpdate.png)
+
+Note that when implementing the update rule in software, \\( Ѳ_1 \\) and \\( Ѳ_2 \\) should not be updated until _after_ you have computed the new values for both of them. Specifically, you don't want to use the new value of \\( Ѳ_1 \\) to calculate the new value of \\( Ѳ_2 \\).
 
 
 ### Gradient Descent of MSE
-
 
 Now that we know how to perform gradient descent on an equation with multiple variables, we can return to looking at gradient descent on our MSE cost function.
 
@@ -128,11 +126,11 @@ Moving from [1.2] to [1.3], we apply both the power rule and the chain rule:
 
 [![Chain Rule][chain_rule]][chain_rule]
 
-Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except Ѳ0 are treated as constants (Ѳ1, x, and y).
+Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except \\( Ѳ_0 \\) are treated as constants ( \\( Ѳ_1 \\), \\( x \\), and \\( y \\)).
 
 [![ThetaZeroDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)
 
-Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, Ѳ0. Now we must also take the partial derivative of the MSE function with respect to Ѳ1. The only difference is in the final step, where we take the partial derivative of the error:
+Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, \\( Ѳ_0 \\). Now we must also take the partial derivative of the MSE function with respect to \\( Ѳ_1 \\). The only difference is in the final step, where we take the partial derivative of the error:
 
 [![Derivative of the error with respect to Theta_1][ThetaOneDerivativeOfError]][ThetaOneDerivativeOfError]
 
