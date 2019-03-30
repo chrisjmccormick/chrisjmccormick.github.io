@@ -22,68 +22,48 @@ This material assumes some familiarity with linear regression, and is primarily 
 
 I am making use of the same notation as the Coursera course, so it will be most helpful for students of that course.
 
-For linear regression, we have a linear hypothesis function, h(x) = Ѳ0 + Ѳ1*x. We want to find the values of Ѳ0 and Ѳ1 which provide the best fit of our hypothesis to a training set. The training set examples are labeled x, y, where x is the input value and y is the output. The ith training example is labeled as x^(i), y^(i). Do not confuse this as an exponent! It just means that this is the ith training example.
-
+For linear regression, we have a linear hypothesis function, \\( h(x) = Ѳ_0 + Ѳ_1 x \\). We want to find the values of \\( Ѳ_0 \\) and \\( Ѳ_1 \\) which provide the best fit of our hypothesis to a training set. The training set examples are labeled \\( x, y \\), where \\( x \\) is the input value and \\( y \\) is the output. The ith training example is labeled as \\( x^{(i)}, y^{(i)} \\). Do not confuse this as an exponent! It just means that this is the ith training example.
 
 ### MSE Cost Function
 
-
 The cost function J for a particular choice of parameters Ѳ is the mean squared error (MSE):
-
 
 [![MSE_Cost_Eq](http://chrisjmccormick.files.wordpress.com/2014/02/mse_cost_eq1.png)](http://chrisjmccormick.files.wordpress.com/2014/02/mse_cost_eq1.png)
 
-
 Where the variables used are:
 
-
 [![MSE_Variable_Descriptions](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)](http://chrisjmccormick.files.wordpress.com/2014/02/mse_variable_descriptions.png)
-
 
 The MSE measures the average amount that the model's predictions vary from the correct values, so you can think of it as a measure of the model’s performance on the training set. The cost is higher when the model is performing poorly on the training set. The objective of the learning algorithm, then, is to find the parameters Ѳ which give the minimum possible cost J.
 
 This minimization objective is expressed using the following notation, which simply states that we want to find the Ѳ which minimizes the cost J(Ѳ).
 
-
 [![Minimize_Eq](http://chrisjmccormick.files.wordpress.com/2014/02/minimize_eq.png)](http://chrisjmccormick.files.wordpress.com/2014/02/minimize_eq.png)
-
-
-
 
 
 ### Gradient Descent Minimization - Single Variable Example
 
-
 We're going to be using gradient descent to find Ѳ that minimizes the cost. But let's forget the MSE cost function for a moment and look at gradient descent as a minimization technique in general.
 
-Let's take the much simpler function J(Ѳ) = Ѳ^2, and let's say we want to find the value of Ѳ which minimizes J(Ѳ).
+Let's take the much simpler function \\( J(Ѳ) = Ѳ^2 \\), and let's say we want to find the value of Ѳ which minimizes J(Ѳ).
 
-Gradient descent starts with a random value of Ѳ, typically Ѳ = 0, but since Ѳ = 0 is already the minimum of our function Ѳ^2, let's start with Ѳ = 3.
+Gradient descent starts with a random value of Ѳ, typically \\( Ѳ = 0 \\), but since \\( Ѳ = 0 \\) is already the minimum of our function \\( Ѳ^2 \\), let's start with \\( Ѳ = 3 \\).
 
 Gradient descent is an iterative algorithm which we will run many times. On each iteration, we apply the following "update rule" (the := symbol means replace theta with the value computed on the right):
 
-
 [![GradientDescentUpdate](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescentupdate.png)](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescentupdate.png)
-
 
 Alpha is a parameter called the learning rate which we'll come back to, but for now we're going to set it to 0.1. The derivative of J(Ѳ) is simply 2Ѳ.
 
-
 [![ExampleTerms](http://chrisjmccormick.files.wordpress.com/2014/02/exampleterms.png)](http://chrisjmccormick.files.wordpress.com/2014/02/exampleterms.png)
-
 
 Below is a plot of our function, J(Ѳ), and the value of Ѳ over ten iterations of gradient descent.
 
-
 [![Simple2DGradientDescent](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)](http://chrisjmccormick.files.wordpress.com/2014/02/simple2dgradientdescent.png)
-
 
 Below is a table showing the value of theta prior to each iteration, and the update amounts.
 
-
 [![GradientDescentTable](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescenttable.png)](http://chrisjmccormick.files.wordpress.com/2014/02/gradientdescenttable.png)
-
-
 
 
 
