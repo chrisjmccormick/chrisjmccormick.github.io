@@ -101,7 +101,7 @@ $$ J(\theta) = {\theta_1}^2 + {\theta_2}^2  $$
 
 When there are multiple variables in the minimization objective, gradient descent defines a separate update rule for each variable. The update rule for \\( \theta_1 \\) uses the partial derivative of \\( J \\) with respect to \\( \theta_1 \\). A partial derivative just means that we hold all of the other variables constant--to take the partial derivative with respect to \\( \theta_1 \\), we just treat \\( \theta_2 \\) as a constant. The update rules are in the table below, as well as the math for calculating the partial derivatives. Make sure you work through those; I wrote out the derivation to make it easy to follow.
 
-![Two Variable Update](https://lh5.googleusercontent.com/-JqtzTcb3o_4/UxUZCnD-hgI/AAAAAAAABm8/S2fXW1KKL-M/w585-h675-no/TwoVariableUpdate.png)
+![Two Variable Update][TwoVariableUpdate]
 
 Note that when implementing the update rule in software, \\( \theta_1 \\) and \\( \theta_2 \\) should not be updated until _after_ you have computed the new values for both of them. Specifically, you don't want to use the new value of \\( \theta_1 \\) to calculate the new value of \\( \theta_2 \\).
 
@@ -118,7 +118,7 @@ $$ h(x) = \theta_0 + \theta_1 x $$
 
 I've written out the derivation below, and I explain each step in detail further down.
 
-![](https://lh5.googleusercontent.com/-HJDxfGy7jp0/UxUYiymwDVI/AAAAAAAABmk/Q69XPphPxxI/w824-h566-no/ThetaZeroDerivation.png)
+![ThetaZeroDerivation][ThetaZeroDerivation]
 
 To move from equation [1.1] to [1.2], we need to apply two basic derivative rules:
 
@@ -132,7 +132,7 @@ Moving from [1.2] to [1.3], we apply both the power rule and the chain rule:
 
 Finally, to go from [1.3] to [1.4], we must evaluate the partial derivative as follows. Recall again that when taking this partial derivative all letters except \\( \theta_0 \\) are treated as constants ( \\( \theta_1 \\), \\( x \\), and \\( y \\)).
 
-[![ThetaZeroDerivativeOfError](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)](http://chrisjmccormick.files.wordpress.com/2014/03/thetazeroderivativeoferror1.png)
+![Derivative of the error with respect to Theta_0][ThetaZeroDerivativeOfError]
 
 Equation [1.4] gives us the partial derivative of the MSE cost function with respect to one of the variables, \\( \theta_0 \\). Now we must also take the partial derivative of the MSE function with respect to \\( \theta_1 \\). The only difference is in the final step, where we take the partial derivative of the error:
 
@@ -148,8 +148,7 @@ Alternatively, you could think of this as folding the 2 into the learning rate. 
 ### Final Update Rules
 Altogether, we have the following definition for gradient descent over our cost function.
 
-[![GradientDescentOfMSETable](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)](http://chrisjmccormick.files.wordpress.com/2014/03/gradientdescentofmsetable.png)
-
+![GradientDescentOfMSETable][GradientDescentOfMSETable]
 
 ### Training Set Statistics
 
@@ -158,7 +157,11 @@ Note that each update of the theta variables is averaged over the training set. 
 
 This means that the statistics of your training set are being taken into account during the learning process. An outlier training example (or even a mislabeled / corrupted example) is going to have less influence over the final weights because it is one voice versus many.
 
+[ThetaZeroDerivation]: {{ site.url }}/assets/GradientDescent/ThetaZeroDerivation.png
+[ThetaZeroDerivativeOfError]: {{ site.url }}/assets/GradientDescent/ThetaZeroDerivativeOfError.png
 [ThetaOneDerivativeOfError]: {{ site.url }}/assets/GradientDescent/ThetaOneDerivativeOfError.png
 [power_rule]: {{ site.url }}/assets/GradientDescent/PowerRule.png
 [chain_rule]: {{ site.url }}/assets/GradientDescent/ChainRule.png
 
+[TwoVariableUpdate]: {{ site.url }}/assets/GradientDescent/TwoVariableUpdate.png
+[GradientDescentOfMSETable]: {{ site.url }}/assets/GradientDescent/GradientDescentOfMSETable.png
