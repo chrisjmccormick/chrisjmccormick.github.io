@@ -112,6 +112,10 @@ Now that we know how to perform gradient descent on an equation with multiple va
 
 The MSE cost function is labeled as equation [1.0] below. Taking the derivative of this equation is a little more tricky. The key thing to remember is that x and y are _not_ variables for the sake of the derivative. Rather, they represent a large set of constants (your training set). So when taking the derivative of the cost function, we'll treat x and y like we would any other constant.
 
+Once again, our hypothesis function for linear regression is the following:
+
+$$ h(x) = Ѳ_0 + Ѳ_1 x $$
+
 I've written out the derivation below, and I explain each step in detail further down.
 
 ![](https://lh5.googleusercontent.com/-HJDxfGy7jp0/UxUYiymwDVI/AAAAAAAABmk/Q69XPphPxxI/w824-h566-no/ThetaZeroDerivation.png)
