@@ -131,7 +131,9 @@ Also, did you know that the word2vec model can also be applied to non-text data 
 
 ## eBook & Example Code
 
-If you want to go deeper with word2vec, I’ve published a $7 eBook which covers:
+Congratulations! You should know have a good grasp of the fundamentals of word2vec.
+
+If you want to go deeper, I’ve published a $7 eBook which covers:
     * Additional model variants:
         * The Continuous Bag-of-Words model (CBOW), an alternative to Skip-gram.
         * Hierarchical Softmax, an alternative to Negative Sampling.
