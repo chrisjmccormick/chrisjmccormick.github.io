@@ -146,7 +146,7 @@ I’ve also published example code which will walk you through all of the concep
     * Walk through a feed-forward pass of the skip-gram model to see the architecture details firsthand.
     * Apply the Subsampling of Frequent Words and Negative Sampling techniques to see how these techniques behave on real data.
 
-The example code is offered for $37 as an add-on to the eBook--check them both out [here](http://bit.ly/2FuHcVx)!
+The example code is offered for $37 as an add-on to the eBook--check them both out [here](http://bit.ly/2X8tcXE)!
 
 ### Cite
 McCormick, C. (2017, January 11). *Word2Vec Tutorial Part 2 - Negative Sampling*. Retrieved from http://www.mccormickml.com
