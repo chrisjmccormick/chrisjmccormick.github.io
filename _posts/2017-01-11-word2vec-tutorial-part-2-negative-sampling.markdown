@@ -130,23 +130,16 @@ If you're familiar with C, I've published an extensively commented (but otherwis
 Also, did you know that the word2vec model can also be applied to non-text data for recommender systems and ad targeting?  Instead of learning vectors from a sequence of words, you can learn vectors from a sequence of user actions. Read more about this in my new post [here](http://mccormickml.com/2018/06/15/applying-word2vec-to-recommenders-and-advertising/). 
 
 ## eBook & Example Code
+I think word2vec is a fascinating (and powerful!) algorithm--great work on making it this far in understanding it! 
 
-Congratulations! You should know have a good grasp of the fundamentals of word2vec.
+Maybe you still have some questions, though...
 
-If you want to go deeper, I’ve published a $7 eBook which covers:
-    * Additional model variants:
-        * The Continuous Bag-of-Words model (CBOW), an alternative to Skip-gram.
-        * Hierarchical Softmax, an alternative to Negative Sampling.
-        * The practical differences between these variants.
-    * How word2vec manages to indirectly weight the context words based on their position.
+* Are you looking for a deeper explanation of how the model weights are updated?
+* Would you like to know more about the technical and practical differences between the Skip-gram and Continuous Bag of Words (CBOW) versions of word2vec?
+* Did you know that Mikolov, the main author of word2vec, has published further work on word2vec in the form of the fastText library from Facebook?
+* Want to see all of the core word2vec components implemented from scratch in Python?
 
-I’ve also published example code which will walk you through all of the concepts from the book (and blog post) in well-documented, “from scratch” Python code. For instance, in the code you will get to:
-    * Inspect a pre-trained model to see the vocabulary and word vectors.
-    * See how word similarities are calculated.
-    * Walk through a feed-forward pass of the skip-gram model to see the architecture details firsthand.
-    * Apply the Subsampling of Frequent Words and Negative Sampling techniques to see how these techniques behave on real data.
-
-The example code is offered for $37 as an add-on to the eBook--check them both out [here](http://bit.ly/2X8tcXE)!
+You’ll find all of the above content in the new Pro edition of my eBook [The Inner Workings of word2vec - Pro Edition](http://bit.ly/2UAlgwp). Give it a look, I think you’ll find it really valuable!  
 
 ### Cite
 McCormick, C. (2017, January 11). *Word2Vec Tutorial Part 2 - Negative Sampling*. Retrieved from http://www.mccormickml.com
