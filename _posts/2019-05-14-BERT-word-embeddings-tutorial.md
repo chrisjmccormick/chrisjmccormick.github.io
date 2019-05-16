@@ -7,7 +7,7 @@ image: /assets/BERTWordEmbeddings/BERT_tokens.png
 tags: BERT, NLP, natural language processing, transfer learning, word embeddings, machine learning
 ---
 
-
+In this post, I take an in-depth look at word embeddings produced by Google's BERT and show you how to get started with BERT by producing your own word embeddings.
 
 # Introduction
 
