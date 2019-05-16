@@ -1,4 +1,11 @@
-
+---
+layout: post
+title:  "BERT Word Embeddings Tutorial"
+date:   2019-5-14 7:00:00 -0800
+comments: true
+image: /assets/BERTWordEmbeddings/BERT_tokens.png
+tags: BERT, NLP, natural language processing, transfer learning, word embeddings, machine learning
+---
 
 # Introduction
 
@@ -12,7 +19,7 @@
 
 BERT (Bidirectional Encoder Representations from Transformers), released in late 2018, is the model we will use in this tutorial to provide readers with a better understanding of and practical guidance for using transfer learning models in NLP. BERT is a method of pretraining language representations that was used to create models that NLP practicioners can then download and use for free. You can either use these models to extract high quality language features from your text data, or you can fine-tune these models on a specific task (classification, entity recognition, question answering, etc.) with your own data to produce state of the art predictions.
 
-### Why BERT embeddings?
+### Why BERT Embeddings?
 
 In this tutorial, we will use BERT to extract features, namely word and sentence embedding vectors, from text data. What can we do with these word and sentence embedding vectors? First, these embeddings are useful for keyword/search expansion, semantic search and information retrieval. For example, if you want to match customer questions or searches against already answered questions or well documented searches, these representations will help you accuratley retrieve results matching the customer's intent and contextual meaning, even if there's no keyword  or phrase overlap.
 
@@ -37,28 +44,6 @@ If you're running this code on Google Colab, you will have to install this libra
 ```python
 !pip install pytorch-pretrained-bert
 ```
-
-    Collecting pytorch-pretrained-bert
-    [?25l  Downloading https://files.pythonhosted.org/packages/d7/e0/c08d5553b89973d9a240605b9c12404bcf8227590de62bae27acbcfe076b/pytorch_pretrained_bert-0.6.2-py3-none-any.whl (123kB)
-    [K     |████████████████████████████████| 133kB 2.2MB/s 
-    [?25hRequirement already satisfied: numpy in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (1.16.3)
-    Requirement already satisfied: torch>=0.4.1 in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (1.1.0)
-    Requirement already satisfied: regex in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (2018.1.10)
-    Requirement already satisfied: requests in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (2.21.0)
-    Requirement already satisfied: boto3 in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (1.9.140)
-    Requirement already satisfied: tqdm in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (4.28.1)
-    Requirement already satisfied: chardet<3.1.0,>=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (3.0.4)
-    Requirement already satisfied: urllib3<1.25,>=1.21.1 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (1.24.2)
-    Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (2019.3.9)
-    Requirement already satisfied: idna<2.9,>=2.5 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (2.8)
-    Requirement already satisfied: s3transfer<0.3.0,>=0.2.0 in /usr/local/lib/python3.6/dist-packages (from boto3->pytorch-pretrained-bert) (0.2.0)
-    Requirement already satisfied: jmespath<1.0.0,>=0.7.1 in /usr/local/lib/python3.6/dist-packages (from boto3->pytorch-pretrained-bert) (0.9.4)
-    Requirement already satisfied: botocore<1.13.0,>=1.12.140 in /usr/local/lib/python3.6/dist-packages (from boto3->pytorch-pretrained-bert) (1.12.140)
-    Requirement already satisfied: python-dateutil<3.0.0,>=2.1; python_version >= "2.7" in /usr/local/lib/python3.6/dist-packages (from botocore<1.13.0,>=1.12.140->boto3->pytorch-pretrained-bert) (2.5.3)
-    Requirement already satisfied: docutils>=0.10 in /usr/local/lib/python3.6/dist-packages (from botocore<1.13.0,>=1.12.140->boto3->pytorch-pretrained-bert) (0.14)
-    Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.6/dist-packages (from python-dateutil<3.0.0,>=2.1; python_version >= "2.7"->botocore<1.13.0,>=1.12.140->boto3->pytorch-pretrained-bert) (1.12.0)
-    Installing collected packages: pytorch-pretrained-bert
-    Successfully installed pytorch-pretrained-bert-0.6.2
 
 
 Now let's import pytorch, the pretrained BERT model, and a BERT tokenizer. We'll explain the BERT model in detail in a later tutorial, but this is the pre-trained model released by Google that ran for many, many hours on Wikipedia and [Book Corpus](https://arxiv.org/pdf/1506.06724.pdf), a dataset containing +10,000 books of different genres. This model is responsible (with a little modification) for beating NLP benchmarks across a range of tasks. Google released a few variations of BERT models, but the one we'll use here is the smaller of the two available sizes ("base" and "large") and ignores casing, hence "uncased.""
@@ -98,7 +83,7 @@ Luckily, this interface takes care of some of these input specifications for us 
 
 
 
-###Special Tokens
+### Special Tokens
 BERT can take as input either one or two sentences, and expects special tokens to mark the beginning and end of each one:
 
 **2 Sentence Input**:
@@ -123,7 +108,7 @@ print (marked_text)
 
 We've imported a BERT-specific tokenizer, let's take a look at the output:
 
-###Tokenization
+### Tokenization
 
 
 ```python
@@ -225,7 +210,7 @@ for tup in zip(tokenized_text, indexed_tokens):
     ('[SEP]', 102)
 
 
-###Segment ID
+### Segment ID
 BERT is trained on and expects sentence pairs, using 1s and 0s to distinguish between the two sentences. That is, for each token in "tokenized_text," we must specify which sentence it belongs to: sentence 0 (a series of 0s) or sentence 1 (a series of 1s). For our purposes, single-sentence inputs only require a series of 1s, so we will create a vector of 1s for each token in our input sentence. 
 
 If you want to process two sentences, assign each word in the first sentence plus the '[SEP]' token a 0, and all tokens of the second sentence a 1.
@@ -239,7 +224,7 @@ print (segments_ids)
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 
-##Running our Example
+## Running our Example
 Next we need to convert our data to torch tensors and call the BERT model. The BERT PyTorch interface requires that the data be in torch tensors rather than Python lists, so we convert the lists here - this does not change the shape or the data.
  
 model.eval() puts our model in evaluation mode as opposed to training mode. In this case, evaluation mode turns off dropout regularization which is used in training.
@@ -652,7 +637,7 @@ plt.show()
 ```
 
 
-![png](BERT_Word_Embeddings_files/BERT_Word_Embeddings_32_0.png)
+![png](/assets/BERTWordEmbeddings/BERT_Word_Embeddings_32_0.png)
 
 
 Now let's convert this data so that it is grouped by tokens instead of layers, i.e. let's get token vectors of [number_of_layers, layer_size], or [12, 768].
@@ -888,13 +873,15 @@ print ("Similarity of 'bank' as in 'bank robber' to 'bank' as in 'river bank':",
 
 ### Special tokens
 
-It should be noted that although the** "[CLS]"** acts as an "aggregate representation" for classification tasks, this is not the best choice for a high quality sentence embedding vector. [According to](https://github.com/google-research/bert/issues/164) BERT author Jacob Devlin: "*I'm not sure what these vectors are, since BERT does not generate meaningful sentence vectors. It seems that this is is doing average pooling over the word tokens to get a sentence vector, but we never suggested that this will generate meaningful sentence representations*."
+It should be noted that although the** "[CLS]"** acts as an "aggregate representation" for classification tasks, this is not the best choice for a high quality sentence embedding vector. [According to](https://github.com/google-research/bert/issues/164) BERT author Jacob Devlin: 
+
+"*I'm not sure what these vectors are, since BERT does not generate meaningful sentence vectors. It seems that this is is doing average pooling over the word tokens to get a sentence vector, but we never suggested that this will generate meaningful sentence representations*."
 
 (However, the [CLS] token does become meaningful if the model has been fine-tuned, where the last hidden layer of this token is used as the "sentence vector" for sequence classification.)
 
 ### Out of vocabulary words
 
-For** out of vocabulary words** that are composed of multiple sentence and character-level embeddings, there is a further issue of how best to recover this embedding. Averaging the embeddings is the most straightforward solution (one that is relied upon in similar embedding models with subword vocabularies like fasttext), but summation of subword embeddings and simply taking the last token embedding (remember that the vectors are context sensitive) are acceptable alternative strategies.
+For **out of vocabulary words** that are composed of multiple sentence and character-level embeddings, there is a further issue of how best to recover this embedding. Averaging the embeddings is the most straightforward solution (one that is relied upon in similar embedding models with subword vocabularies like fasttext), but summation of subword embeddings and simply taking the last token embedding (remember that the vectors are context sensitive) are acceptable alternative strategies.
 
 ### Similarity metrics
 
