@@ -7,9 +7,9 @@ image: /assets/BERTWordEmbeddings/BERT_tokens.png
 tags: BERT, NLP, natural language processing, transfer learning, word embeddings, machine learning
 ---
 
+
+
 # Introduction
-
-
 
 ### History
 
