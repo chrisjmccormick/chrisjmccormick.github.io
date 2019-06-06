@@ -266,124 +266,97 @@ with torch.no_grad():
 ```
 
 ## Output
-The output contains our hidden states. Because the BERT-base model contains 12 layers each with 768 hidden units, our output is a python list of 12 layers, and within each layer is a vector of shape:
+The full set of hidden states for this model, stored in the object `encoded_layers`, is a little dizzying. This object has four dimensions, in the following order:
 
-[batch_size, sequence_length, hidden_state_size]
+1. The layer number (12 layers)
+2. The batch number (1 sentence)
+3. The word / token number (22 tokens in our sentence)
+4. The hidden unit / feature number (768 features)
 
-For our purposes, batch_size is simply one so we can ignore it, and are left with vectors of length 768 for each token of our input:
+That’s 202,752 unique values just to represent our one sentence!
 
+The second dimension, the batch size, is used when submitting multiple sentences to the model at once; here, though, we just have one example sentence.
 
 ```python
 print ("Number of layers:", len(encoded_layers))
+layer_i = 0
+
+print ("Number of batches:", len(encoded_layers[layer_i]))
+batch_i = 0
+
+print ("Number of tokens:", len(encoded_layers[layer_i][batch_i]))
+token_i = 0
+
+print ("Number of hidden units:", len(encoded_layers[layer_i][batch_i][token_i]))
 ```
 
-    Number of layers: 12
+```
+Number of layers: 12
+Number of batches: 1
+Number of tokens: 22
+Number of hidden units: 768
+```
 
+Let's take a quick look at the range of values for a given layer and token.
+
+You'll find that the range is fairly similar for all layers and tokens, with the majority of values falling between \[-2, 2\], and a small smattering of values around -10.
 
 
 ```python
-print ("Output is: [batch_size, sequence_length, hidden_state_size]")
-encoded_layers[0].shape
-```
+# For the 5th token in our sentence, select its feature values from layer 5.
+token_i = 5
+layer_i = 5
+vec = encoded_layers[layer_i][batch_i][token_i]
 
-    Output is: [batch_size, sequence_length, hidden_state_size]
-
-
-
-
-
-    torch.Size([1, 22, 768])
-
-
-
-
-```python
-print ("Inside one layer, a matrix of size [number_of_tokens_in_sequence, hidden_state_size]") 
-print (encoded_layers[0][0].shape)
-```
-
-    Inside one layer, a matrix of size [number_of_tokens_in_sequence, hidden_state_size]
-    torch.Size([22, 768])
-
-
-
-```python
-print ("Values contained in our hidden states:")
-encoded_layers[0]
-```
-
-    Values contained in our hidden states:
-
-
-
-
-
-    tensor([[[ 0.0570,  0.0508, -0.2146,  ...,  0.2171, -0.0559,  0.0430],
-             [ 0.3141, -0.0202,  0.1747,  ...,  0.3359,  0.8146,  0.5119],
-             [ 0.1267, -0.8081, -0.7680,  ...,  0.8372,  0.6825, -0.3614],
-             ...,
-             [ 0.6849, -0.6179, -1.7802,  ...,  0.3497,  0.1045, -0.5633],
-             [-0.0852,  0.0702, -0.4732,  ...,  0.2069,  0.3393,  0.3904],
-             [ 0.0032,  0.0831, -0.0772,  ...,  0.0296,  0.6122, -0.0897]]])
-
-
-
-Let's take a quick look at the range of values for a given layer and token (the range is fairly similar for all layers and tokens with the majorit of values between [-2,2] with a small smattering of values around -10).
-
-
-```python
-# Randomly selected layer and token numbers
-layer_num = 5
-token_num = 5
-
+# Plot the values as a histogram to show their distribution.
 plt.figure(figsize=(10,10))
-plt.hist(encoded_layers[layer_num][0][token_num], bins=200)
+plt.hist(vec, bins=200)
 plt.show()
 ```
-
 
 ![png](/assets/BERTWordEmbeddings/BERT_Word_Embeddings_32_0.png)
 
 
-Now let's convert this data so that it is grouped by tokens instead of layers, i.e. let's get token vectors of [number_of_layers, layer_size], or [12, 768].
+Grouping the values by layer makes sense for the model, but for our purposes we want it grouped by token. 
 
+The following code just reshapes the values so that we have them in the form: 
+
+```
+    [# tokens, # layers, # features]
+```
 
 ```python
 # Convert the hidden state embeddings into single token vectors
 
-
 # Holds the list of 12 layer embeddings for each token
+# Will have the shape: [# tokens, # layers, # features]
 token_embeddings = [] 
 
-for token_index in range(len(tokenized_text)):
+# For each token in the sentence...
+for token_i in range(len(tokenized_text)):
   
   # Holds 12 layers of hidden states for each token 
   hidden_layers = [] 
   
-  for layer in encoded_layers:
+  # For each of the 12 layers...
+  for layer_i in range(len(encoded_layers)):
     
-     # The hidden states for one layer
-    hidden_layer_states = layer[0][token_index]
-    hidden_layers.append(hidden_layer_states)
+    # Lookup the vector for `token_i` in `layer_i`
+    vec = encoded_layers[layer_i][batch_i][token_i]
+    
+    hidden_layers.append(vec)
     
   token_embeddings.append(hidden_layers)
+
+# Sanity check the dimensions:
+print ("Number of tokens in sequence:", len(token_embeddings))
+print ("Number of layers per token:", len(token_embeddings[0]))
 ```
 
-
-```python
-print ("Number of tokens in sequence:", len(token_embeddings)) 
 ```
-
-    Number of tokens in sequence: 22
-
-
-
-```python
-print ("Number of layers per token:", len(token_embeddings[0])) 
+Number of tokens in sequence: 22
+Number of layers per token: 12
 ```
-
-    Number of layers per token: 12
-
 
 ## Creating word and sentence vectors from hidden states
 
