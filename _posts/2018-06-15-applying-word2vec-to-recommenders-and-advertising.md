@@ -22,6 +22,8 @@ User activity around an item encodes many abstract qualities of that item which 
 
 The word2vec approach has proven successful in extracting these hidden insights, and being able to compare, search, and categorize items on these abstract dimensions opens up a lot of opportunities for smarter, better recommendations. Commercially, Yahoo saw a 9% lift in CTR when applying this technique to their advertisements, and AirBNB saw a 21% lift in CTR on their Similar Listing carousel, a product that drives 99% of bookings along with search ranking.
 
+[![The Inner Workings of word2vec][inner_workings_ad]](http://bit.ly/2X8tcXE)
+
 ## Four Production Examples
 Every e-commerce, social media, or content sharing site has this kind of user activity, so this approach appears to have _very_ wide applicability. In the following sections I’ll summarize four publicized use cases of this technique which have been put into production:
 * Music recommendations at Spotify and Anghami
