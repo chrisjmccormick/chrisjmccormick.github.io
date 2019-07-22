@@ -10,6 +10,13 @@ tags: BERT, NLP, natural language processing, transfer learning, classification,
 In this tutorial I'll show you how to use BERT with the huggingface PyTorch library to quickly and efficiently fine-tune a model to get near state of the art performance in sentence classification. More broadly, I describe the practical application of transfer learning in NLP to create high performance models with minimal effort on a range of NLP tasks.
 
 
+This post is presented in two forms--as a blog post [here](http://mccormickml.com/2019/07/22/BERT-fine-tuning/) and as a Colab notebook [here](https://colab.research.google.com/drive/1ywsvwO6thOVOrfagjjfuxEf6xVRxbUNO). 
+The content is identical in both, but: 
+
+* The blog post format may be easier to read, and includes a comments section for discussion. 
+* The Colab Notebook will allow you to run the code and inspect it as you read through.
+
+
 ## Introduction
 
 ### History
