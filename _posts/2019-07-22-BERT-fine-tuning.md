@@ -53,7 +53,7 @@ This shift to transfer learning parallels the same shift that took place in comp
 
 Let's get started!
 
-### Install and Import
+## Install and Import
 
 Google Colab offers free GPUs and TPUs! Since we'll be training a large neural network it's best to take advantage of this (in this case we'll attach a GPU), otherwise training will take a very long time.
 
@@ -86,28 +86,6 @@ At the moment, the Hugging Face library seems to be the most widely accepted and
 ```python
 !pip install pytorch-pretrained-bert pytorch-nlp
 ```
-
-    Requirement already satisfied: pytorch-pretrained-bert in /usr/local/lib/python3.6/dist-packages (0.6.2)
-    Requirement already satisfied: pytorch-nlp in /usr/local/lib/python3.6/dist-packages (0.4.1)
-    Requirement already satisfied: requests in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (2.21.0)
-    Requirement already satisfied: tqdm in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (4.28.1)
-    Requirement already satisfied: boto3 in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (1.9.185)
-    Requirement already satisfied: regex in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (2019.6.8)
-    Requirement already satisfied: torch>=0.4.1 in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (1.1.0)
-    Requirement already satisfied: numpy in /usr/local/lib/python3.6/dist-packages (from pytorch-pretrained-bert) (1.16.4)
-    Requirement already satisfied: pandas in /usr/local/lib/python3.6/dist-packages (from pytorch-nlp) (0.24.2)
-    Requirement already satisfied: urllib3<1.25,>=1.21.1 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (1.24.3)
-    Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (2019.6.16)
-    Requirement already satisfied: idna<2.9,>=2.5 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (2.8)
-    Requirement already satisfied: chardet<3.1.0,>=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests->pytorch-pretrained-bert) (3.0.4)
-    Requirement already satisfied: botocore<1.13.0,>=1.12.185 in /usr/local/lib/python3.6/dist-packages (from boto3->pytorch-pretrained-bert) (1.12.185)
-    Requirement already satisfied: jmespath<1.0.0,>=0.7.1 in /usr/local/lib/python3.6/dist-packages (from boto3->pytorch-pretrained-bert) (0.9.4)
-    Requirement already satisfied: s3transfer<0.3.0,>=0.2.0 in /usr/local/lib/python3.6/dist-packages (from boto3->pytorch-pretrained-bert) (0.2.1)
-    Requirement already satisfied: python-dateutil>=2.5.0 in /usr/local/lib/python3.6/dist-packages (from pandas->pytorch-nlp) (2.5.3)
-    Requirement already satisfied: pytz>=2011k in /usr/local/lib/python3.6/dist-packages (from pandas->pytorch-nlp) (2018.9)
-    Requirement already satisfied: docutils>=0.10 in /usr/local/lib/python3.6/dist-packages (from botocore<1.13.0,>=1.12.185->boto3->pytorch-pretrained-bert) (0.14)
-    Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.6/dist-packages (from python-dateutil>=2.5.0->pandas->pytorch-nlp) (1.12.0)
-
 
 
 ```python
@@ -360,19 +338,13 @@ MAX_LEN = 128
 
 
 ```python
-# Pad our input tokens
-input_ids = pad_sequences([tokenizer.convert_tokens_to_ids(txt) for txt in tokenized_texts],
-                          maxlen=MAX_LEN, dtype="long", truncating="post", padding="post")
-```
-
-
-```python
 # Use the BERT tokenizer to convert the tokens to their index numbers in the BERT vocabulary
 input_ids = [tokenizer.convert_tokens_to_ids(x) for x in tokenized_texts]
 ```
 
 
 ```python
+# Pad our input tokens
 input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long", truncating="post", padding="post")
 ```
 
@@ -652,7 +624,7 @@ plt.show()
 ![png](/assets/BERTFineTuning/training_loss.png)
 
 
-##Predict and Evaluate on Holdout Set
+## Predict and Evaluate on Holdout Set
 
 Now we'll load the holdout dataset and prepare inputs just as we did with the training set. Then we'll evaluate predictions using [Matthew's correlation coefficient](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.matthews_corrcoef.html) because this is the metric used by the wider NLP community to evaluate performance on CoLA. With this metric, +1 is the best score, and -1 is the worst score. This way, we can see how well we perform against the state of the art models for this specific task.
 
@@ -692,11 +664,9 @@ tokenized_texts = [tokenizer.tokenize(sent) for sent in sentences]
 
 
 MAX_LEN = 128
-# Pad our input tokens
-input_ids = pad_sequences([tokenizer.convert_tokens_to_ids(txt) for txt in tokenized_texts],
-                          maxlen=MAX_LEN, dtype="long", truncating="post", padding="post")
 # Use the BERT tokenizer to convert the tokens to their index numbers in the BERT vocabulary
 input_ids = [tokenizer.convert_tokens_to_ids(x) for x in tokenized_texts]
+# Pad our input tokens
 input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long", truncating="post", padding="post")
 # Create attention masks
 attention_masks = []
