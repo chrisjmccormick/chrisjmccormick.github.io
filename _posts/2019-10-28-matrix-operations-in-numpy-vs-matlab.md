@@ -15,7 +15,7 @@ It's also likely that you have since switched from Octave to Python. Coding in P
 Side Note: The NumPy documentation has a very nice "quick reference" type guide on migrating from Matlab to NumPy [here](https://numpy.org/devdocs/user/numpy-for-matlab-users.html).
 
 
-## `ndarray ≠ matrix`
+## Turns out `ndarray ≠ matrix`
 
 Once you have the basics of Python down, you'll find that, in the machine learning field, we use NumPy `ndarray` to store our matrix and vector data. NumPy arrays behave very similarly to variables in Matlab--for instance, they both support very similar syntax for making selections within a matrix. This is great, and it makes the transition to Python a lot easier.
 
@@ -25,7 +25,7 @@ In fact, did you know that NumPy actually has a separate class named `numpy.matr
 
 Here are the two big differences.
 
-1. If you have two matrices $ A $ and $ B $ both stored as `numpy.ndarray`s, then you'd probably think that running `C = A * B` performs matrix multiplication... but it doesn't. The below table illustrates this with a matrix-vector multiplication example.
+1. If you have two matrices \\( A \\) and \\( B \\) both stored as `numpy.ndarray`s, then you'd probably think that running `C = A * B` performs matrix multiplication... but it doesn't. The below table illustrates this with a matrix-vector multiplication example.
 
 ![Interpretation of asterisk in ndarray vs. Matlab](http://www.mccormickml.com/assets/numpy/interpretation_of_asterisk.png)
 
@@ -121,13 +121,13 @@ Values: [1 2 3 4 5]
 
 The distinction between a row vector and a column vector is important in linear algebra, because if you have a matrix `W` that's \[5 x 3\] and a column vector `x` that's \[5 x 1\], then there are restrictions on how they can legally be multiplied together: 
 
-* $ xW $  - Not Valid
+* \\( xW \\)  - Not Valid
     * `[5 x 1] * [5 x 3] = Error!`
-* $ Wx $  - Not Valid
+* \\( Wx \\)  - Not Valid
     * `[5 x 3] * [5 x 1] = Error!`    
-* $ x'W $ - Valid
+* \\( x'W \\) - Valid
     * `[1 x 5] * [5 x 3] = [1 x 3]`
-* $ W'x $ - Valid
+* \\( W'x \\) - Valid
     * `[3 x 5] * [5 x 1] = [3 x 1]`
 
 Note that the output vectors of the last two (the two valid operations) not only have different orientations but also contain different values.
