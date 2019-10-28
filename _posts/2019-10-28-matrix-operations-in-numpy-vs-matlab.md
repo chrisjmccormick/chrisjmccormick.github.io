@@ -119,7 +119,7 @@ Values: [1 2 3 4 5]
 
 ### Why would vector orientation matter?
 
-The distinction between a row vector and a column vector is important in linear algebra, because if you have a matrix `W` that's \[5 x 3\] and a column vector `x` that's \[5 x 1\], then there are restrictions on how they can legally be multiplied together: 
+The distinction between a row vector and a column vector is important in linear algebra, because if you have a matrix \\( W \\) that's \[5 x 3\] and a column vector \\( x \\) that's \[5 x 1\], then there are restrictions on how they can legally be multiplied together: 
 
 * \\( xW \\)  - Not Valid
     * `[5 x 1] * [5 x 3] = Error!`
@@ -136,7 +136,7 @@ When implementing an algorithm in code based on its equation, I find the matrix 
 
 With the above definitions of `x` and `W`, if I try to write `x * W` in Matlab, then there's clearly something wrong--I'm misinterpreting the equation somehow. Matlab will help make me aware of this by throwing an error that the dimensions don't align. 
 
-NumPy, however, will simply assume that `x` is a row vector, and that x * W is valid.
+NumPy, however, will simply assume that `x` is a row vector, and that `np.dot(x, W)` is valid.
 
 ```python
 import numpy as np
@@ -180,7 +180,7 @@ If it bothers you so much, Chris, then why not simply call the `reshape` functio
 
 This *is* a possibility, but it creates a couple *new* pitfalls that you'd need to be careful of. Plus, it leads to some rather funky syntax. 
 
-Here are the two problems with this approach
+Here are the two problems with this approach:
 
 (1) When you slice a vector from a matrix, the ndarray class drops any unneccessary dimensions. Again--this makes more sense when you're thinking in terms of the computer science "array" concept and not the "matrix" concept. To combat this, you need to put the vector's index inside square brackets, as if it were a list of multiple indeces that you wanted to select.  
 
