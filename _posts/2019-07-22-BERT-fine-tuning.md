@@ -7,6 +7,8 @@ image: /assets/BERTFineTuning/bert_cocky.png
 tags: BERT, NLP, natural language processing, transfer learning, classification, machine learning
 ---
 
+By Chris McCormick and Nick Ryan
+
 In this tutorial I'll show you how to use BERT with the huggingface PyTorch library to quickly and efficiently fine-tune a model to get near state of the art performance in sentence classification. More broadly, I describe the practical application of transfer learning in NLP to create high performance models with minimal effort on a range of NLP tasks.
 
 
