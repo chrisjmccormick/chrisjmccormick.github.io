@@ -20,7 +20,7 @@ tags:
 
 In this post, I’m providing a brief tutorial, along with some example Python code, for applying the MinHash algorithm to compare a large number of documents to one another efficiently.
 
-I first learned about this topic through Stanford’s Mining of Massive Datasets (“MMDS”) course available for free on Coursera [here](https://www.coursera.org/course/mmds). What’s especially great about that course is that the authors also provide their textbook online for free! You can find the textbook [here](http://www.mmds.org), with a separate PDF file for each chapter. [Chapter 3](http://infolab.stanford.edu/~ullman/mmds/ch3.pdf) covers the MinHash algorithm, and I’d refer you to that text as a more complete discussion of the topic.
+I first learned about this topic through Stanford’s Mining of Massive Datasets (“MMDS”) course available for free on Coursera [here](https://www.coursera.org/course/mmds) (Update 11/5/19 - It's no longer on Coursera, but still freely available [here](https://lagunita.stanford.edu/courses/course-v1:ComputerScience+MMDS+SelfPaced/about)). What’s especially great about that course is that the authors also provide their textbook online for free! You can find the textbook [here](http://www.mmds.org), with a separate PDF file for each chapter. [Chapter 3](http://infolab.stanford.edu/~ullman/mmds/ch3.pdf) covers the MinHash algorithm, and I’d refer you to that text as a more complete discussion of the topic.
 
 On to the tutorial!
 
