@@ -8,7 +8,6 @@ tags: BERT, Attention, LSTM, NLP, natural language processing, transfer learning
 ---
 
 # 1. Introduction
------------------
 
 In this “research notes” blog post, and the ones that follow it, I’ll be sharing what I am learning about BERT, as well as identifying the areas where I am perhaps confused or where I still need to learn more.
 
@@ -23,14 +22,18 @@ My hope is that these research posts will:
 You can read through this post, or just use it as a reference for the YouTube video:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FKlPCK1uFrc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br/>
+
+**Contents**
     
 * TOC
 {:toc}
 
-By Chris McCormick
+*By Chris McCormick*
 
 ## 1.1. Objectives for the BERT Tutorial
-----------------------------------------
+
 My eventual goal for this tutorial is to explain “the inner workings“ of the BERT architecture.
 
 I’ve found that a powerful approach to creating great tutorials is, while researching and learning about the topic, to pay very close attention to what terms and concepts feel alien or confusing to me.
@@ -47,7 +50,6 @@ I affectionately call the above illustration "BERT Mountain" :).
 
 
 ## 1.2. Improvements on BERT
-------------------------------
 
 I am aware that the original BERT model has been outperformed on the GLUE benchmarks (RoBERTa, XLNet, …), and that new models are coming out every handful of months which manage to one-up the prior state of the art.  
 
@@ -60,7 +62,6 @@ Once I know more about BERT, and the differences between it and its successors, 
 
 
 # 2. Initial Sources
------------------
 
 Here some of the primary sources of information about BERT--each of these is either highly authoratative (e.g., research papers) or which I understand to be highly regarded (popular blog posts). 
 
@@ -69,7 +70,6 @@ Again, all of these require prior knowledge of LSTMs, the Encoder-Decoder approa
 
 
 ## 2.1. The BERT Paper & Resources
---------------------------------------------
 
 
 ### BERT Paper
@@ -87,15 +87,11 @@ Again, all of these require prior knowledge of LSTMs, the Encoder-Decoder approa
 
 I've heard that the BERT paper is well-written and not too difficult to follow. However, this excerpt from the paper makes it clear that we won't get much from it without first understanding more about what a "Transformer" model is.
 
-<br/>
-
 --------------------------
 
 >"BERT’s model architecture is a multi-layer bidirectional Transformer encoder based on the original implementation described in Vaswani et al. (2017) and released in the tensor2tensor library. Because the use of Transformers has become common and our implementation is almost identical to the original, we will omit an exhaustive background description of the model architecture and refer readers to Vaswani et al. (2017) as well as excellent guides such as "The Annotated Transformer"."
 
 -------------------------
-
-<br/>
 
 This paragraph suggests that the "original transformer" was described in the paper "Attention is all you need" (cited as Vaswani et al. (2017)), and was also implemented in the `tensor2tensor` library released on tensorflow. It also references "The Annotated Transformer" blog post as a source for understanding Transformers. So I'll add all of these to our list of primary sources.
 
@@ -123,8 +119,6 @@ This short post might be worth reading as a high-level overview of the significa
 
 
 ## 2.2. Attention is all you need (Paper)
-----------------------------
-
 
 > ![Transformer paper](http://www.mccormickml.com/assets/BERT/transformer_paper.png)
 
@@ -140,7 +134,6 @@ The blog post in the next section contains the full text of this paper, so it pr
 
 
 ## 2.3. The Annotated Transformer (Blog Post)
---------------------------------------------
 
 > ![Annotated Transformer Post](http://www.mccormickml.com/assets/BERT/screenshot_annotated_transformer.png)
 
@@ -157,7 +150,6 @@ There is terminology here which comes from sequence models, and "Attention" is o
 
 
 ## 2.4. Jay Alammar's Posts
-----------------------
 
 Jay's blog posts are well written and very "readable", largely due to his excellent illustrations. 
 
@@ -174,7 +166,6 @@ If you already have a good background in LSTMs, then I suspect that going throug
 
 
 ## 2.5. Sequence Models Course on Coursera
-----------------------------------
 
 https://www.coursera.org/learn/nlp-sequence-models/home/
 
@@ -192,8 +183,6 @@ I'm a big fan of Andrew's, and his introductory Machine Learning course is my al
 You can check it out for 7 days for free, and after that it's $50 per month.
 
 # 3. Next Up
------------
-
 
 The "holy grail" for me with this tutorial (i.e., my biggest goal) is to provide a clear, detailed, and well illustrated explanation of the Transformer architecture in BERT without expecting the reader to have a strong background in recurrence or LSTMs, or even Attention in the context of LSTMs. 
 
@@ -202,23 +191,19 @@ It will take some time to get there, but in the mean time, there are a number of
 
 
 ## 3.1. Input Representation & WordPiece Embeddings
----------------------------------
+
 I think a great place to start will be to look at the details and mechanics of how you feed text into a BERT model. Along with this, we can talk about the approach uses for creating embeddings for words with the "WordPiece" approach.
 
 Both of these topics are covered in [this post](http://mccormickml.com/2019/05/14/BERT-word-embeddings-tutorial/) by Nick Ryan and myself, but I plan to create a dedicated post and video to expand on these insights.
 
 
-
-
-
 ## 3.2. BERT Applications
--------------------------
+
 Once we've covered the input representation, we can then look at the output of the BERT model, and ways that we can apply BERT to different applications.
 
 [This post](http://mccormickml.com/2019/07/22/BERT-fine-tuning/), for example, shows how to apply BERT to text classification.
 
 ## 3.3. BERT Training Tasks
----------------------------
 
 BERT was trained on two "fake tasks": "Masked Word Prediction" and "Next Sentence Prediction". 
 
@@ -238,6 +223,5 @@ Of course, another key contribution might be Google researchers having the text 
 
 
 ## 3.4. BERT Transformer Architecture
---------------
 
 I'm not sure yet how this part of the research will play out. Ideally I will gradually share insights about the Transformer architecture as I learn them, but we'll just have to see how it goes!
