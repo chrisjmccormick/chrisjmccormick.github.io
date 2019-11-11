@@ -1,15 +1,11 @@
 ---
 layout: post
-title:  "BERT Research - Ep 1 - Key Concepts & Sources"
+title:  "BERT Research - Ep. 1 - Key Concepts & Sources"
 date:   2019-11-11 8:00:00 -0800
 comments: true
 image: /assets/BERT/BERT_Mountain.png
 tags: BERT, Attention, LSTM, NLP, natural language processing, transfer learning, machine learning, research post
 ---
-
-By Chris McCormick
-
-This blog post also has a YouTube version [here](https://youtu.be/FKlPCK1uFrc)!
 
 # 1. Introduction
 -----------------
@@ -24,7 +20,14 @@ My hope is that these research posts will:
     * Work out what I want to say, and how I ultimately want to organize the material.
     * Get early feedback on my explanations before publishing. 
 
+You can read through this post, or just use it as a reference for the YouTube video:
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FKlPCK1uFrc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+* TOC
+{:toc}
+
+By Chris McCormick
 
 ## 1.1. Objectives for the BERT Tutorial
 ----------------------------------------
