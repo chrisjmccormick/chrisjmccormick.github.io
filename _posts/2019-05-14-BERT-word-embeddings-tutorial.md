@@ -17,21 +17,32 @@ The content is identical in both, but:
 * The blog post format may be easier to read, and includes a comments section for discussion. 
 * The Colab Notebook will allow you to run the code and inspect it as you read through.
 
+# Contents
+
+* TOC
+{:toc}
+
 # Introduction
+
+
 
 ### History
 
 2018 was a breakthrough year in NLP. Transfer learning, particularly models like Allen AI's ELMO, OpenAI's Open-GPT, and Google's BERT allowed researchers to smash multiple benchmarks with minimal task-specific fine-tuning and provided the rest of the NLP community with pretrained models that could easily (with less data and less compute time) be fine-tuned and implemented to produce state of the art results. Unfortunately, for many starting out in NLP and even for some experienced practicioners, the theory and practical application of these powerful models is still not well understood.
 
+
+
 ### What is BERT?
 
 BERT (Bidirectional Encoder Representations from Transformers), released in late 2018, is the model we will use in this tutorial to provide readers with a better understanding of and practical guidance for using transfer learning models in NLP. BERT is a method of pretraining language representations that was used to create models that NLP practicioners can then download and use for free. You can either use these models to extract high quality language features from your text data, or you can fine-tune these models on a specific task (classification, entity recognition, question answering, etc.) with your own data to produce state of the art predictions.
 
-### Why BERT Embeddings?
+
+
+### Why BERT embeddings?
 
 In this tutorial, we will use BERT to extract features, namely word and sentence embedding vectors, from text data. What can we do with these word and sentence embedding vectors? First, these embeddings are useful for keyword/search expansion, semantic search and information retrieval. For example, if you want to match customer questions or searches against already answered questions or well documented searches, these representations will help you accuratley retrieve results matching the customer's intent and contextual meaning, even if there's no keyword  or phrase overlap.
 
-Second, and perhaps more importantly, these vectors are used as high-quality feature inputs to downstream models. NLP models such as LSTMs or CNNs require inputs in the form of numerical vectors, and this typically means translating features like the vocabulary and part of speechs into numerical representations. In the past, words have been represented either as uniquely indexed values (one-hot encoding), or more helpfully as neural word embeddings where vocabulary words are matched against the fixed-length feature embeddings that result from models like Word2Vec or Fasttext. BERT offers an advantage over models like Word2Vec, because while each word has a fixed representation under Word2Vec regardless of the context within which the word appears, BERT produces word representations that are dynamically informed by the words around them. For example, given two sentences:
+Second, and perhaps more importantly, these vectors are used as high-quality feature inputs to downstream models. NLP models such as LSTMs or CNNs require inputs in the form of numerical vectors, and this typically means translating features like the vocabulary and parts of speech into numerical representations. In the past, words have been represented either as uniquely indexed values (one-hot encoding), or more helpfully as neural word embeddings where vocabulary words are matched against the fixed-length feature embeddings that result from models like Word2Vec or Fasttext. BERT offers an advantage over models like Word2Vec, because while each word has a fixed representation under Word2Vec regardless of the context within which the word appears, BERT produces word representations that are dynamically informed by the words around them. For example, given two sentences:
 
 "The man was accused of robbing a bank."
 "The man went fishing by the bank of the river."
@@ -42,9 +53,11 @@ From an educational standpoint, a close examination of BERT word embeddings is a
 
 Onward!
 
-### Install and Import
+# 1. Loading Pre-Trained BERT
 
-Install the pytorch interface for BERT by Hugging Face. (This library contains interfaces for other pretrained language models like OpenAI's GPT and GPT-2.) We've selected the pytorch interface because it strikes a nice balance between the high-level APIs (which are easy to use but don't provide insight into how things work) and tensorflow code (which contains lots of details but often sidetracks us into lessons about tensorflow, when the purpose here is BERT!).
+Install the pytorch interface for BERT by Hugging Face. (This library contains interfaces for other pretrained language models like OpenAI's GPT and GPT-2.) 
+
+We've selected the pytorch interface because it strikes a nice balance between the high-level APIs (which are easy to use but don't provide insight into how things work) and tensorflow code (which contains lots of details but often sidetracks us into lessons about tensorflow, when the purpose here is BERT!).
 
 If you're running this code on Google Colab, you will have to install this library each time you reconnect; the following cell will take care of that for you.
 
@@ -52,7 +65,6 @@ If you're running this code on Google Colab, you will have to install this libra
 ```python
 !pip install pytorch-pretrained-bert
 ```
-
 
 Now let's import pytorch, the pretrained BERT model, and a BERT tokenizer. We'll explain the BERT model in detail in a later tutorial, but this is the pre-trained model released by Google that ran for many, many hours on Wikipedia and [Book Corpus](https://arxiv.org/pdf/1506.06724.pdf), a dataset containing +10,000 books of different genres. This model is responsible (with a little modification) for beating NLP benchmarks across a range of tasks. Google released a few variations of BERT models, but the one we'll use here is the smaller of the two available sizes ("base" and "large") and ignores casing, hence "uncased.""
 
@@ -73,10 +85,10 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 ```
 
-    100%|██████████| 231508/231508 [00:00<00:00, 2386266.84B/s]
+    100%|██████████| 231508/231508 [00:00<00:00, 416614.61B/s]
 
 
-## Input Formatting
+# 2. Input Formatting
 Because BERT is a pretrained model that expects input data in a specific format, we will need:
 
 - special tokens to mark the beginning ([CLS]) and separation/end of sentences ([SEP])
@@ -91,45 +103,41 @@ Luckily, this interface takes care of some of these input specifications for us 
 
 
 
-### Special Tokens
+## 2.1. Special Tokens
 BERT can take as input either one or two sentences, and expects special tokens to mark the beginning and end of each one:
 
 **2 Sentence Input**:
 
-[CLS] the man went to the store [SEP] he bought a gallon of milk [SEP]
+`[CLS] The man went to the store. [SEP] He bought a gallon of milk. [SEP]`
 
 **1 Sentence Input**:
 
-[CLS] the man went to the store [SEP]
+`[CLS] The man went to the store. [SEP]`
+
+
+
+## 2.2. Tokenization
+
+BERT provides its own tokenizer, which we imported above. Let's see how it handles the below sentence.
 
 
 ```python
 text = "Here is the sentence I want embeddings for."
-text = "After stealing money from the bank vault, the bank robber was seen fishing on the Mississippi river bank."
 marked_text = "[CLS] " + text + " [SEP]"
 
-print (marked_text)
-```
-
-    [CLS] After stealing money from the bank vault, the bank robber was seen fishing on the Mississippi river bank. [SEP]
-
-
-We've imported a BERT-specific tokenizer, let's take a look at the output:
-
-### Tokenization
-
-
-```python
+# Tokenize our sentence with the BERT tokenizer.
 tokenized_text = tokenizer.tokenize(marked_text)
+
+# Print out the tokens.
 print (tokenized_text)
 ```
 
-    ['[CLS]', 'after', 'stealing', 'money', 'from', 'the', 'bank', 'vault', ',', 'the', 'bank', 'robber', 'was', 'seen', 'fishing', 'on', 'the', 'mississippi', 'river', 'bank', '.', '[SEP]']
+    ['[CLS]', 'here', 'is', 'the', 'sentence', 'i', 'want', 'em', '##bed', '##ding', '##s', 'for', '.', '[SEP]']
 
 
 Notice how the word "embeddings" is represented:
 
-['em', '##bed', '##ding', '##s']
+`['em', '##bed', '##ding', '##s']`
 
 The original word has been split into smaller subwords and characters. The two hash signs preceding some of these subwords are just our tokenizer's way to denote that this subword or character is part of a larger word and preceded by another subword. So, for example, the '##bed' token is separate from the 'bed' token; the first is used whenever the subword 'bed' occurs within a larger word and the second is used explicitly for when the standalone token 'thing you sleep on' occurs.
 
@@ -152,6 +160,8 @@ So, rather than assigning "embeddings" and every other out of vocabulary word to
 
 
 Here are some examples of the tokens contained in our vocabulary. Tokens beginning with two hashes are subwords or individual characters.
+
+*For an exploration of the contents of BERT's vocabulary, see [this notebook](https://colab.research.google.com/drive/1fCKIBJ6fgWQ-f6UKs7wDTpNTL9N-Cq9X) I created and the accompanying YouTube video [here](https://youtu.be/zJW57aCBCTk).*
 
 
 ```python
@@ -184,55 +194,76 @@ list(tokenizer.vocab.keys())[5000:5020]
 
 
 
-Next, we need to call the tokenizer  to match the tokens agains their indices in the tokenizer vocabulary:
+After breaking the text into tokens, we then have to convert the sentence from a list of strings to a list of vocabulary indeces.
+
+From here on, we'll use the below example sentence, which contains two instances of the word "bank" with different meanings.
 
 
 ```python
+# Define a new example sentence with multiple meanings of the word "bank"
+text = "After stealing money from the bank vault, the bank robber was seen " \
+       "fishing on the Mississippi river bank."
+
+# Add the special tokens.
+marked_text = "[CLS] " + text + " [SEP]"
+
+# Split the sentence into tokens.
+tokenized_text = tokenizer.tokenize(marked_text)
+
+# Map the token strings to their vocabulary indeces.
 indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_text)
 
+# Display the words with their indeces.
 for tup in zip(tokenized_text, indexed_tokens):
-  print (tup)
+    print('{:<12} {:>6,}'.format(tup[0], tup[1]))
 ```
 
-    ('[CLS]', 101)
-    ('after', 2044)
-    ('stealing', 11065)
-    ('money', 2769)
-    ('from', 2013)
-    ('the', 1996)
-    ('bank', 2924)
-    ('vault', 11632)
-    (',', 1010)
-    ('the', 1996)
-    ('bank', 2924)
-    ('robber', 27307)
-    ('was', 2001)
-    ('seen', 2464)
-    ('fishing', 5645)
-    ('on', 2006)
-    ('the', 1996)
-    ('mississippi', 5900)
-    ('river', 2314)
-    ('bank', 2924)
-    ('.', 1012)
-    ('[SEP]', 102)
+    [CLS]           101
+    after         2,044
+    stealing     11,065
+    money         2,769
+    from          2,013
+    the           1,996
+    bank          2,924
+    vault        11,632
+    ,             1,010
+    the           1,996
+    bank          2,924
+    robber       27,307
+    was           2,001
+    seen          2,464
+    fishing       5,645
+    on            2,006
+    the           1,996
+    mississippi   5,900
+    river         2,314
+    bank          2,924
+    .             1,012
+    [SEP]           102
 
 
-### Segment ID
+## 2.3. Segment ID
 BERT is trained on and expects sentence pairs, using 1s and 0s to distinguish between the two sentences. That is, for each token in "tokenized_text," we must specify which sentence it belongs to: sentence 0 (a series of 0s) or sentence 1 (a series of 1s). For our purposes, single-sentence inputs only require a series of 1s, so we will create a vector of 1s for each token in our input sentence. 
 
 If you want to process two sentences, assign each word in the first sentence plus the '[SEP]' token a 0, and all tokens of the second sentence a 1.
 
 
 ```python
+# Mark each of the 22 tokens as belonging to sentence "1".
 segments_ids = [1] * len(tokenized_text)
+
 print (segments_ids)
 ```
 
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 
-## Running our Example
+# 3. Extracting Embeddings 
+
+
+
+## 3.1. Running BERT on our text
+
 Next we need to convert our data to torch tensors and call the BERT model. The BERT PyTorch interface requires that the data be in torch tensors rather than Python lists, so we convert the lists here - this does not change the shape or the data.
  
 model.eval() puts our model in evaluation mode as opposed to training mode. In this case, evaluation mode turns off dropout regularization which is used in training.
@@ -241,7 +272,6 @@ Calling `from_pretrained` will fetch the model from the internet. When we load t
 
 
 ```python
-
 # Convert inputs to PyTorch tensors
 tokens_tensor = torch.tensor([indexed_tokens])
 segments_tensors = torch.tensor([segments_ids])
@@ -261,13 +291,15 @@ Next, let's fetch the hidden states of the network.
 torch.no_grad deactivates the gradient calculations, saves memory, and speeds up computation (we don't need gradients or backpropagation since we're just running a forward pass). 
 
 
+
 ```python
 # Predict hidden states features for each layer
 with torch.no_grad():
     encoded_layers, _ = model(tokens_tensor, segments_tensors)
 ```
 
-## Output
+## 3.2. Understanding the Output
+
 The full set of hidden states for this model, stored in the object `encoded_layers`, is a little dizzying. This object has four dimensions, in the following order:
 
 1. The layer number (12 layers)
@@ -278,6 +310,7 @@ The full set of hidden states for this model, stored in the object `encoded_laye
 That’s 202,752 unique values just to represent our one sentence!
 
 The second dimension, the batch size, is used when submitting multiple sentences to the model at once; here, though, we just have one example sentence.
+
 
 ```python
 print ("Number of layers:", len(encoded_layers))
@@ -292,12 +325,11 @@ token_i = 0
 print ("Number of hidden units:", len(encoded_layers[layer_i][batch_i][token_i]))
 ```
 
-```
-Number of layers: 12
-Number of batches: 1
-Number of tokens: 22
-Number of hidden units: 768
-```
+    Number of layers: 12
+    Number of batches: 1
+    Number of tokens: 22
+    Number of hidden units: 768
+
 
 Let's take a quick look at the range of values for a given layer and token.
 
@@ -321,46 +353,84 @@ plt.show()
 
 Grouping the values by layer makes sense for the model, but for our purposes we want it grouped by token. 
 
-The following code just reshapes the values so that we have them in the form: 
+Current dimensions:
 
-```
-    [# tokens, # layers, # features]
-```
+`[# layers, # batches, # tokens, # features]`
+
+Desired dimensions:
+
+`[# tokens, # layers, # features]`
+
+Luckily, PyTorch includes the `permute` function for easily rearranging the dimensions of a tensor. 
+
+However, the first dimension is currently a Python list! 
+
 
 ```python
-# Convert the hidden state embeddings into single token vectors
+# `encoded_layers` is a Python list.
+print('     Type of encoded_layers: ', type(encoded_layers))
 
-# Holds the list of 12 layer embeddings for each token
-# Will have the shape: [# tokens, # layers, # features]
-token_embeddings = [] 
-
-# For each token in the sentence...
-for token_i in range(len(tokenized_text)):
-  
-  # Holds 12 layers of hidden states for each token 
-  hidden_layers = [] 
-  
-  # For each of the 12 layers...
-  for layer_i in range(len(encoded_layers)):
-    
-    # Lookup the vector for `token_i` in `layer_i`
-    vec = encoded_layers[layer_i][batch_i][token_i]
-    
-    hidden_layers.append(vec)
-    
-  token_embeddings.append(hidden_layers)
-
-# Sanity check the dimensions:
-print ("Number of tokens in sequence:", len(token_embeddings))
-print ("Number of layers per token:", len(token_embeddings[0]))
+# Each layer in the list is a torch tensor.
+print('Tensor shape for each layer: ', encoded_layers[0].size())
 ```
 
-```
-Number of tokens in sequence: 22
-Number of layers per token: 12
+         Type of encoded_layers:  <class 'list'>
+    Tensor shape for each layer:  torch.Size([1, 22, 768])
+
+
+Let's combine the 12 layers to make this one whole big tensor.
+
+
+```python
+# Concatenate the tensors for all layers. We use `stack` here to
+# create a new dimension in the tensor.
+token_embeddings = torch.stack(encoded_layers, dim=0)
+
+token_embeddings.size()
 ```
 
-## Creating word and sentence vectors from hidden states
+
+
+
+    torch.Size([12, 1, 22, 768])
+
+
+
+Let's get rid of the "batches" dimension since we don't need it.
+
+
+```python
+# Remove dimension 1, the "batches".
+token_embeddings = torch.squeeze(token_embeddings, dim=1)
+
+token_embeddings.size()
+```
+
+
+
+
+    torch.Size([12, 22, 768])
+
+
+
+Finally, we can switch around the "layers" and "tokens" dimensions with `permute`.
+
+
+```python
+# Swap dimensions 0 and 1.
+token_embeddings = token_embeddings.permute(1,0,2)
+
+token_embeddings.size()
+```
+
+
+
+
+    torch.Size([22, 12, 768])
+
+
+
+## 3.3. Creating word and sentence vectors from hidden states
 
 Now, what do we do with these hidden states? We would like to get individual vectors for each of our tokens, or perhaps a single vector representation of the whole sentence, but for each token of our input we have 12 separate vectors each of length 768.
 
@@ -390,57 +460,97 @@ The upshot being that, again**, the correct pooling strategy (mean, max, concate
 
 ### Word Vectors
 
-To give you some examples, let's create word vectors using a concatenation and summation of the last four layers:
+To give you some examples, let's create word vectors two ways. 
+
+First, let's **concatenate** the last four layers, giving us a single word vector per token. Each vector will have length `4 x 768 = 3,072`. 
 
 
 ```python
-concatenated_last_4_layers = [torch.cat((layer[-1], layer[-2], layer[-3], layer[-4]), 0) for layer in token_embeddings] # [number_of_tokens, 3072]
+# Stores the token vectors, with shape [22 x 3,072]
+token_vecs_cat = []
 
-summed_last_4_layers = [torch.sum(torch.stack(layer)[-4:], 0) for layer in token_embeddings] # [number_of_tokens, 768]
+# `token_embeddings` is a [22 x 12 x 768] tensor.
+
+# For each token in the sentence...
+for token in token_embeddings:
+    
+    # `token` is a [12 x 768] tensor
+
+    # Concatenate the vectors (that is, append them together) from the last 
+    # four layers.
+    # Each layer vector is 768 values, so `cat_vec` is length 3,072.
+    cat_vec = torch.cat((token[-1], token[-2], token[-3], token[-4]), dim=0)
+    
+    # Use `cat_vec` to represent `token`.
+    token_vecs_cat.append(cat_vec)
+
+print ('Shape is: %d x %d' % (len(token_vecs_cat), len(token_vecs_cat[0])))
 ```
+
+    Shape is: 22 x 3072
+
+
+As an alternative method, let's try creating the word vectors by **summing** together the last four layers.
+
+
+```python
+# Stores the token vectors, with shape [22 x 768]
+token_vecs_sum = []
+
+# `token_embeddings` is a [22 x 12 x 768] tensor.
+
+# For each token in the sentence...
+for token in token_embeddings:
+
+    # `token` is a [12 x 768] tensor
+
+    # Sum the vectors from the last four layers.
+    sum_vec = torch.sum(token[-4:], dim=0)
+    
+    # Use `sum_vec` to represent `token`.
+    token_vecs_sum.append(sum_vec)
+
+print ('Shape is: %d x %d' % (len(token_vecs_sum), len(token_vecs_sum[0])))
+```
+
+    Shape is: 22 x 768
+
 
 ### Sentence Vectors
 
-To get a single vector for our entire sentence we have multiple application-dependent strategieis, but a simple approach is to average the second to last hiden layer of each token producing a single 768 length vector.
-
-
+To get a single vector for our entire sentence we have multiple application-dependent strategies, but a simple approach is to average the second to last hiden layer of each token producing a single 768 length vector.
 
 
 ```python
-sentence_embedding = torch.mean(encoded_layers[11], 1)
+# `encoded_layers` has shape [12 x 1 x 22 x 768]
+
+# `token_vecs` is a tensor with shape [22 x 768]
+token_vecs = encoded_layers[11][0]
+
+# Calculate the average of all 22 token vectors.
+sentence_embedding = torch.mean(token_vecs, dim=0)
 ```
 
 
 ```python
-print ("Our final sentence embedding vector of shape:"), sentence_embedding[0].shape[0]
+print ("Our final sentence embedding vector of shape:", sentence_embedding.size())
 ```
 
-    Our final sentence embedding vector of shape:
+    Our final sentence embedding vector of shape: torch.Size([768])
 
 
+## 3.4. Confirming contextually dependent vectors
 
+To confirm that the value of these vectors are in fact contextually dependent, let's look at the different instances of the word "bank" in our example sentence:
 
+"After stealing money from the **bank vault**, the **bank robber** was seen fishing on the Mississippi **river bank**."
 
-    (None, 768)
-
-
-
-### Confirming contextually dependent vectors
-
-To confirm that the value of these vectors are in fact contextually dependent, let's take a look at the output from the following sentence (if you want to try this out you'll have to run this example separately from the top by replacing our original sentence with the following sentence):
+Let's find the index of those three instances of the word "bank" in the example sentence.
 
 
 ```python
-print (text)
-```
-
-    After stealing money from the bank vault, the bank robber was seen fishing on the Mississippi river bank.
-
-
-
-```python
-for i,x in enumerate(tokenized_text):
-  print (i,x)
+for i, token_str in enumerate(tokenized_text):
+  print (i, token_str)
 ```
 
     0 [CLS]
@@ -467,109 +577,74 @@ for i,x in enumerate(tokenized_text):
     21 [SEP]
 
 
+They are at 6, 10, and 19.
 
-```python
-print ("First fifteen values of 'bank' as in 'bank robber':")
-summed_last_4_layers[10][:15]
-```
+For this analysis, we'll use the word vectors that we created by summing the last four layers.
 
-    First fifteen values of 'bank' as in 'bank robber':
-
-
-
-
-
-    tensor([ 1.1868, -1.5298, -1.3770,  1.0648,  3.1446,  1.4003, -4.2407,  1.3946,
-            -0.1170, -1.8777,  0.1091, -0.3862,  0.6744,  2.1924, -4.5306])
-
-
+We can try printing out their vectors to compare them.
 
 
 ```python
-print ("First fifteen values of 'bank' as in 'bank vault':")
-summed_last_4_layers[6][:15]
+print('First 5 vector values for each instance of "bank".')
+print('')
+print("bank vault   ", str(token_vecs_sum[6][:5]))
+print("bank robber  ", str(token_vecs_sum[10][:5]))
+print("river bank   ", str(token_vecs_sum[19][:5]))
 ```
 
-    First fifteen values of 'bank' as in 'bank vault':
+    First 5 values for each meaning of "bank".
+    
+    bank vault    tensor([ 2.1319, -2.1413, -1.6260,  0.8638,  3.3173])
+    bank robber   tensor([ 1.1868, -1.5298, -1.3770,  1.0648,  3.1446])
+    river bank    tensor([ 1.1295, -1.4725, -0.7296, -0.0901,  2.4970])
 
 
-
-
-
-    tensor([ 2.1319, -2.1413, -1.6260,  0.8638,  3.3173,  0.1796, -4.4853,  3.1215,
-            -0.9740, -3.1780,  0.1046, -1.5481,  0.4758,  1.1703, -4.4859])
-
-
+We can see that the values differ, but let's calculate the cosine similarity between the vectors to make a more precise comparison.
 
 
 ```python
-print ("First fifteen values of 'bank' as in 'river bank':")
-summed_last_4_layers[19][:15]
+from scipy.spatial.distance import cosine
+
+# Calculate the cosine similarity between the word bank 
+# in "bank robber" vs "river bank" (different meanings).
+diff_bank = 1 - cosine(token_vecs_sum[10], token_vecs_sum[19])
+
+# Calculate the cosine similarity between the word bank
+# in "bank robber" vs "bank vault" (same meaning).
+same_bank = 1 - cosine(token_vecs_sum[10], token_vecs_sum[6])
+
+print('Vector similarity for  *similar*  meanings:  %.2f' % same_bank)
+print('Vector similarity for *different* meanings:  %.2f' % diff_bank)
 ```
 
-    First fifteen values of 'bank' as in 'river bank':
+    Vector similarity for  *similar*  meanings:  0.95
+    Vector similarity for *different* meanings:  0.68
 
 
+This looks pretty good!
+
+# 4. Appendix
 
 
+## 4.1. Special tokens
 
-    tensor([ 1.1295, -1.4725, -0.7296, -0.0901,  2.4970,  0.5330,  0.9742,  5.1834,
-            -1.0692, -1.5941,  1.9261,  0.7119, -0.9809,  1.2127, -2.9812])
-
-
-
-As we can see, these are all different vectors and they should be; although the word 'bank' is the same, in each case of our sentence it has different meanings, sometimes very different meanings.
-
-We have three different uses of "bank" in this sentence, two of which should be almost identical. Let's check the cosine similarity to see if this is the case:
-
-
-```python
-from sklearn.metrics.pairwise import cosine_similarity
-
-# Compare "bank" as in "bank robber" to "bank" as in "river bank"
-different_bank = cosine_similarity(summed_last_4_layers[10].reshape(1,-1), summed_last_4_layers[19].reshape(1,-1))[0][0]
-
-# Compare "bank" as in "bank robber" to "bank" as in "bank vault" 
-same_bank = cosine_similarity(summed_last_4_layers[10].reshape(1,-1), summed_last_4_layers[6].reshape(1,-1))[0][0]
-```
-
-
-```python
-print ("Similarity of 'bank' as in 'bank robber' to 'bank' as in 'bank vault':",  same_bank)
-```
-
-    Similarity of 'bank' as in 'bank robber' to 'bank' as in 'bank vault': 0.94567525
-
-
-
-```python
-print ("Similarity of 'bank' as in 'bank robber' to 'bank' as in 'river bank':",  different_bank)
-```
-
-    Similarity of 'bank' as in 'bank robber' to 'bank' as in 'river bank': 0.6797334
-
-
-## Other: special tokens, OOV words, and similarity metrics
-
-### Special tokens
-
-It should be noted that although the** "[CLS]"** acts as an "aggregate representation" for classification tasks, this is not the best choice for a high quality sentence embedding vector. [According to](https://github.com/google-research/bert/issues/164) BERT author Jacob Devlin: 
-
-"*I'm not sure what these vectors are, since BERT does not generate meaningful sentence vectors. It seems that this is is doing average pooling over the word tokens to get a sentence vector, but we never suggested that this will generate meaningful sentence representations*."
+It should be noted that although the `[CLS]` acts as an "aggregate representation" for classification tasks, this is not the best choice for a high quality sentence embedding vector. [According to](https://github.com/google-research/bert/issues/164) BERT author Jacob Devlin: "*I'm not sure what these vectors are, since BERT does not generate meaningful sentence vectors. It seems that this is is doing average pooling over the word tokens to get a sentence vector, but we never suggested that this will generate meaningful sentence representations*."
 
 (However, the [CLS] token does become meaningful if the model has been fine-tuned, where the last hidden layer of this token is used as the "sentence vector" for sequence classification.)
 
-### Out of vocabulary words
+
+
+## 4.2. Out of vocabulary words
 
 For **out of vocabulary words** that are composed of multiple sentence and character-level embeddings, there is a further issue of how best to recover this embedding. Averaging the embeddings is the most straightforward solution (one that is relied upon in similar embedding models with subword vocabularies like fasttext), but summation of subword embeddings and simply taking the last token embedding (remember that the vectors are context sensitive) are acceptable alternative strategies.
 
-### Similarity metrics
+
+
+## 4.3. Similarity metrics
 
 It is worth noting that word-level **similarity comparisons** are not appropriate with BERT embeddings because these embeddings are contextually dependent, meaning that the word vector changes depending on the sentence it appears in. This allows wonderful things like polysemy so that e.g. your representation encodes river "bank" and not a financial institution "bank",  but makes direct word-to-word similarity comparisons less valuable. However, for sentence embeddings similarity comparison is still valid such that one can query, for example, a single sentence against a dataset of other sentences in order to find the most similar. Depending on the similarity metric used, the resulting similarity values will be less informative than the relative ranking of similarity outputs since many similarity metrics make assumptions about the vector space (equally-weighted dimensions, for example) that do not hold for our 768-dimensional vector space.
 
 
-## Implementations
+## 4.4. Implementations
 
 You can use the code in this notebook as the foundation of your own application to extract BERT features from text. However, official [tensorflow](https://github.com/google-research/bert/blob/master/extract_features.py) and well-regarded [pytorch](https://github.com/huggingface/pytorch-pretrained-BERT/blob/master/examples/extract_features.py) implementations already exist that do this for you.  Additionally, [bert-as-a-service](https://github.com/hanxiao/bert-as-service) is an excellent tool designed specifically for running this task with high performance, and is the one I would recommend for production applications. The author has taken great care in the tool's implementation and provides excellent documentation (some of which was used to help create this tutorial) to help users understand the more nuanced details the user faces, like resource management and pooling strategy.
-
-
