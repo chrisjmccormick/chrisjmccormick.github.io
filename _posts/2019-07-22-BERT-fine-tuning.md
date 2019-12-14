@@ -19,6 +19,9 @@ The content is identical in both, but:
 * The blog post includes a comments section for discussion. 
 * The Colab Notebook will allow you to run the code and inspect it as you read through.
 
+I've also published a video walkthrough of this post on my YouTube channel!
+<iframe width="560" height="315" src="https://www.youtube.com/embed/x66kkDnbzi4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 # Contents
 
 * TOC
