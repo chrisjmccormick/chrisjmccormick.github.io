@@ -60,7 +60,7 @@ In this tutorial, we will use BERT to train a text classifier. Specifically, we 
 
 
 
-#### A Shift in NLP
+### A Shift in NLP
 
 This shift to transfer learning parallels the same shift that took place in computer vision a few years ago. Creating a good deep learning network for computer vision tasks can take millions of parameters and be very expensive to train. Researchers discovered that deep networks learn hierarchical feature representations (simple features like edges at the lowest layers with gradually more complex features at higher layers). Rather than training a new network from scratch each time, the lower layers of a trained network with generalized image features could be copied and transfered for use in another network with a different task. It soon became common practice to download a pre-trained deep network and quickly retrain it for the new task or add additional layers on top - vastly preferable to the expensive process of training a network from scratch. For many, the introduction of deep pre-trained language models in 2018 (ELMO, BERT, ULMFIT, Open-GPT, etc.) signals the same shift to transfer learning in NLP that computer vision saw.
 
@@ -436,7 +436,7 @@ labels = df.label.values
 
 In this section, we'll transform our dataset into the format that BERT can be trained on.
 
-## 3.1. Tokenization
+## 3.1. BERT Tokenizer
 
 
 To feed our text to BERT, it must be split into tokens, and then these tokens must be mapped to their index in the tokenizer vocabulary.
@@ -565,7 +565,7 @@ These results suggest to me that the padding tokens aren't simply skipped over--
 
 
 
-## 3.1. Sentences to IDs
+## 3.2. Sentences to IDs
 
 The `tokenizer.encode` function combines multiple steps for us:
 1. Split the sentence into tokens.
@@ -609,11 +609,9 @@ print('Token IDs:', input_ids[0])
     Token IDs: [101, 2256, 2814, 2180, 1005, 1056, 4965, 2023, 4106, 1010, 2292, 2894, 1996, 2279, 2028, 2057, 16599, 1012, 102]
 
 
-## 3.2. Padding & Truncating
+## 3.3. Padding & Truncating
 
-Pad and truncate our sequences so that they all become of length MAX_LEN. 
-
-("post" indicates that we want to pad and truncate at the end of the sequence, as opposed to the beginning) `pad_sequences` is a utility function that we're borrowing from Keras. It simply handles the truncating and padding of Python lists.
+Pad and truncate our sequences so that they all have the same length, `MAX_LEN`.
 
 First, what's the maximum sentence length in our dataset?
 
@@ -642,6 +640,8 @@ print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
 print('\nPadding token: "{:}", ID: {:}'.format(tokenizer.pad_token, tokenizer.pad_token_id))
 
 # Pad our input tokens with value 0.
+# "post" indicates that we want to pad and truncate at the end of the sequence,
+# as opposed to the beginning.
 input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long", 
                           value=0, truncating="post", padding="post")
 
@@ -659,7 +659,7 @@ print('\nDone.')
     Using TensorFlow backend.
 
 
-## 3.3. Attention Masks
+## 3.4. Attention Masks
 
 The attention mask simply makes it explicit which tokens are actual words versus which are padding. 
 
@@ -682,7 +682,7 @@ for sent in input_ids:
     attention_masks.append(att_mask)
 ```
 
-## 3.4. Training & Validation Split
+## 3.5. Training & Validation Split
 
 
 Divide up our training set to use 90% for training and 10% for validation.
@@ -701,7 +701,7 @@ train_masks, validation_masks, _, _ = train_test_split(attention_masks, labels,
                                              random_state=2018, test_size=0.1)
 ```
 
-## 3.5. Converting to PyTorch Data Types
+## 3.6. Converting to PyTorch Data Types
 
 Our model expects PyTorch tensors rather than numpy.ndarrays, so convert all of our dataset variables.
 
@@ -754,18 +754,38 @@ For this task, we first want to modify the pre-trained BERT model to give output
 
 Thankfully, the huggingface pytorch implementation includes a set of interfaces designed for a variety of NLP tasks. Though these interfaces are all built on top of a trained BERT model, each has different top layers and output types designed to accomodate their specific NLP task.  
 
-We'll load [BertForSequenceClassification](https://github.com/huggingface/pytorch-pretrained-BERT/blob/master/pytorch_pretrained_bert/modeling.py#L1129). This is the normal BERT model with an added single linear layer on top for classification that we will use as a sentence classifier. As we feed input data, the entire pre-trained BERT model and the additional untrained classification layer is trained on our specific task. 
+Here is the current list of classes provided for fine-tuning:
+* BertModel
+* BertForPreTraining
+* BertForMaskedLM
+* BertForNextSentencePrediction
+* **BertForSequenceClassification** - The one we'll use.
+* BertForTokenClassification
+* BertForQuestionAnswering
+
+The documentation for these can be found under [here](https://huggingface.co/transformers/v2.2.0/model_doc/bert.html).
+
+
+
+We'll be using [BertForSequenceClassification](https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#bertforsequenceclassification). This is the normal BERT model with an added single linear layer on top for classification that we will use as a sentence classifier. As we feed input data, the entire pre-trained BERT model and the additional untrained classification layer is trained on our specific task. 
 
 
 OK, let's load BERT! There are a few different pre-trained BERT models available. "bert-base-uncased" means the version that has only lowercase letters ("uncased") and is the smaller version of the two ("base" vs "large").
 
+The documentation for `from_pretrained` can be found [here](https://huggingface.co/transformers/v2.2.0/main_classes/model.html#transformers.PreTrainedModel.from_pretrained), with the additional parameters defined [here](https://huggingface.co/transformers/v2.2.0/main_classes/configuration.html#transformers.PretrainedConfig).
 
 ```python
 from transformers import BertForSequenceClassification, AdamW, BertConfig
 
 # Load BertForSequenceClassification, the pretrained BERT model with a single 
 # linear classification layer on top. 
-model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
+model = BertForSequenceClassification.from_pretrained(
+    "bert-base-uncased", # Use the 12-layer BERT model, with an uncased vocab.
+    num_labels = 2, # The number of output labels--2 for binary classification.
+                    # You can increase this for multi-class tasks.   
+    output_attentions = False, # Whether the model returns attentions weights.
+    output_hidden_states = False, # Whether the model returns all hidden-states.
+)
 
 # Tell pytorch to run this model on the GPU.
 model.cuda()
@@ -893,7 +913,6 @@ scheduler = get_linear_schedule_with_warmup(optimizer,
 Below is our training loop. There's a lot going on, but fundamentally for each pass in our loop we have a trianing phase and a validation phase. At each pass we need to:
 
 Training loop:
-- Tell the model to compute gradients by setting the model in train mode
 - Unpack our data inputs and labels
 - Load data onto the GPU for acceleration
 - Clear out the gradients calculated in the previous pass. 
@@ -904,7 +923,6 @@ Training loop:
 - Track variables for monitoring progress
 
 Evalution loop:
-- Tell the model not to compute gradients by setting the model in evaluation mode
 - Unpack our data inputs and labels
 - Load data onto the GPU for acceleration
 - Forward pass (feed input data through the network)
@@ -951,6 +969,10 @@ We're ready to kick off the training!
 ```python
 import random
 
+# This training code is based on the `run_glue.py` script here:
+# https://github.com/huggingface/transformers/blob/5bfcd0485ece086ebcbed2d008813037968a9e58/examples/run_glue.py#L128
+
+
 # Set the seed value all over the place to make this reproducible.
 seed_val = 42
 
@@ -961,8 +983,6 @@ torch.cuda.manual_seed_all(seed_val)
 
 # Store the average loss after each epoch so we can plot them.
 loss_values = []
-
-model.zero_grad()
 
 # For each epoch...
 for epoch_i in range(0, epochs):
@@ -983,11 +1003,11 @@ for epoch_i in range(0, epochs):
     # Reset the total loss for this epoch.
     total_loss = 0
 
-    # Set our model to training mode (as opposed to evaluation mode)
+    # Put the model into training mode. Don't be mislead--the call to 
+    # `train` just changes the *mode*, it doesn't *perform* the training.
+    # `dropout` and `batchnorm` layers behave differently during training
+    # vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)
     model.train()
-        
-    # This training code is based on the `run_glue.py` script here:
-    # https://github.com/huggingface/transformers/blob/5bfcd0485ece086ebcbed2d008813037968a9e58/examples/run_glue.py#L128
 
     # For each batch of training data...
     for step, batch in enumerate(train_dataloader):
@@ -999,9 +1019,6 @@ for epoch_i in range(0, epochs):
             
             # Report progress.
             print('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(step, len(train_dataloader), elapsed))
-
-        # Put the model into training mode.    
-        model.train()
 
         # Unpack this training batch from our dataloader. 
         #
@@ -1015,38 +1032,52 @@ for epoch_i in range(0, epochs):
         b_input_ids = batch[0].to(device)
         b_input_mask = batch[1].to(device)
         b_labels = batch[2].to(device)
-                
-        # Forward pass (evaluate the model on this training batch)
-        # `model` is of type: pytorch_pretrained_bert.modeling.BertForSequenceClassification
+
+        # Always clear any previously calculated gradients before performing a
+        # backward pass. PyTorch doesn't do this automatically because 
+        # accumulating the gradients is "convenient while training RNNs". 
+        # (source: https://stackoverflow.com/questions/48001598/why-do-we-need-to-call-zero-grad-in-pytorch)
+        model.zero_grad()        
+
+        # Perform a forward pass (evaluate the model on this training batch).
+        # This will return the loss (rather than the model output) because we
+        # have provided the `labels`.
+        # The documentation for this `model` function is here: 
+        # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
         outputs = model(b_input_ids, 
                     token_type_ids=None, 
                     attention_mask=b_input_mask, 
                     labels=b_labels)
         
+        # The call to `model` always returns a tuple, so we need to pull the 
+        # loss value out of the tuple.
         loss = outputs[0]
 
-        # Accumulate the loss. `loss` is a Tensor containing a single value; 
-        # the `.item()` function just returns the Python value from the tensor.
+        # Accumulate the training loss over all of the batches so that we can
+        # calculate the average loss at the end. `loss` is a Tensor containing a
+        # single value; the `.item()` function just returns the Python value 
+        # from the tensor.
         total_loss += loss.item()
 
         # Perform a backward pass to calculate the gradients.
         loss.backward()
 
         # Clip the norm of the gradients to 1.0.
+        # This is to help prevent the "exploding gradients" problem.
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
-        # Update parameters and take a step using the computed gradient
+        # Update parameters and take a step using the computed gradient.
+        # The optimizer dictates the "update rule"--how the parameters are
+        # modified based on their gradients, the learning rate, etc.
         optimizer.step()
 
         # Update the learning rate.
         scheduler.step()
 
-        # Clear out the gradients (by default they accumulate)
-        model.zero_grad()
-
     # Calculate the average loss over the training data.
     avg_train_loss = total_loss / len(train_dataloader)            
     
+    # Store the loss value for plotting the learning curve.
     loss_values.append(avg_train_loss)
 
     print("")
@@ -1064,7 +1095,8 @@ for epoch_i in range(0, epochs):
 
     t0 = time.time()
 
-    # Put model in evaluation mode to evaluate loss on the validation set
+    # Put the model in evaluation mode--the dropout layers behave differently
+    # during evaluation.
     model.eval()
 
     # Tracking variables 
@@ -1080,13 +1112,23 @@ for epoch_i in range(0, epochs):
         # Unpack the inputs from our dataloader
         b_input_ids, b_input_mask, b_labels = batch
         
-        # Telling the model not to compute or store gradients, saving memory and speeding up validation
+        # Telling the model not to compute or store gradients, saving memory and
+        # speeding up validation
         with torch.no_grad():        
-            # Forward pass, calculate logit predictions
-            # token_type_ids is for the segment ids, but we only have a single sentence here.
-            # See https://github.com/huggingface/transformers/blob/5bfcd0485ece086ebcbed2d008813037968a9e58/examples/run_glue.py#L258 
-            outputs = model(b_input_ids, token_type_ids=None, attention_mask=b_input_mask)
+
+            # Forward pass, calculate logit predictions.
+            # This will return the logits rather than the loss because we have
+            # not provided labels.
+            # token_type_ids is the same as the "segment ids", which 
+            # differentiates sentence 1 and 2 in 2-sentence tasks.
+            # The documentation for this `model` function is here: 
+            # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
+            outputs = model(b_input_ids, 
+                            token_type_ids=None, 
+                            attention_mask=b_input_mask)
         
+        # Get the "logits" output by the model. The "logits" are the output
+        # values prior to applying an activation function like the softmax.
         logits = outputs[0]
 
         # Move logits and labels to CPU
@@ -1113,67 +1155,67 @@ print("Training complete!")
     
     ======== Epoch 1 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:29.
-      Batch    80  of    241.    Elapsed: 0:00:58.
-      Batch   120  of    241.    Elapsed: 0:01:28.
-      Batch   160  of    241.    Elapsed: 0:01:57.
-      Batch   200  of    241.    Elapsed: 0:02:27.
-      Batch   240  of    241.    Elapsed: 0:02:56.
+      Batch    40  of    241.    Elapsed: 0:00:11.
+      Batch    80  of    241.    Elapsed: 0:00:21.
+      Batch   120  of    241.    Elapsed: 0:00:31.
+      Batch   160  of    241.    Elapsed: 0:00:42.
+      Batch   200  of    241.    Elapsed: 0:00:52.
+      Batch   240  of    241.    Elapsed: 0:01:03.
     
       Average training loss: 0.50
-      Training epcoh took: 0:02:57
+      Training epcoh took: 0:01:03
     
     Running Validation...
-      Accuracy: 0.81
-      Validation took: 0:00:06
+      Accuracy: 0.79
+      Validation took: 0:00:02
     
     ======== Epoch 2 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:29.
-      Batch    80  of    241.    Elapsed: 0:00:59.
-      Batch   120  of    241.    Elapsed: 0:01:28.
-      Batch   160  of    241.    Elapsed: 0:01:58.
-      Batch   200  of    241.    Elapsed: 0:02:27.
-      Batch   240  of    241.    Elapsed: 0:02:56.
+      Batch    40  of    241.    Elapsed: 0:00:11.
+      Batch    80  of    241.    Elapsed: 0:00:21.
+      Batch   120  of    241.    Elapsed: 0:00:32.
+      Batch   160  of    241.    Elapsed: 0:00:42.
+      Batch   200  of    241.    Elapsed: 0:00:52.
+      Batch   240  of    241.    Elapsed: 0:01:03.
     
-      Average training loss: 0.30
-      Training epcoh took: 0:02:57
+      Average training loss: 0.32
+      Training epcoh took: 0:01:03
     
     Running Validation...
       Accuracy: 0.82
-      Validation took: 0:00:06
+      Validation took: 0:00:02
     
     ======== Epoch 3 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:29.
-      Batch    80  of    241.    Elapsed: 0:00:59.
-      Batch   120  of    241.    Elapsed: 0:01:28.
-      Batch   160  of    241.    Elapsed: 0:01:58.
-      Batch   200  of    241.    Elapsed: 0:02:27.
-      Batch   240  of    241.    Elapsed: 0:02:56.
+      Batch    40  of    241.    Elapsed: 0:00:11.
+      Batch    80  of    241.    Elapsed: 0:00:21.
+      Batch   120  of    241.    Elapsed: 0:00:32.
+      Batch   160  of    241.    Elapsed: 0:00:42.
+      Batch   200  of    241.    Elapsed: 0:00:52.
+      Batch   240  of    241.    Elapsed: 0:01:03.
     
-      Average training loss: 0.19
-      Training epcoh took: 0:02:57
-    
-    Running Validation...
-      Accuracy: 0.83
-      Validation took: 0:00:06
-    
-    ======== Epoch 4 / 4 ========
-    Training...
-      Batch    40  of    241.    Elapsed: 0:00:29.
-      Batch    80  of    241.    Elapsed: 0:00:59.
-      Batch   120  of    241.    Elapsed: 0:01:28.
-      Batch   160  of    241.    Elapsed: 0:01:58.
-      Batch   200  of    241.    Elapsed: 0:02:27.
-      Batch   240  of    241.    Elapsed: 0:02:56.
-    
-      Average training loss: 0.13
-      Training epcoh took: 0:02:57
+      Average training loss: 0.20
+      Training epcoh took: 0:01:03
     
     Running Validation...
       Accuracy: 0.82
-      Validation took: 0:00:06
+      Validation took: 0:00:02
+    
+    ======== Epoch 4 / 4 ========
+    Training...
+      Batch    40  of    241.    Elapsed: 0:00:10.
+      Batch    80  of    241.    Elapsed: 0:00:21.
+      Batch   120  of    241.    Elapsed: 0:00:31.
+      Batch   160  of    241.    Elapsed: 0:00:42.
+      Batch   200  of    241.    Elapsed: 0:00:52.
+      Batch   240  of    241.    Elapsed: 0:01:03.
+    
+      Average training loss: 0.14
+      Training epcoh took: 0:01:03
+    
+    Running Validation...
+      Accuracy: 0.82
+      Validation took: 0:00:02
     
     Training complete!
 
@@ -1199,7 +1241,7 @@ plt.plot(loss_values, 'b-o')
 
 # Label the plot.
 plt.title("Training loss")
-plt.xlabel("Batch")
+plt.xlabel("Epoch")
 plt.ylabel("Loss")
 
 plt.show()
@@ -1385,21 +1427,21 @@ matthews_set
 
 
 
-    [-0.14856415213808927,
-     0.014456362470655182,
-     0.4732058754737091,
+    [0.049286405809014416,
+     -0.21684543705982773,
+     0.4040950971038548,
      0.41179801403140964,
-     0.5222329678670935,
-     0.6147253896340708,
-     0.5555555555555556,
+     0.25365601296401685,
+     0.6777932975034471,
+     0.4879500364742666,
      0.0,
-     0.9165151389911681,
+     0.8320502943378436,
      0.8246211251235321,
      0.9229582069908973,
      0.647150228929434,
-     0.8749672939989046,
-     0.647150228929434,
-     0.38461538461538464,
+     0.8150678894028793,
+     0.7141684885491869,
+     0.3268228676411533,
      0.5844155844155844,
      0.0]
 
@@ -1420,7 +1462,7 @@ mcc = matthews_corrcoef(flat_true_labels, flat_predictions)
 print('MCC: %.3f' % mcc)
 ```
 
-    MCC: 0.566
+    MCC: 0.529
 
 
 Cool! In about half an hour and without doing any hyperparameter tuning (adjusting the learning rate, epochs, batch size, ADAM properties, etc.) we are able to get a good score. I should also mention we didn't train on the entire training dataset, but set aside a portion of it as our validation set for legibililty of code.
@@ -1488,12 +1530,12 @@ Let's check out the file sizes, out of curiosity.
 ```
 
     total 427964K
-    -rw-r--r-- 1 root root      1K Dec 10 23:15 added_tokens.json
-    -rw-r--r-- 1 root root      1K Dec 10 23:15 config.json
-    -rw-r--r-- 1 root root 427719K Dec 10 23:15 pytorch_model.bin
-    -rw-r--r-- 1 root root      1K Dec 10 23:15 special_tokens_map.json
-    -rw-r--r-- 1 root root      1K Dec 10 23:15 tokenizer_config.json
-    -rw-r--r-- 1 root root    227K Dec 10 23:15 vocab.txt
+    -rw-r--r-- 1 root root      1K Dec 19 17:33 added_tokens.json
+    -rw-r--r-- 1 root root      1K Dec 19 17:33 config.json
+    -rw-r--r-- 1 root root 427719K Dec 19 17:33 pytorch_model.bin
+    -rw-r--r-- 1 root root      1K Dec 19 17:33 special_tokens_map.json
+    -rw-r--r-- 1 root root      1K Dec 19 17:33 tokenizer_config.json
+    -rw-r--r-- 1 root root    227K Dec 19 17:33 vocab.txt
 
 
 The largest file is the model weights, at around 418 megabytes.
@@ -1503,7 +1545,7 @@ The largest file is the model weights, at around 418 megabytes.
 !ls -l --block-size=M ./model_save/pytorch_model.bin
 ```
 
-    -rw-r--r-- 1 root root 418M Dec 10 23:15 ./model_save/pytorch_model.bin
+    -rw-r--r-- 1 root root 418M Dec 19 17:33 ./model_save/pytorch_model.bin
 
 
 To save your model across Colab Notebook sessions, download it to your local machine, or ideally copy it to your Google Drive.
