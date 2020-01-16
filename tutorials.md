@@ -5,6 +5,40 @@ title: Tutorials
 
 <hr/>
 
+### BERT
+[![BERT Architecture][bert_layers]][bert_layers]
+
+* [BERT Research Series](https://www.youtube.com/playlist?list=PLam9sigHPGwOBuH4_4fr-XvDbe5uneaf6) on YouTube.
+* BERT Application Examples:
+    * Word Embeddings ([post][bert_word_embeddings], [notebook](https://colab.research.google.com/drive/1ZQvuAVwA3IjybezQOXnrXMGAnMyZRuPU))
+    * Sentence Classification ([post][bert_sentence_classification], [notebook](https://colab.research.google.com/drive/1Y4o3jh3ZH70tl6mCd76vz_IxX23biCPP))
+    * Document Classification ([video](https://youtu.be/_eSGWNqKeeY), [notebook](https://www.chrismccormick.ai/offers/uzNxadxB/checkout))
+
+<hr/>
+
+[bert_layers]: {{ site.url }}/assets/BERT/CLS_token_500x606.png
+[bert_word_embeddings]: {{ site.url }}/2019/05/14/BERT-word-embeddings-tutorial/
+[bert_sentence_classification]: {{ site.url }}/2019/07/22/BERT-fine-tuning/
+
+### Word2Vec
+
+[![Skip-gram model][skip-gram_model]][skip-gram_model]
+
+* [Word2Vec Tutorial - The Skip-Gram Model][word2vec_skip-gram]
+* [Word2Vec Tutorial Part 2 - Negative Sampling][word2vec_negative_sampling]
+* [Applying word2vec to Recommenders and Advertising][word2vec_recommenders]
+* [Commented word2vec C code](https://github.com/chrisjmccormick/word2vec_commented)
+* [Wor2Vec Resources][word2vec_res]
+
+
+[skip-gram_model]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
+[word2vec_skip-gram]: {{ site.url }}/2016/04/19/word2vec-tutorial-the-skip-gram-model/
+[word2vec_negative_sampling]: {{ site.url }}/2017/01/11/word2vec-tutorial-part-2-negative-sampling/
+[word2vec_recommenders]: {{ site.url }}/2018/06/15/applying-word2vec-to-recommenders-and-advertising/
+[word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/
+
+<hr/>
+
 ### Radial Basis Function Networks
 
 [![RBFN Architecture][rbfn_arch_small]][rbfn_arch_small]
@@ -35,27 +69,9 @@ My tutorial and Matlab code on the HOG descriptor are easily one of the most pop
 * [HOG Descriptor Matlab Code][hog_matlab]
 * [HOG Result Clustering][hog_clustering]
 
+
 [hog_tutorial]: {{ site.url }}/2013/05/09/hog-person-detector-tutorial/ "HOG Person Detector Tutorial"
 [hog_matlab]: {{ site.url }}/2013/05/09/hog-descriptor-in-matlab/ "HOG descriptor in Matlab"
 [hog_clustering]: {{ site.url }}/2013/11/07/opencv-hog-detector-result-clustering/ "HOG Detector result clustering"
-
-<hr/>
-
-### Word2Vec
-
-[![Skip-gram model][skip-gram_model]][skip-gram_model]
-
-* [Word2Vec Tutorial - The Skip-Gram Model][word2vec_skip-gram]
-* [Word2Vec Tutorial Part 2 - Negative Sampling][word2vec_negative_sampling]
-* [Applying word2vec to Recommenders and Advertising][word2vec_recommenders]
-* [Commented word2vec C code](https://github.com/chrisjmccormick/word2vec_commented)
-* [Wor2Vec Resources][word2vec_res]
-
-
-[skip-gram_model]: {{ site.url }}/assets/word2vec/skip_gram_net_arch.png
-[word2vec_skip-gram]: {{ site.url }}/2016/04/19/word2vec-tutorial-the-skip-gram-model/
-[word2vec_negative_sampling]: {{ site.url }}/2017/01/11/word2vec-tutorial-part-2-negative-sampling/
-[word2vec_recommenders]: {{ site.url }}/2018/06/15/applying-word2vec-to-recommenders-and-advertising/
-[word2vec_res]: {{ site.url }}/2016/04/27/word2vec-resources/
 
 <hr/>
