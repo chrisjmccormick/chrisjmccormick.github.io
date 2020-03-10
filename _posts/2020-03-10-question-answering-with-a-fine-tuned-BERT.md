@@ -7,9 +7,6 @@ image: /assets/BERT/SQuAD/input_formatting.png
 tags: BERT, Transformers, SQuAD, Question Answering, text span, huggingface, BertForQuestionAnswering, Machine Learning, Natural Language Processing, NLP
 ---
 
-# Question Answering with a Fine-Tuned BERT
-*by Chris McCormick*
-
 What does it mean for BERT to achieve "human-level performance on Question Answering"? Is BERT the greatest search engine ever, able to find the answer to any question we pose it?
 
 In **Part 1** of this post / notebook, I'll explain what it really means to apply BERT to QA, and illustrate the details.
@@ -29,6 +26,7 @@ For something like text classification, you definitely want to fine-tune BERT on
 * TOC
 {:toc}
 
+*by Chris McCormick*
 
 # Part 1: How BERT is applied to Question Answering
 
