@@ -9,11 +9,12 @@ tags: Machine Learning, BERT, Word Embeddings, WordPiece, Tokenization, Natural 
 
 By Chris McCormick and Nick Ryan
 
-*Revised on 12/13/19 to use the new [transformers](https://github.com/huggingface/transformers) interface.*
+*Revised on 3/20/20 - Switched to `tokenizer.encode_plus` and added validation loss. See Revision History at the end for details.*
+
 
 In this tutorial I'll show you how to use BERT with the huggingface PyTorch library to quickly and efficiently fine-tune a model to get near state of the art performance in sentence classification. More broadly, I describe the practical application of transfer learning in NLP to create high performance models with minimal effort on a range of NLP tasks.
 
-This post is presented in two forms--as a blog post [here](http://mccormickml.com/2019/07/22/BERT-fine-tuning/) and as a Colab Notebook [here](https://colab.research.google.com/drive/1Y4o3jh3ZH70tl6mCd76vz_IxX23biCPP). 
+This post is presented in two forms--as a blog post [here](http://mccormickml.com/2019/07/22/BERT-fine-tuning/) and as a Colab Notebook [here](https://colab.research.google.com/drive/1pTuQhug6Dhl9XalKB0zUGf4FIdYFlpcX). 
 
 The content is identical in both, but: 
 * The blog post includes a comments section for discussion. 
@@ -76,7 +77,7 @@ Google Colab offers free GPUs and TPUs! Since we'll be training a large neural n
 
 A GPU can be added by going to the menu and selecting:
 
-`Edit --> Notebook Settings --> Hardware accelerator --> (GPU)`
+`Edit 🡒 Notebook Settings 🡒 Hardware accelerator 🡒 (GPU)`
 
 Then run the following cell to confirm that the GPU is detected.
 
@@ -92,15 +93,6 @@ if device_name == '/device:GPU:0':
 else:
     raise SystemError('GPU device not found')
 ```
-
-
-<p style="color: red;">
-The default version of TensorFlow in Colab will soon switch to TensorFlow 2.x.<br>
-We recommend you <a href="https://www.tensorflow.org/guide/migrate" target="_blank">upgrade</a> now 
-or ensure your notebook will continue to use TensorFlow 1.x via the <code>%tensorflow_version 1.x</code> magic:
-<a href="https://colab.research.google.com/notebooks/tensorflow_version.ipynb" target="_blank">more info</a>.</p>
-
-
 
     Found GPU at: /device:GPU:0
 
@@ -527,9 +519,7 @@ On the output of the final (12th) transformer, *only the first embedding (corres
 corresponding to this token is used as the aggregate sequence representation for classification
 tasks." (from the [BERT paper](https://arxiv.org/pdf/1810.04805.pdf))
 
-I'm not sure why the authors took this strategy instead of some kind of pooling of all the final vectors, but I'm sure that if pooling were better they would have gone that route. 
-
-Also, because BERT is trained to only use this [CLS] token for classification, we know that the model has been motivated to encode everything it needs for the classification step into that single 768-value embedding vector.
+You might think to try some pooling strategy over the final embeddings, but this isn't necessary. Because BERT is trained to only use this [CLS] token for classification, we know that the model has been motivated to encode everything it needs for the classification step into that single 768-value embedding vector. It's already done the pooling for us!
 
 
 
@@ -547,58 +537,98 @@ Padding is done with a special `[PAD]` token, which is at index 0 in the BERT vo
 
 <img src="http://www.mccormickml.com/assets/BERT/padding_and_mask.png" width="600">
 
-The "Attention Mask" is simply an array of 1s and 0s indicating which tokens are padding and which aren't (seems kind of redundant, doesn't it?! Again, I don't currently know why).
+The "Attention Mask" is simply an array of 1s and 0s indicating which tokens are padding and which aren't (seems kind of redundant, doesn't it?!). This mask tells the "Self-Attention" mechanism in BERT not to incorporate these PAD tokens into its interpretation of the sentence.
 
-I've experimented with running this notebook with two different values of MAX_LEN, and it impacted both the training speed and the  test set accuracy.
+The maximum length does impact training and evaluation speed, however. 
+For example, with a Tesla K80:
 
-With a Tesla K80 and:
+`MAX_LEN = 128  -->  Training epochs take ~5:28 each`
 
+`MAX_LEN = 64   -->  Training epochs take ~2:57 each`
+
+
+
+
+
+
+
+## 3.3. Tokenize Dataset
+
+The transformers library provides a helpful `encode` function which will handle most of the parsing and data prep steps for us.
+
+Before we are ready to encode our text, though, we need to decide on a **maximum sentence length** for padding / truncating to.
+
+The below cell will perform one tokenization pass of the dataset in order to measure the maximum sentence length.
+
+
+```python
+max_len = 0
+
+# For every sentence...
+for sent in sentences:
+
+    # Tokenize the text and add `[CLS]` and `[SEP]` tokens.
+    input_ids = tokenizer.encode(sent, add_special_tokens=True)
+
+    # Update the maximum sentence length.
+    max_len = max(max_len, len(input_ids))
+
+print('Max sentence length: ', max_len)
 ```
-MAX_LEN = 128  -->  Training epochs take ~5:28 each, score is 0.535
-MAX_LEN = 64   -->  Training epochs take ~2:57 each, score is 0.566
-```
 
-These results suggest to me that the padding tokens aren't simply skipped over--that they are in fact fed through the model and incorporated in the results (thereby impacting both model speed and accuracy). I'll have to dig into the architecture more to understand this.
+    Max sentence length:  47
 
 
+Just in case there are some longer test sentences, I'll set the maximum length to 64.
 
 
+Now we're ready to perform the real tokenization.
 
+The `tokenizer.encode_plus` function combines multiple steps for us:
 
-## 3.2. Sentences to IDs
-
-The `tokenizer.encode` function combines multiple steps for us:
 1. Split the sentence into tokens.
 2. Add the special `[CLS]` and `[SEP]` tokens.
 3. Map the tokens to their IDs.
+4. Pad or truncate all sentences to the same length.
+5. Create the attention masks which explicitly differentiate real tokens from `[PAD]` tokens.
 
-Oddly, this function can perform truncating for us, but doesn't handle padding. 
+The first four features are in `tokenizer.encode`, but I'm using `tokenizer.encode_plus` to get the fifth item (attention masks). Documentation is [here](https://huggingface.co/transformers/main_classes/tokenizer.html?highlight=encode_plus#transformers.PreTrainedTokenizer.encode_plus).
+
 
 
 ```python
 # Tokenize all of the sentences and map the tokens to thier word IDs.
 input_ids = []
+attention_masks = []
 
 # For every sentence...
 for sent in sentences:
-    # `encode` will:
+    # `encode_plus` will:
     #   (1) Tokenize the sentence.
     #   (2) Prepend the `[CLS]` token to the start.
     #   (3) Append the `[SEP]` token to the end.
     #   (4) Map tokens to their IDs.
-    encoded_sent = tokenizer.encode(
+    #   (5) Pad or truncate the sentence to `max_length`
+    #   (6) Create attention masks for [PAD] tokens.
+    encoded_dict = tokenizer.encode_plus(
                         sent,                      # Sentence to encode.
                         add_special_tokens = True, # Add '[CLS]' and '[SEP]'
-
-                        # This function also supports truncation and conversion
-                        # to pytorch tensors, but we need to do padding, so we
-                        # can't use these features :( .
-                        #max_length = 128,          # Truncate all sentences.
-                        #return_tensors = 'pt',     # Return pytorch tensors.
+                        max_length = 64,           # Pad & truncate all sentences.
+                        pad_to_max_length = True,
+                        return_attention_mask = True,   # Construct attn. masks.
+                        return_tensors = 'pt',     # Return pytorch tensors.
                    )
     
-    # Add the encoded sentence to the list.
-    input_ids.append(encoded_sent)
+    # Add the encoded sentence to the list.    
+    input_ids.append(encoded_dict['input_ids'])
+    
+    # And its attention mask (simply differentiates padding from non-padding).
+    attention_masks.append(encoded_dict['attention_mask'])
+
+# Convert the lists into tensors.
+input_ids = torch.cat(input_ids, dim=0)
+attention_masks = torch.cat(attention_masks, dim=0)
+labels = torch.tensor(labels)
 
 # Print sentence 0, now as a list of IDs.
 print('Original: ', sentences[0])
@@ -606,142 +636,69 @@ print('Token IDs:', input_ids[0])
 ```
 
     Original:  Our friends won't buy this analysis, let alone the next one we propose.
-    Token IDs: [101, 2256, 2814, 2180, 1005, 1056, 4965, 2023, 4106, 1010, 2292, 2894, 1996, 2279, 2028, 2057, 16599, 1012, 102]
+    Token IDs: tensor([  101,  2256,  2814,  2180,  1005,  1056,  4965,  2023,  4106,  1010,
+             2292,  2894,  1996,  2279,  2028,  2057, 16599,  1012,   102,     0,
+                0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+                0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+                0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+                0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+                0,     0,     0,     0])
 
 
-## 3.3. Padding & Truncating
-
-Pad and truncate our sequences so that they all have the same length, `MAX_LEN`.
-
-First, what's the maximum sentence length in our dataset?
-
-
-```python
-print('Max sentence length: ', max([len(sen) for sen in input_ids]))
-```
-
-    Max sentence length:  47
-
-
-Given that, let's choose MAX_LEN = 64 and apply the padding.
-
-
-```python
-# We'll borrow the `pad_sequences` utility function to do this.
-from keras.preprocessing.sequence import pad_sequences
-
-# Set the maximum sequence length.
-# I've chosen 64 somewhat arbitrarily. It's slightly larger than the
-# maximum training sentence length of 47...
-MAX_LEN = 64
-
-print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
-
-print('\nPadding token: "{:}", ID: {:}'.format(tokenizer.pad_token, tokenizer.pad_token_id))
-
-# Pad our input tokens with value 0.
-# "post" indicates that we want to pad and truncate at the end of the sequence,
-# as opposed to the beginning.
-input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long", 
-                          value=0, truncating="post", padding="post")
-
-print('\nDone.')
-```
-
-    
-    Padding/truncating all sentences to 64 values...
-    
-    Padding token: "[PAD]", ID: 0
-    
-    Done.
-
-
-    Using TensorFlow backend.
-
-
-## 3.4. Attention Masks
-
-The attention mask simply makes it explicit which tokens are actual words versus which are padding. 
-
-The BERT vocabulary does not use the ID 0, so if a token ID is 0, then it's padding, and otherwise it's a real token.
-
-
-```python
-# Create attention masks
-attention_masks = []
-
-# For each sentence...
-for sent in input_ids:
-    
-    # Create the attention mask.
-    #   - If a token ID is 0, then it's padding, set the mask to 0.
-    #   - If a token ID is > 0, then it's a real token, set the mask to 1.
-    att_mask = [int(token_id > 0) for token_id in sent]
-    
-    # Store the attention mask for this sentence.
-    attention_masks.append(att_mask)
-```
-
-## 3.5. Training & Validation Split
+## 3.4. Training & Validation Split
 
 
 Divide up our training set to use 90% for training and 10% for validation.
 
 
 ```python
-# Use train_test_split to split our data into train and validation sets for
-# training
-from sklearn.model_selection import train_test_split
+from torch.utils.data import TensorDataset, random_split
 
-# Use 90% for training and 10% for validation.
-train_inputs, validation_inputs, train_labels, validation_labels = train_test_split(input_ids, labels, 
-                                                            random_state=2018, test_size=0.1)
-# Do the same for the masks.
-train_masks, validation_masks, _, _ = train_test_split(attention_masks, labels,
-                                             random_state=2018, test_size=0.1)
+# Combine the training inputs into a TensorDataset.
+dataset = TensorDataset(input_ids, attention_masks, labels)
+
+# Create a 90-10 train-validation split.
+
+# Calculate the number of samples to include in each set.
+train_size = int(0.9 * len(dataset))
+val_size = len(dataset) - train_size
+
+# Divide the dataset by randomly selecting samples.
+train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+
+print('{:>5,} training samples'.format(train_size))
+print('{:>5,} validation samples'.format(val_size))
 ```
 
-## 3.6. Converting to PyTorch Data Types
+    7,695 training samples
+      856 validation samples
 
-Our model expects PyTorch tensors rather than numpy.ndarrays, so convert all of our dataset variables.
-
-
-```python
-# Convert all inputs and labels into torch tensors, the required datatype 
-# for our model.
-train_inputs = torch.tensor(train_inputs)
-validation_inputs = torch.tensor(validation_inputs)
-
-train_labels = torch.tensor(train_labels)
-validation_labels = torch.tensor(validation_labels)
-
-train_masks = torch.tensor(train_masks)
-validation_masks = torch.tensor(validation_masks)
-```
 
 We'll also create an iterator for our dataset using the torch DataLoader class. This helps save on memory during training because, unlike a for loop, with an iterator the entire dataset does not need to be loaded into memory.
 
 
 ```python
-from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
+from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 
 # The DataLoader needs to know our batch size for training, so we specify it 
-# here.
-# For fine-tuning BERT on a specific task, the authors recommend a batch size of
-# 16 or 32.
-
+# here. For fine-tuning BERT on a specific task, the authors recommend a batch 
+# size of 16 or 32.
 batch_size = 32
 
-# Create the DataLoader for our training set.
-train_data = TensorDataset(train_inputs, train_masks, train_labels)
-train_sampler = RandomSampler(train_data)
-train_dataloader = DataLoader(train_data, sampler=train_sampler, batch_size=batch_size)
+# Create the DataLoaders for our training and validation sets.
+# We'll take training samples in random order. 
+train_dataloader = DataLoader(
+            train_dataset,  # The training samples.
+            sampler = RandomSampler(train_dataset), # Select batches randomly
+            batch_size = batch_size # Trains with this batch size.
+        )
 
-# Create the DataLoader for our validation set.
-validation_data = TensorDataset(validation_inputs, validation_masks, validation_labels)
-validation_sampler = SequentialSampler(validation_data)
-validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, batch_size=batch_size)
-
+# For validation the order doesn't matter, so we'll just read them sequentially.
+validation_dataloader = DataLoader(
+            val_dataset, # The validation samples.
+            sampler = SequentialSampler(val_dataset), # Pull out batches sequentially.
+            batch_size = batch_size # Evaluate with this batch size.
+        )
 ```
 
 # 4. Train Our Classification Model
@@ -773,6 +730,7 @@ We'll be using [BertForSequenceClassification](https://huggingface.co/transforme
 OK, let's load BERT! There are a few different pre-trained BERT models available. "bert-base-uncased" means the version that has only lowercase letters ("uncased") and is the smaller version of the two ("base" vs "large").
 
 The documentation for `from_pretrained` can be found [here](https://huggingface.co/transformers/v2.2.0/main_classes/model.html#transformers.PreTrainedModel.from_pretrained), with the additional parameters defined [here](https://huggingface.co/transformers/v2.2.0/main_classes/configuration.html#transformers.PretrainedConfig).
+
 
 ```python
 from transformers import BertForSequenceClassification, AdamW, BertConfig
@@ -872,10 +830,16 @@ for p in params[-4:]:
 
 Now that we have our model loaded we need to grab the training hyperparameters from within the stored model.
 
-For the purposes of fine-tuning, the authors recommend choosing from the following values:
-- Batch size: 16, 32  (We chose 32 when creating our DataLoaders).
-- Learning rate (Adam): 5e-5, 3e-5, 2e-5  (We'll use 2e-5).
-- Number of epochs: 2, 3, 4  (We'll use 4).
+For the purposes of fine-tuning, the authors recommend choosing from the following values (from Appendix A.3 of the [BERT paper](https://arxiv.org/pdf/1810.04805.pdf)):
+
+>- **Batch size:** 16, 32  
+- **Learning rate (Adam):** 5e-5, 3e-5, 2e-5  
+- **Number of epochs:** 2, 3, 4 
+
+We chose:
+* Batch size: 32 (set when creating our DataLoaders)
+* Learning rate: 2e-5
+* Epochs: 4 (we'll see that this is probably too many...)
 
 The epsilon parameter `eps = 1e-8` is "a very small number to prevent any division by zero in the implementation" (from [here](https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/)).
 
@@ -896,10 +860,13 @@ optimizer = AdamW(model.parameters(),
 ```python
 from transformers import get_linear_schedule_with_warmup
 
-# Number of training epochs (authors recommend between 2 and 4)
+# Number of training epochs. The BERT authors recommend between 2 and 4. 
+# We chose to run for 4, but we'll see later that this may be over-fitting the
+# training data.
 epochs = 4
 
-# Total number of training steps is number of batches * number of epochs.
+# Total number of training steps is [number of batches] x [number of epochs]. 
+# (Note that this is not the same as the number of training samples).
 total_steps = len(train_dataloader) * epochs
 
 # Create the learning rate scheduler.
@@ -910,9 +877,11 @@ scheduler = get_linear_schedule_with_warmup(optimizer,
 
 ## 4.3. Training Loop
 
-Below is our training loop. There's a lot going on, but fundamentally for each pass in our loop we have a trianing phase and a validation phase. At each pass we need to:
+Below is our training loop. There's a lot going on, but fundamentally for each pass in our loop we have a trianing phase and a validation phase. 
 
-Training loop:
+> *Thank you to [Stas Bekman](https://ca.linkedin.com/in/stasbekman) for contributing the insights and code for using validation loss to detect over-fitting!*
+
+**Training:**
 - Unpack our data inputs and labels
 - Load data onto the GPU for acceleration
 - Clear out the gradients calculated in the previous pass. 
@@ -922,13 +891,15 @@ Training loop:
 - Tell the network to update parameters with optimizer.step()
 - Track variables for monitoring progress
 
-Evalution loop:
+**Evalution:**
 - Unpack our data inputs and labels
 - Load data onto the GPU for acceleration
 - Forward pass (feed input data through the network)
 - Compute loss on our validation data and track variables for monitoring progress
 
-So please read carefully through the comments to get an understanding of what's happening. If you're unfamiliar with pytorch a quick look at some of their [beginner tutorials](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#sphx-glr-beginner-blitz-cifar10-tutorial-py) will help show you that training loops really involve only a few simple steps; the rest is usually just decoration and logging.  
+Pytorch hides all of the detailed calculations from us, but we've commented the code to point out which of the above steps are happening on each line. 
+
+> *PyTorch also has some [beginner tutorials](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#sphx-glr-beginner-blitz-cifar10-tutorial-py) which you may also find helpful.*
 
 Define a helper function for calculating accuracy.
 
@@ -943,7 +914,7 @@ def flat_accuracy(preds, labels):
     return np.sum(pred_flat == labels_flat) / len(labels_flat)
 ```
 
-Helper function for formatting elapsed times.
+Helper function for formatting elapsed times as `hh:mm:ss`
 
 
 
@@ -968,10 +939,10 @@ We're ready to kick off the training!
 
 ```python
 import random
+import numpy as np
 
 # This training code is based on the `run_glue.py` script here:
 # https://github.com/huggingface/transformers/blob/5bfcd0485ece086ebcbed2d008813037968a9e58/examples/run_glue.py#L128
-
 
 # Set the seed value all over the place to make this reproducible.
 seed_val = 42
@@ -981,8 +952,12 @@ np.random.seed(seed_val)
 torch.manual_seed(seed_val)
 torch.cuda.manual_seed_all(seed_val)
 
-# Store the average loss after each epoch so we can plot them.
-loss_values = []
+# We'll store a number of quantities such as training and validation loss, 
+# validation accuracy, and timings.
+training_stats = []
+
+# Measure the total training time for the whole run.
+total_t0 = time.time()
 
 # For each epoch...
 for epoch_i in range(0, epochs):
@@ -1001,7 +976,7 @@ for epoch_i in range(0, epochs):
     t0 = time.time()
 
     # Reset the total loss for this epoch.
-    total_loss = 0
+    total_train_loss = 0
 
     # Put the model into training mode. Don't be mislead--the call to 
     # `train` just changes the *mode*, it doesn't *perform* the training.
@@ -1040,24 +1015,22 @@ for epoch_i in range(0, epochs):
         model.zero_grad()        
 
         # Perform a forward pass (evaluate the model on this training batch).
-        # This will return the loss (rather than the model output) because we
-        # have provided the `labels`.
         # The documentation for this `model` function is here: 
         # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-        outputs = model(b_input_ids, 
-                    token_type_ids=None, 
-                    attention_mask=b_input_mask, 
-                    labels=b_labels)
-        
-        # The call to `model` always returns a tuple, so we need to pull the 
-        # loss value out of the tuple.
-        loss = outputs[0]
+        # It returns different numbers of parameters depending on what arguments
+        # arge given and what flags are set. For our useage here, it returns
+        # the loss (because we provided labels) and the "logits"--the model
+        # outputs prior to activation.
+        loss, logits = model(b_input_ids, 
+                             token_type_ids=None, 
+                             attention_mask=b_input_mask, 
+                             labels=b_labels)
 
         # Accumulate the training loss over all of the batches so that we can
         # calculate the average loss at the end. `loss` is a Tensor containing a
         # single value; the `.item()` function just returns the Python value 
         # from the tensor.
-        total_loss += loss.item()
+        total_train_loss += loss.item()
 
         # Perform a backward pass to calculate the gradients.
         loss.backward()
@@ -1074,15 +1047,15 @@ for epoch_i in range(0, epochs):
         # Update the learning rate.
         scheduler.step()
 
-    # Calculate the average loss over the training data.
-    avg_train_loss = total_loss / len(train_dataloader)            
+    # Calculate the average loss over all of the batches.
+    avg_train_loss = total_train_loss / len(train_dataloader)            
     
-    # Store the loss value for plotting the learning curve.
-    loss_values.append(avg_train_loss)
+    # Measure how long this epoch took.
+    training_time = format_time(time.time() - t0)
 
     print("")
     print("  Average training loss: {0:.2f}".format(avg_train_loss))
-    print("  Training epcoh took: {:}".format(format_time(time.time() - t0)))
+    print("  Training epcoh took: {:}".format(training_time))
         
     # ========================================
     #               Validation
@@ -1100,127 +1073,262 @@ for epoch_i in range(0, epochs):
     model.eval()
 
     # Tracking variables 
-    eval_loss, eval_accuracy = 0, 0
-    nb_eval_steps, nb_eval_examples = 0, 0
+    total_eval_accuracy = 0
+    total_eval_loss = 0
+    nb_eval_steps = 0
 
     # Evaluate data for one epoch
     for batch in validation_dataloader:
         
-        # Add batch to GPU
-        batch = tuple(t.to(device) for t in batch)
+        # Unpack this training batch from our dataloader. 
+        #
+        # As we unpack the batch, we'll also copy each tensor to the GPU using 
+        # the `to` method.
+        #
+        # `batch` contains three pytorch tensors:
+        #   [0]: input ids 
+        #   [1]: attention masks
+        #   [2]: labels 
+        b_input_ids = batch[0].to(device)
+        b_input_mask = batch[1].to(device)
+        b_labels = batch[2].to(device)
         
-        # Unpack the inputs from our dataloader
-        b_input_ids, b_input_mask, b_labels = batch
-        
-        # Telling the model not to compute or store gradients, saving memory and
-        # speeding up validation
+        # Tell pytorch not to bother with constructing the compute graph during
+        # the forward pass, since this is only needed for backprop (training).
         with torch.no_grad():        
 
             # Forward pass, calculate logit predictions.
-            # This will return the logits rather than the loss because we have
-            # not provided labels.
             # token_type_ids is the same as the "segment ids", which 
             # differentiates sentence 1 and 2 in 2-sentence tasks.
             # The documentation for this `model` function is here: 
             # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-            outputs = model(b_input_ids, 
-                            token_type_ids=None, 
-                            attention_mask=b_input_mask)
-        
-        # Get the "logits" output by the model. The "logits" are the output
-        # values prior to applying an activation function like the softmax.
-        logits = outputs[0]
+            # Get the "logits" output by the model. The "logits" are the output
+            # values prior to applying an activation function like the softmax.
+            (loss, logits) = model(b_input_ids, 
+                                   token_type_ids=None, 
+                                   attention_mask=b_input_mask,
+                                   labels=b_labels)
+            
+        # Accumulate the validation loss.
+        total_eval_loss += loss.item()
 
         # Move logits and labels to CPU
         logits = logits.detach().cpu().numpy()
         label_ids = b_labels.to('cpu').numpy()
-        
-        # Calculate the accuracy for this batch of test sentences.
-        tmp_eval_accuracy = flat_accuracy(logits, label_ids)
-        
-        # Accumulate the total accuracy.
-        eval_accuracy += tmp_eval_accuracy
 
-        # Track the number of batches
-        nb_eval_steps += 1
+        # Calculate the accuracy for this batch of test sentences, and
+        # accumulate it over all batches.
+        total_eval_accuracy += flat_accuracy(logits, label_ids)
+        
 
     # Report the final accuracy for this validation run.
-    print("  Accuracy: {0:.2f}".format(eval_accuracy/nb_eval_steps))
-    print("  Validation took: {:}".format(format_time(time.time() - t0)))
+    avg_val_accuracy = total_eval_accuracy / len(validation_dataloader)
+    print("  Accuracy: {0:.2f}".format(avg_val_accuracy))
+
+    # Calculate the average loss over all of the batches.
+    avg_val_loss = total_eval_loss / len(validation_dataloader)
+    
+    # Measure how long the validation run took.
+    validation_time = format_time(time.time() - t0)
+    
+    print("  Validation Loss: {0:.2f}".format(avg_val_loss))
+    print("  Validation took: {:}".format(validation_time))
+
+    # Record all statistics from this epoch.
+    training_stats.append(
+        {
+            'epoch': epoch_i + 1,
+            'Training Loss': avg_train_loss,
+            'Valid. Loss': avg_val_loss,
+            'Valid. Accur.': avg_val_accuracy,
+            'Training Time': training_time,
+            'Validation Time': validation_time
+        }
+    )
 
 print("")
 print("Training complete!")
+
+print("Total training took {:} (h:mm:ss)".format(format_time(time.time()-total_t0)))
 ```
 
     
     ======== Epoch 1 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:11.
-      Batch    80  of    241.    Elapsed: 0:00:21.
-      Batch   120  of    241.    Elapsed: 0:00:31.
-      Batch   160  of    241.    Elapsed: 0:00:42.
-      Batch   200  of    241.    Elapsed: 0:00:52.
-      Batch   240  of    241.    Elapsed: 0:01:03.
+      Batch    40  of    241.    Elapsed: 0:00:08.
+      Batch    80  of    241.    Elapsed: 0:00:17.
+      Batch   120  of    241.    Elapsed: 0:00:25.
+      Batch   160  of    241.    Elapsed: 0:00:34.
+      Batch   200  of    241.    Elapsed: 0:00:42.
+      Batch   240  of    241.    Elapsed: 0:00:51.
     
       Average training loss: 0.50
-      Training epcoh took: 0:01:03
+      Training epcoh took: 0:00:51
     
     Running Validation...
-      Accuracy: 0.79
+      Accuracy: 0.80
+      Validation Loss: 0.45
       Validation took: 0:00:02
     
     ======== Epoch 2 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:11.
-      Batch    80  of    241.    Elapsed: 0:00:21.
-      Batch   120  of    241.    Elapsed: 0:00:32.
-      Batch   160  of    241.    Elapsed: 0:00:42.
-      Batch   200  of    241.    Elapsed: 0:00:52.
-      Batch   240  of    241.    Elapsed: 0:01:03.
+      Batch    40  of    241.    Elapsed: 0:00:08.
+      Batch    80  of    241.    Elapsed: 0:00:17.
+      Batch   120  of    241.    Elapsed: 0:00:25.
+      Batch   160  of    241.    Elapsed: 0:00:34.
+      Batch   200  of    241.    Elapsed: 0:00:42.
+      Batch   240  of    241.    Elapsed: 0:00:51.
     
       Average training loss: 0.32
-      Training epcoh took: 0:01:03
+      Training epcoh took: 0:00:51
     
     Running Validation...
-      Accuracy: 0.82
+      Accuracy: 0.81
+      Validation Loss: 0.46
       Validation took: 0:00:02
     
     ======== Epoch 3 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:11.
-      Batch    80  of    241.    Elapsed: 0:00:21.
-      Batch   120  of    241.    Elapsed: 0:00:32.
-      Batch   160  of    241.    Elapsed: 0:00:42.
-      Batch   200  of    241.    Elapsed: 0:00:52.
-      Batch   240  of    241.    Elapsed: 0:01:03.
+      Batch    40  of    241.    Elapsed: 0:00:08.
+      Batch    80  of    241.    Elapsed: 0:00:17.
+      Batch   120  of    241.    Elapsed: 0:00:25.
+      Batch   160  of    241.    Elapsed: 0:00:34.
+      Batch   200  of    241.    Elapsed: 0:00:42.
+      Batch   240  of    241.    Elapsed: 0:00:51.
     
-      Average training loss: 0.20
-      Training epcoh took: 0:01:03
+      Average training loss: 0.22
+      Training epcoh took: 0:00:51
     
     Running Validation...
       Accuracy: 0.82
+      Validation Loss: 0.49
       Validation took: 0:00:02
     
     ======== Epoch 4 / 4 ========
     Training...
-      Batch    40  of    241.    Elapsed: 0:00:10.
-      Batch    80  of    241.    Elapsed: 0:00:21.
-      Batch   120  of    241.    Elapsed: 0:00:31.
-      Batch   160  of    241.    Elapsed: 0:00:42.
-      Batch   200  of    241.    Elapsed: 0:00:52.
-      Batch   240  of    241.    Elapsed: 0:01:03.
+      Batch    40  of    241.    Elapsed: 0:00:08.
+      Batch    80  of    241.    Elapsed: 0:00:17.
+      Batch   120  of    241.    Elapsed: 0:00:25.
+      Batch   160  of    241.    Elapsed: 0:00:34.
+      Batch   200  of    241.    Elapsed: 0:00:42.
+      Batch   240  of    241.    Elapsed: 0:00:51.
     
-      Average training loss: 0.14
-      Training epcoh took: 0:01:03
+      Average training loss: 0.16
+      Training epcoh took: 0:00:51
     
     Running Validation...
       Accuracy: 0.82
+      Validation Loss: 0.55
       Validation took: 0:00:02
     
     Training complete!
+    Total training took 0:03:30 (h:mm:ss)
 
 
-Let's take a look at our training loss over all batches:
+Let's view the summary of the training process.
+
+
+```python
+import pandas as pd
+
+# Display floats with two decimal places.
+pd.set_option('precision', 2)
+
+# Create a DataFrame from our training statistics.
+df_stats = pd.DataFrame(data=training_stats)
+
+# Use the 'epoch' as the row index.
+df_stats = df_stats.set_index('epoch')
+
+# A hack to force the column headers to wrap.
+#df = df.style.set_table_styles([dict(selector="th",props=[('max-width', '70px')])])
+
+# Display the table.
+df_stats
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Training Loss</th>
+      <th>Valid. Loss</th>
+      <th>Valid. Accur.</th>
+      <th>Training Time</th>
+      <th>Validation Time</th>
+    </tr>
+    <tr>
+      <th>epoch</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>0.50</td>
+      <td>0.45</td>
+      <td>0.80</td>
+      <td>0:00:51</td>
+      <td>0:00:02</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.32</td>
+      <td>0.46</td>
+      <td>0.81</td>
+      <td>0:00:51</td>
+      <td>0:00:02</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.22</td>
+      <td>0.49</td>
+      <td>0.82</td>
+      <td>0:00:51</td>
+      <td>0:00:02</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.16</td>
+      <td>0.55</td>
+      <td>0.82</td>
+      <td>0:00:51</td>
+      <td>0:00:02</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Notice that, while the the training loss is going down with each epoch, the validation loss is increasing! This suggests that we are training our model too long, and it's over-fitting on the training data. 
+
+(For reference, we are using 7,695 training samples and 856 validation samples).
+
+Validation Loss is a more precise measure than accuracy, because with accuracy we don't care about the exact output value, but just which side of a threshold it falls on. 
+
+If we are predicting the correct answer, but with less confidence, then validation loss will catch this, while accuracy will not.
 
 
 ```python
@@ -1237,18 +1345,20 @@ sns.set(font_scale=1.5)
 plt.rcParams["figure.figsize"] = (12,6)
 
 # Plot the learning curve.
-plt.plot(loss_values, 'b-o')
+plt.plot(df_stats['Training Loss'], 'b-o', label="Training")
+plt.plot(df_stats['Valid. Loss'], 'g-o', label="Validation")
 
 # Label the plot.
-plt.title("Training loss")
+plt.title("Training & Validation Loss")
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
+plt.legend()
+plt.xticks([1, 2, 3, 4])
 
 plt.show()
 ```
 
-
-![Learning Curve](http://www.mccormickml.com/assets/BERT/learning_curve.png)
+![Learning Curve - Training & Validation Loss](http://www.mccormickml.com/assets/BERT/CoLA/learning_curve_w_validation_loss.png)
 
 
 # 5. Performance On Test Set
@@ -1277,43 +1387,42 @@ labels = df.label.values
 
 # Tokenize all of the sentences and map the tokens to thier word IDs.
 input_ids = []
+attention_masks = []
 
 # For every sentence...
 for sent in sentences:
-    # `encode` will:
+    # `encode_plus` will:
     #   (1) Tokenize the sentence.
     #   (2) Prepend the `[CLS]` token to the start.
     #   (3) Append the `[SEP]` token to the end.
     #   (4) Map tokens to their IDs.
-    encoded_sent = tokenizer.encode(
+    #   (5) Pad or truncate the sentence to `max_length`
+    #   (6) Create attention masks for [PAD] tokens.
+    encoded_dict = tokenizer.encode_plus(
                         sent,                      # Sentence to encode.
                         add_special_tokens = True, # Add '[CLS]' and '[SEP]'
+                        max_length = 64,           # Pad & truncate all sentences.
+                        pad_to_max_length = True,
+                        return_attention_mask = True,   # Construct attn. masks.
+                        return_tensors = 'pt',     # Return pytorch tensors.
                    )
     
-    input_ids.append(encoded_sent)
+    # Add the encoded sentence to the list.    
+    input_ids.append(encoded_dict['input_ids'])
+    
+    # And its attention mask (simply differentiates padding from non-padding).
+    attention_masks.append(encoded_dict['attention_mask'])
 
-# Pad our input tokens
-input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, 
-                          dtype="long", truncating="post", padding="post")
-
-# Create attention masks
-attention_masks = []
-
-# Create a mask of 1s for each token followed by 0s for padding
-for seq in input_ids:
-  seq_mask = [float(i>0) for i in seq]
-  attention_masks.append(seq_mask) 
-
-# Convert to tensors.
-prediction_inputs = torch.tensor(input_ids)
-prediction_masks = torch.tensor(attention_masks)
-prediction_labels = torch.tensor(labels)
+# Convert the lists into tensors.
+input_ids = torch.cat(input_ids, dim=0)
+attention_masks = torch.cat(attention_masks, dim=0)
+labels = torch.tensor(labels)
 
 # Set the batch size.  
 batch_size = 32  
 
 # Create the DataLoader.
-prediction_data = TensorDataset(prediction_inputs, prediction_masks, prediction_labels)
+prediction_data = TensorDataset(input_ids, attention_masks, labels)
 prediction_sampler = SequentialSampler(prediction_data)
 prediction_dataloader = DataLoader(prediction_data, sampler=prediction_sampler, batch_size=batch_size)
 ```
@@ -1332,7 +1441,7 @@ With the test set prepared, we can apply our fine-tuned model to generate predic
 ```python
 # Prediction on test set
 
-print('Predicting labels for {:,} test sentences...'.format(len(prediction_inputs)))
+print('Predicting labels for {:,} test sentences...'.format(len(input_ids)))
 
 # Put model in evaluation mode
 model.eval()
@@ -1410,7 +1519,7 @@ for i in range(len(true_labels)):
     Calculating Matthews Corr. Coef. for each batch...
 
 
-    /usr/local/lib/python3.6/dist-packages/sklearn/metrics/classification.py:872: RuntimeWarning: invalid value encountered in double_scalars
+    /usr/local/lib/python3.6/dist-packages/sklearn/metrics/_classification.py:900: RuntimeWarning: invalid value encountered in double_scalars
       mcc = cov_ytyp / np.sqrt(cov_ytyt * cov_ypyp)
 
 
@@ -1421,57 +1530,50 @@ Each batch has 32 sentences in it, except the last batch which has only (516 % 3
 
 
 ```python
-matthews_set
+# Create a barplot showing the MCC score for each batch of test samples.
+ax = sns.barplot(x=list(range(len(matthews_set))), y=matthews_set, ci=None)
+
+plt.title('MCC Score per Batch')
+plt.ylabel('MCC Score (-1 to +1)')
+plt.xlabel('Batch #')
+
+plt.show()
 ```
 
+![png](http://www.mccormickml.com/assets/BERT/CoLA/mcc_score_by_batch.png)
 
 
-
-    [0.049286405809014416,
-     -0.21684543705982773,
-     0.4040950971038548,
-     0.41179801403140964,
-     0.25365601296401685,
-     0.6777932975034471,
-     0.4879500364742666,
-     0.0,
-     0.8320502943378436,
-     0.8246211251235321,
-     0.9229582069908973,
-     0.647150228929434,
-     0.8150678894028793,
-     0.7141684885491869,
-     0.3268228676411533,
-     0.5844155844155844,
-     0.0]
-
-
+Now we'll combine the results for all of the batches and calculate our final MCC score.
 
 
 ```python
-# Combine the predictions for each batch into a single list of 0s and 1s.
-flat_predictions = [item for sublist in predictions for item in sublist]
+# Combine the results across all batches. 
+flat_predictions = np.concatenate(predictions, axis=0)
+
+# For each sample, pick the label (0 or 1) with the higher score.
 flat_predictions = np.argmax(flat_predictions, axis=1).flatten()
 
 # Combine the correct labels for each batch into a single list.
-flat_true_labels = [item for sublist in true_labels for item in sublist]
+flat_true_labels = np.concatenate(true_labels, axis=0)
 
 # Calculate the MCC
 mcc = matthews_corrcoef(flat_true_labels, flat_predictions)
 
-print('MCC: %.3f' % mcc)
+print('Total MCC: %.3f' % mcc)
 ```
 
-    MCC: 0.529
+    Total MCC: 0.498
 
 
-Cool! In about half an hour and without doing any hyperparameter tuning (adjusting the learning rate, epochs, batch size, ADAM properties, etc.) we are able to get a good score. I should also mention we didn't train on the entire training dataset, but set aside a portion of it as our validation set for legibililty of code.
+Cool! In about half an hour and without doing any hyperparameter tuning (adjusting the learning rate, epochs, batch size, ADAM properties, etc.) we are able to get a good score. 
 
-The library documents the expected accuracy for this benchmark [here](https://huggingface.co/transformers/examples.html#glue).
+> *Note: To maximize the score, we should remove the "validation set" (which we used to help determine how many epochs to train for) and train on the entire training set.*
+
+The library documents the expected accuracy for this benchmark [here](https://huggingface.co/transformers/examples.html#glue) as `49.23`.
 
 You can also look at the official leaderboard [here](https://gluebenchmark.com/leaderboard/submission/zlssuBTm5XRs0aSKbFYGVIVdvbj1/-LhijX9VVmvJcvzKymxy). 
 
-Note that (due to the small dataset size?) the accuracy can vary significantly with different random seeds.
+Note that (due to the small dataset size?) the accuracy can vary significantly between runs.
 
 
 # Conclusion
@@ -1529,13 +1631,12 @@ Let's check out the file sizes, out of curiosity.
 !ls -l --block-size=K ./model_save/
 ```
 
-    total 427964K
-    -rw-r--r-- 1 root root      1K Dec 19 17:33 added_tokens.json
-    -rw-r--r-- 1 root root      1K Dec 19 17:33 config.json
-    -rw-r--r-- 1 root root 427719K Dec 19 17:33 pytorch_model.bin
-    -rw-r--r-- 1 root root      1K Dec 19 17:33 special_tokens_map.json
-    -rw-r--r-- 1 root root      1K Dec 19 17:33 tokenizer_config.json
-    -rw-r--r-- 1 root root    227K Dec 19 17:33 vocab.txt
+    total 427960K
+    -rw-r--r-- 1 root root      2K Mar 18 15:53 config.json
+    -rw-r--r-- 1 root root 427719K Mar 18 15:53 pytorch_model.bin
+    -rw-r--r-- 1 root root      1K Mar 18 15:53 special_tokens_map.json
+    -rw-r--r-- 1 root root      1K Mar 18 15:53 tokenizer_config.json
+    -rw-r--r-- 1 root root    227K Mar 18 15:53 vocab.txt
 
 
 The largest file is the model weights, at around 418 megabytes.
@@ -1545,7 +1646,7 @@ The largest file is the model weights, at around 418 megabytes.
 !ls -l --block-size=M ./model_save/pytorch_model.bin
 ```
 
-    -rw-r--r-- 1 root root 418M Dec 19 17:33 ./model_save/pytorch_model.bin
+    -rw-r--r-- 1 root root 418M Mar 18 15:53 ./model_save/pytorch_model.bin
 
 
 To save your model across Colab Notebook sessions, download it to your local machine, or ideally copy it to your Google Drive.
@@ -1608,3 +1709,31 @@ optimizer_grouped_parameters = [
 # Note - `optimizer_grouped_parameters` only includes the parameter values, not 
 # the names.
 ```
+
+# Revision History
+
+**Version 3** - *Mar 18th, 2020* - (current)
+* Simplified the tokenization and input formatting (for both training and test) by leveraging the `tokenizer.encode_plus` function. 
+`encode_plus` handles padding *and* creates the attention masks for us.
+* Improved explanation of attention masks.
+* Switched to using `torch.utils.data.random_split` for creating the training-validation split.
+* Added a summary table of the training statistics (validation loss, time per epoch, etc.).
+* Added validation loss to the learning curve plot, so we can see if we're overfitting. 
+    * Thank you to [Stas Bekman](https://ca.linkedin.com/in/stasbekman) for contributing this!
+* Displayed the per-batch MCC as a bar plot.
+
+**Version 2** - *Dec 20th, 2019* - [link](https://colab.research.google.com/drive/1Y4o3jh3ZH70tl6mCd76vz_IxX23biCPP)
+* huggingface renamed their library to `transformers`. 
+* Updated the notebook to use the `transformers` library.
+
+**Version 1** - *July 22nd, 2019*
+* Initial version.
+
+
+
+## Further Work
+
+* It might make more sense to use the MCC score for “validation accuracy”, but I’ve left it out so as not to have to explain it earlier in the Notebook.
+* Seeding -- I’m not convinced that setting the seed values at the beginning of the training loop is actually creating reproducible results…
+* The MCC score seems to vary substantially across different runs. It would be interesting to run this example a number of times and show the variance.
+
