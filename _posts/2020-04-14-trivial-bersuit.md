@@ -1,11 +1,11 @@
- ---
- layout: post
- title:  "Trivial BERsuiT - How much trivia does BERT know?"
- date:   2020-04-14 8:00:00 -0800
- comments: true
- image: /assets/BERT/bert_trivia_correct.png
- tags: BERT, Transformers, Trivia, World Knowledge, Masked Language Model, BertForMaskedLM, Natural Language Processing, NLP
- ---
+---
+layout: post
+title:  "Trivial BERsuiT - How much trivia does BERT know?"
+date:   2020-04-14 8:00:00 -0800
+comments: true
+image: /assets/BERT/bert_trivia_correct.png
+tags: BERT, Transformers, Trivia, World Knowledge, Masked Language Model, BertForMaskedLM, Natural Language Processing, NLP
+---
 
 *by Chris McCormick*
 
