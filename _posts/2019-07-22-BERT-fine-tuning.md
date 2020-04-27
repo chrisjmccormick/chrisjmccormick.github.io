@@ -1737,3 +1737,5 @@ optimizer_grouped_parameters = [
 * Seeding -- I’m not convinced that setting the seed values at the beginning of the training loop is actually creating reproducible results…
 * The MCC score seems to vary substantially across different runs. It would be interesting to run this example a number of times and show the variance.
 
+### Cite
+Chris McCormick and Nick Ryan. (2019, July 22). *BERT Fine-Tuning Tutorial with PyTorch*. Retrieved from http://www.mccormickml.com
