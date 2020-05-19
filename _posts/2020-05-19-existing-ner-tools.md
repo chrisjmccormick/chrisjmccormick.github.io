@@ -7,8 +7,6 @@ image: https://drive.google.com/uc?export=view&id=1SfkyBN53SAgfr3yjMLTeu_l1e6Igv
 tags: machine learning, deep learning, NER, named entity recognition, NLP, natural language processing, python, BERT, spacy, stanza, flair, pytorch, fine-tune, tutorial, example code, NLP library
 ---
 
-*by Nick Ryan and Chris McCormick*
-
 In conjunction with our tutorial for fine-tuning BERT on Named Entity Recognition (NER) tasks [here](https://www.chrismccormick.ai/offers/sFfjji7i), we wanted to provide some practical guidance and resources for building your own NER application since fine-tuning BERT may not be the best solution for every NER application. 
 
 In this post, we will:
@@ -18,6 +16,8 @@ In this post, we will:
 3. Share some resources we've found comparing and benchmarking different NER tools.
 
 You can also find the Colab Notebook version of this post [here](https://colab.research.google.com/drive/16mNNJRLs0FEHEA8PhQl4IzeK9GvJ27OJ).
+
+*by Nick Ryan and Chris McCormick*
 
 ## Contents
  
