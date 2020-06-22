@@ -31,6 +31,7 @@ github:
 pages_list:       
   About: '/about/'
   Tutorials: '/tutorials/'
+  Store: 'https://www.chrismccormick.ai/store'
   Archive: '/archive/'
 
 # Gems
