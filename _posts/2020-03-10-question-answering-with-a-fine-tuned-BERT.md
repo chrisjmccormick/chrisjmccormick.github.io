@@ -51,6 +51,8 @@ The two pieces of text are separated by the special `[SEP]` token.
 
 BERT also uses "Segment Embeddings" to differentiate the question from the reference text. These are simply two embeddings (for segments "A" and "B") that BERT learned, and which it adds to the token embeddings before feeding them into the input layer. 
 
+[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://www.chrismccormick.ai/offers/nstHFTrM/checkout)
+
 ## Start & End Token Classifiers
 
 BERT needs to highlight a "span" of text containing the answer--this is represented as simply predicting which token marks the start of the answer, and which token marks the end.
