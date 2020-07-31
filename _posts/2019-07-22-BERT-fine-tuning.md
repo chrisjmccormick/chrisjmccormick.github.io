@@ -59,7 +59,7 @@ In this tutorial, we will use BERT to train a text classifier. Specifically, we 
 
     * Finally, this simple fine-tuning procedure (typically adding one fully-connected layer on top of BERT and training for a few epochs) was shown to achieve state of the art results with minimal task-specific adjustments for a wide variety of tasks: classification, language inference, semantic similarity, question answering, etc. Rather than implementing custom and sometimes-obscure architetures shown to work well on a specific task, simply fine-tuning BERT is shown to be a better (or at least equal) alternative.
 
-
+[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://www.chrismccormick.ai/offers/nstHFTrM/checkout)
 
 ### A Shift in NLP
 
