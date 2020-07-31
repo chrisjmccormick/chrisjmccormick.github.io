@@ -55,6 +55,8 @@ From an educational standpoint, a close examination of BERT word embeddings is a
 
 Onward!
 
+[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://www.chrismccormick.ai/offers/nstHFTrM/checkout)
+
 # 1. Loading Pre-Trained BERT
 
 Install the pytorch interface for BERT by Hugging Face. (This library contains interfaces for other pretrained language models like OpenAI's GPT and GPT-2.) 
