@@ -4,7 +4,7 @@ title:  "GPU Benchmarks for Fine-Tuning BERT"
 date:   2020-07-21 8:00:00 -0800
 comments: true
 image: https://drive.google.com/uc?export=view&id=1V5IJqcui7iAgsiT86Vev_EL4iu-81lUl
-tags: Google Colab, Tesla, GPU, GPU Benchmarks, BERT, Transformers, huggingface, Machine Learning, Natural Language Processing, NLP
+tags: Google Colab, Nvidia, Tesla, GPU, GPU Benchmarks, BERT, Transformers, huggingface, Machine Learning, Natural Language Processing, NLP
 ---
 
 While working on my recent [Multi-Class Classification Example](https://www.chrismccormick.ai/offers/z8d2xA2T/checkout), I was having trouble with running out of memory on the GPU in Colab--a pretty frustrating issue! 
