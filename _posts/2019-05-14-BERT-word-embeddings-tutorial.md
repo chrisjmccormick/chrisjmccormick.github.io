@@ -55,7 +55,7 @@ From an educational standpoint, a close examination of BERT word embeddings is a
 
 Onward!
 
-[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://www.chrismccormick.ai/offers/nstHFTrM/checkout)
+[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://bit.ly/2DmQkxh)
 
 # 1. Loading Pre-Trained BERT
 
