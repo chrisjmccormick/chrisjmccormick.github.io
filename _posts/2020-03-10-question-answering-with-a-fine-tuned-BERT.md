@@ -51,7 +51,7 @@ The two pieces of text are separated by the special `[SEP]` token.
 
 BERT also uses "Segment Embeddings" to differentiate the question from the reference text. These are simply two embeddings (for segments "A" and "B") that BERT learned, and which it adds to the token embeddings before feeding them into the input layer. 
 
-[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://www.chrismccormick.ai/offers/nstHFTrM/checkout)
+[![BERT eBook Display Ad](http://www.mccormickml.com/assets/BERT/BERT_eBook_Display_Ad.png)](https://bit.ly/2BZCr7u)
 
 ## Start & End Token Classifiers
 
