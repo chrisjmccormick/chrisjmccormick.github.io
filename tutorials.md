@@ -11,8 +11,8 @@ title: Tutorials
 * [BERT Research Series](https://www.youtube.com/playlist?list=PLam9sigHPGwOBuH4_4fr-XvDbe5uneaf6) on YouTube - Follow along in this 8 episode series as I make sense of how BERT works.
     * The culmination of this series was my [BERT eBook](https://bit.ly/2XNj5Ks)!
 * BERT Application Examples:
-    * Word Embeddings ([post][bert_word_embeddings], [notebook](https://colab.research.google.com/drive/1ZQvuAVwA3IjybezQOXnrXMGAnMyZRuPU))
-    * Sentence Classification ([post][bert_sentence_classification], [notebook](https://colab.research.google.com/drive/1Y4o3jh3ZH70tl6mCd76vz_IxX23biCPP))
+    * Word Embeddings ([post][bert_word_embeddings], [notebook](https://colab.research.google.com/drive/1yFphU6PW9Uo6lmDly_ud9a6c4RCYlwdX))
+    * Sentence Classification ([post][bert_sentence_classification], [notebook](https://colab.research.google.com/drive/1pTuQhug6Dhl9XalKB0zUGf4FIdYFlpcX))
     * Document Classification ([video](https://youtu.be/_eSGWNqKeeY), [notebook](https://bit.ly/2FcIdEb)
     * Named Entity Recognition ([notebook](https://bit.ly/3fKhvzo))
     * Multilingual BERT ([notebook](https://bit.ly/3itodLE))
