@@ -8,15 +8,19 @@ title: Tutorials
 ### BERT
 [![BERT Architecture][bert_layers]][bert_layers]
 
-* [BERT Research Series](https://www.youtube.com/playlist?list=PLam9sigHPGwOBuH4_4fr-XvDbe5uneaf6) on YouTube.
+* [BERT Research Series](https://www.youtube.com/playlist?list=PLam9sigHPGwOBuH4_4fr-XvDbe5uneaf6) on YouTube - Follow along in this 8 episode series as I make sense of how BERT works.
+    * The culmination of this series was my [BERT eBook](https://bit.ly/2XNj5Ks)!
 * BERT Application Examples:
     * Word Embeddings ([post][bert_word_embeddings], [notebook](https://colab.research.google.com/drive/1ZQvuAVwA3IjybezQOXnrXMGAnMyZRuPU))
     * Sentence Classification ([post][bert_sentence_classification], [notebook](https://colab.research.google.com/drive/1Y4o3jh3ZH70tl6mCd76vz_IxX23biCPP))
-    * Document Classification ([video](https://youtu.be/_eSGWNqKeeY), [notebook](https://www.chrismccormick.ai/offers/uzNxadxB/checkout))
+    * Document Classification ([video](https://youtu.be/_eSGWNqKeeY), [notebook](https://bit.ly/2FcIdEb)
+    * Named Entity Recognition ([notebook](https://bit.ly/3fKhvzo))
+    * Multilingual BERT ([notebook](https://bit.ly/3itodLE))
+    
 
 <hr/>
 
-[bert_layers]: {{ site.url }}/assets/BERT/CLS_token_500x606.png
+[bert_layers]: {{ site.url }}/assets/BERT/bert_architecture_tutorials_page.png
 [bert_word_embeddings]: {{ site.url }}/2019/05/14/BERT-word-embeddings-tutorial/
 [bert_sentence_classification]: {{ site.url }}/2019/07/22/BERT-fine-tuning/
 
