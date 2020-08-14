@@ -25,6 +25,14 @@ You can read through this post, or just use it as a reference for the YouTube vi
 
 <br/>
 
+<div class="message">
+UPDATE May, 2020: The BERT Research Series is complete! 
+
+I've published a new eBook, <a href="https://bit.ly/2CrfdHC">The Inner Workings of BERT</a>, to provide a comprehensive tutorial on the subject.
+
+All 8 episodes of the research series are also still available on YouTube <a href="https://www.youtube.com/watch?v=FKlPCK1uFrc&list=PLam9sigHPGwOBuH4_4fr-XvDbe5uneaf6">here</a>.
+</div>
+
 **Contents**
     
 * TOC
