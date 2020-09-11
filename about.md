@@ -16,7 +16,7 @@ Here are some of the places you can find me and my work:
     * Typically with (thoroughly!) commented example code on [GitHub](http://github.com/chrisjmccormick/).
 * [eBooks](http://bit.ly/2X8tcXE) and [Video Courses](https://www.chrismccormick.ai/word2vec-the-course) at ChrisMcCormick.AI. 
 * [Answers on Quora](https://www.quora.com/profile/Chris-McCormick-12)
-* Insights & answers on my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/) (*Coming Soon!*).
+* Insights & answers on my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/).
 
 Education & Experience
 ======================
