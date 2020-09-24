@@ -35,7 +35,7 @@ We'll train the neural network to do this by feeding it word pairs found in our 
 
 The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of ("Soviet", "Union") than it is of ("Soviet", "Sasquatch"). When the training is finished, if you give it the word "Soviet" as input, then it will output a much higher probability for "Union" or "Russia" than it will for "Sasquatch".
 
-[![The Inner Workings of word2vec][inner_workings_ad]](http://bit.ly/2X8tcXE)
+[![The Inner Workings of word2vec][inner_workings_ad]](https://bit.ly/2G8tLxe)
 
 Model Details
 =============
@@ -112,7 +112,7 @@ You may have noticed that the skip-gram neural network contains a huge number of
 
 Other Resources
 ===============
-[![The Inner Workings of word2vec][inner_workings_ad]](http://bit.ly/2X8tcXE)
+[![The Inner Workings of word2vec][inner_workings_ad]](https://bit.ly/2G8tLxe)
 
 Did you know that the word2vec model can also be applied to non-text data for recommender systems and ad targeting?  Instead of learning vectors from a sequence of words, you can learn vectors from a sequence of user actions. Read more about this in my new post [here](http://mccormickml.com/2018/06/15/applying-word2vec-to-recommenders-and-advertising/). 
 
