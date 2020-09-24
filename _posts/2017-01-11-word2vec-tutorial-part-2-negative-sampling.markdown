@@ -139,7 +139,7 @@ Maybe you still have some questions, though...
 * Did you know that Mikolov, the main author of word2vec, has published further work on word2vec in the form of the fastText library from Facebook?
 * Want to see all of the core word2vec components implemented from scratch in Python?
 
-You’ll find all of the above content in the new Pro edition of my eBook [The Inner Workings of word2vec - Pro Edition](http://bit.ly/2UAlgwp). Give it a look, I think you’ll find it really valuable!  
+You’ll find all of the above content in my eBook [The Inner Workings of word2vec](https://bit.ly/302oIWk). Give it a look, I think you’ll find it really valuable!  
 
 ### Cite
 McCormick, C. (2017, January 11). *Word2Vec Tutorial Part 2 - Negative Sampling*. Retrieved from http://www.mccormickml.com
