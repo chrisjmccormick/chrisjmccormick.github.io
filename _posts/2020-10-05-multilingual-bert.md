@@ -433,6 +433,4 @@ For Indonesian, I would still want to try both approaches, but I suspect that XL
 
 # Example Notebooks
 
-The two Notebooks referenced in this post (one implements the Multilingual experiments and the other implements the Monolingual experiments) are available to purchase from my site [here](https://bit.ly/3irTX3y).
-
-I also provide a walkthrough of these Notebooks on YouTube here (Coming Soon!).
+The two Notebooks referenced in this post (one implements the Multilingual experiments and the other implements the Monolingual experiments) are available to purchase from my site [here](https://bit.ly/3irTX3y). I also provide a walkthrough of these Notebooks on YouTube [here](https://www.youtube.com/playlist?list=PLam9sigHPGwM27p3FQpLK1nt0eioiM-cq).
