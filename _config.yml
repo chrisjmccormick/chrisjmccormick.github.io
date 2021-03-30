@@ -32,6 +32,7 @@ pages_list:
   About: '/about/'
   Tutorials: '/tutorials/'
   Store: 'https://www.chrismccormick.ai/store'
+  Forum: 'https://discourse.chrismccormick.ai/'
   Archive: '/archive/'
 
 # Gems
