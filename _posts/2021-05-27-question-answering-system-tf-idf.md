@@ -7,9 +7,6 @@ image: https://drive.google.com/uc?export=view&id=1EFXsuUDkykjeieTT8M9b76w0ZMcOm
 tags: tutorial, python, pytorch, huggingface, deep learning, NLP, natural language processing, question answering, BERT, SQUAD, TF-IDF, chatbot, conversational AI
 ---
 
-
-# Introduction
-
 In this post, we'll create a very simple question answering system that, given a natural language question, returns the most likely answers from a corpus of documents. 
 
 This represents an easy to follow and low-effort example of a question answering system that can still be of practical use for you own application if you choose to swap in your own dataset or build something more elaborate on top of this. Additionally, the concepts covered here will be useful in later posts when we look at variations of more complex questions answering systems.
