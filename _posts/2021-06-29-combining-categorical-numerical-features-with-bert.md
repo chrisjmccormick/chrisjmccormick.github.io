@@ -26,6 +26,8 @@ Then, in Section 3, I've implemented a simple strategy to combine *everything* a
 
 There is a GitHub project called the [Multimodal-Toolkit](https://github.com/georgian-io/Multimodal-Toolkit) which is how I learned about this clothing review dataset. The toolkit implements a number of more complicated techniques, but their benchmarks (as well as our results below) show that this simple features-to-text strategy works best for this dataset.
 
+In our weekly discussion group, I talked through this Notebook and we also met with Ken Gu, the author of the Multi-Modal Toolkit! You can watch the recording [here](https://youtu.be/XPt9pIpe1vo).
+
 You can find the Colab Notebook version of this post [here](https://colab.research.google.com/drive/1YRHK4HO8RktGzlYmGjBo056kzVD4_j9o).
 
 By Chris McCormick
@@ -836,7 +838,7 @@ The simplest way to handle these non-text features is to convert them into text 
 
 I figured that BERT would make better use of these additional features given some additional context... For example, to handle the "Age" feature, instead of just prepending the number "33" on its own, I prepend the text "I am 33 years old."
 
-
+> UPDATE: I learned from Ken that they simply added the features as strings separated by the “[SEP]” token (e.g., “Dresses [SEP] General [SEP] 34 [SEP] 5 …”) Ken’s approach achieved the same test set score in their experiments, and saves significantly on the sequence length!
 
 ```python
 # This will hold all of the dataset samples, as strings.
@@ -1862,6 +1864,8 @@ Here are the final scores:
 | BERT, all features to text           | 0.968    |
 
 We managed to outperform the other strategies! 
+
+> UPDATE: One of our discussion group attendees, Jon, pointed out that (1) MCC is probably a better metric for this dataset due to the class imbalance, and (2) that it’s good practice to verify that our randomly selected test set has the same class balance as the training set (this probably happened naturally, though, given that the test set has ~2k samples).
 
 # Conclusion
 
