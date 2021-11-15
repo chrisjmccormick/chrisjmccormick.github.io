@@ -19,8 +19,8 @@ sass:
 # About/contact
 author:
   name:              Chris McCormick
-  url:               https://twitter.com/chrisjmccormick
-  email:             chrisjmccormick@in2h2.com
+  url:               https://www.chrismccormick.ai
+  email:             chris@chrismccormick.ai
   
 # Custom vars
 version:             2.0.0
@@ -30,10 +30,8 @@ github:
 # This is the list of pages to include in the header of the website.
 pages_list:       
   About: '/about/'
-  Tutorials: '/tutorials/'
-  Store: 'https://www.chrismccormick.ai/store'
-  Forum: 'https://discourse.chrismccormick.ai/'
-  Archive: '/archive/'
+  Membership: 'https://www.chrismccormick.ai/membership?utm_source=blog&utm_medium=banner&utm_campaign=membership&utm_content=blog_header2'
+  Blog Archive: '/archive/'
 
 # Gems
 gems:
