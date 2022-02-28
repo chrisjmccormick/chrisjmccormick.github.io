@@ -6,27 +6,22 @@ permalink: /about/
 
 ![Profile picture][profile_pic]
 
-I love the field of Machine Learning! Such a fascinating and impactful subject, and also one that’s hard to master. 
+### Formal Bio
 
-I also happen to love the challenge of explaining difficult topics well. I’ve brought together my love of ML and my passion for making tutorials to form my online education business at [ChrisMcCormick.AI](https://www.chrismccormick.ai), which is now my full-time job. 
+Chris is an author of eBooks, tutorial videos, and example code on a variety of Machine Learning topics--particularly on challenging subjects in Natural Language Processing. He’s best known for his word2vec blog posts  (recommended reading for Stanford's NLP class), BERT architecture YouTube series, and example code for a variety of BERT applications.  
 
-Here are some of the places you can find me and my work:
+Chris earned his B.S. from Stanford in 2006 as a software engineer, and has been working in the areas of computer vision, machine learning, and NLP since 2012.
 
-* Written [tutorials](http://www.mccormickml.com/tutorials/) on this blog.
-    * Typically with (thoroughly!) commented example code on [GitHub](http://github.com/chrisjmccormick/).
-* [eBooks](http://bit.ly/2X8tcXE) and [Video Courses](https://www.chrismccormick.ai/word2vec-the-course) at ChrisMcCormick.AI. 
-* [Answers on Quora](https://www.quora.com/profile/Chris-McCormick-12)
-* Insights & answers on my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/).
+His writing and speaking styles are characterized by levity and positioning himself as a fellow learner rather than an authority. Chris loves to create the tutorials that he wishes he could have read--with an emphasis on thoroughness, while still being easy-to-follow. You’ll often find his simple and colorful illustrations reused around the web. His example code follows the same principles--working code is always a great start, but he further prioritizes explanation and readability, with thoughtful organization and detailed comments at every step.
 
-Education & Experience
-======================
+### My Story
 
-<table>
-  <tr><td>2006</td><td>B.S. Electrical Engineering, Stanford University</td></tr>
-  <tr><td>2006 – 2011</td><td>Embedded Software Engineer, Texas Instruments</td></tr>
-  <tr><td>2012 - 2014</td><td>Applications & Development Engineer, CogniMem</td></tr>
-  <tr><td>2015 - 2018</td><td>Research & Applications, Nearist</td></tr>
-  <tr><td>2019 - Present</td><td>Founder, ChrisMcCormick.AI</td></tr>
-</table>
+It was my childhood dream to work on Artifical Intelligence. When I went to Stanford in 2002, I wrote it off as something that was purely academic research, and went down the more practical path of software engineering. Ten years later (in 2012) I made a totally unexpected career change into Computer Vision and Machine Learning, just as Deep Learning was beginning to take off! I'm so grateful that AI has become such an important and practical topic, and that I've been able to work in that space ever since!
+
+Another passion of mine is to gather the insight and knowledge held by one group of people (e.g., the academic Machine Learning community), and to translate it and make it accessible to another group of people that needs it (e.g., software engineers with no ML background). The sudden importance of AI to technology has created exactly that need, and I feel so fortunate to have been positioned with the passion, skills, and opportunity to help fill that role for our engineering community.
+
+### My Content
+
+* In addition to my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/) and this blog, I run a membership site at [ChrisMcCormick.AI](https://www.chrismccormick.ai/membership). 
 
 [profile_pic]: https://chrisjmccormick.files.wordpress.com/2012/12/chrisprofile_portrait_300px.jpg
