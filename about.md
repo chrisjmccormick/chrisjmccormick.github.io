@@ -8,11 +8,11 @@ permalink: /about/
 
 ### Formal Bio
 
-Chris is an author of eBooks, tutorial videos, and example code on a variety of Machine Learning topics--particularly on challenging subjects in Natural Language Processing. He’s best known for his word2vec blog posts  (recommended reading for Stanford's NLP class), BERT architecture YouTube series, and example code for a variety of BERT applications.  
+Chris is an author of **eBooks**, tutorial **videos**, and **example code** on a variety of Machine Learning topics--particularly on challenging subjects in **Natural Language Processing**. He’s best known for his **word2vec** blog posts  (recommended reading for Stanford's NLP class), **BERT** architecture YouTube series, and example code for a variety of BERT applications.  
 
-Chris earned his B.S. from Stanford in 2006 as a software engineer, and has been working in the areas of computer vision, machine learning, and NLP since 2012.
+Chris earned his B.S. from **Stanford** in 2006 as a **software engineer**, and has been working in the areas of computer vision, machine learning, and NLP since 2012.
 
-His writing and speaking styles are characterized by levity and positioning himself as a fellow learner rather than an authority. Chris loves to create the tutorials that he wishes he could have read--with an emphasis on thoroughness, while still being easy-to-follow. You’ll often find his simple and colorful illustrations reused around the web. His example code follows the same principles--working code is always a great start, but he further prioritizes explanation and readability, with thoughtful organization and detailed comments at every step.
+His writing and speaking styles are characterized by levity and positioning himself as a **fellow learner** rather than an authority. Chris loves to create the tutorials that he wishes he could have read--with an emphasis on thoroughness, while still being **easy-to-follow**. You’ll often find his simple and colorful **illustrations** reused around the web. His example code follows the same principles--working code is always a great start, but he further prioritizes explanation and readability, with thoughtful **organization** and detailed **comments** at every step.
 
 ### My Story
 
@@ -22,6 +22,6 @@ Another passion of mine is to gather the insight and knowledge held by one group
 
 ### My Content
 
-* In addition to my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/) and this blog, I run a membership site at [ChrisMcCormick.AI](https://www.chrismccormick.ai/membership). 
+* In addition to my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/) and this blog, I run a membership site at [ChrisMcCormick.AI](https://www.chrismccormick.ai/membership?utm_source=blog&utm_medium=link&utm_campaign=membership&utm_content=about). 
 
 [profile_pic]: http://www.mccormickml.com/assets/2021_profile_portrait_300px.jpg
