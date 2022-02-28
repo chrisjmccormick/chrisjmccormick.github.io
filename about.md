@@ -24,4 +24,4 @@ Another passion of mine is to gather the insight and knowledge held by one group
 
 * In addition to my [YouTube channel](https://www.youtube.com/channel/UCoRX98PLOsaN8PtekB9kWrw/) and this blog, I run a membership site at [ChrisMcCormick.AI](https://www.chrismccormick.ai/membership?utm_source=blog&utm_medium=link&utm_campaign=membership&utm_content=about). 
 
-[profile_pic]: http://www.mccormickml.com/assets/2021_profile_portrait_300px.jpg
+[profile_pic]: http://www.mccormickml.com/assets/2021_profile_240_x_300px.jpg
