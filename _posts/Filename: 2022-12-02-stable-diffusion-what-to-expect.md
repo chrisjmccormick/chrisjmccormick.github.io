@@ -21,17 +21,20 @@ Unfortunately, what it so masterfully generates also tends to be very **incohere
 In my experience, you should probably decline any offers for a ride in a stable diffusion fighter jet... 😜
 
 
-![Stable Diffusion Fighter Jet]([https://drive.google.com/uc?export=view&id=1iV3ALD-fHYTVG-1LTLWg-fCDuDH8cOBY](https://drive.google.com/uc?export=view&id=1iV3ALD-fHYTVG-1LTLWg-fCDuDH8cOBY))
+![Stable Diffusion Fighter Jet](https://drive.google.com/uc?export=view&id=1iV3ALD-fHYTVG-1LTLWg-fCDuDH8cOBY)
+
 
 Browsing libraries of generated imagery, the most popular (and successful) subject to generate seems to be **portraits**.
 
-![Symmetrical Portraits]([https://drive.google.com/uc?export=view&id=1J4aMHF-879G6-nL4u8645iX8bJPo4yfu](https://drive.google.com/uc?export=view&id=1J4aMHF-879G6-nL4u8645iX8bJPo4yfu))
+![Symmetrical Portraits](https://drive.google.com/uc?export=view&id=1J4aMHF-879G6-nL4u8645iX8bJPo4yfu)
+
 
 (From [here](https://lexica.art/prompt/5408d538-1057-4ba0-be08-2b65279e107b), [here](https://lexica.art/prompt/601d3548-5c86-491f-8175-0020edc801b6), and [here](https://lexica.art/prompt/6417498c-787d-4b92-af46-a26df5e541c6).)
 
 A head-on perspective, with a lot of **symmetry**, seems to work best. There are strong examples of other perspectives as well, just less common:
 
-![Portraits]([https://drive.google.com/uc?export=view&id=1MQgy_xBsqDJtxr0I0IqJ7h-CvgwTuoO0](https://drive.google.com/uc?export=view&id=1MQgy_xBsqDJtxr0I0IqJ7h-CvgwTuoO0))
+![Portraits](https://drive.google.com/uc?export=view&id=1MQgy_xBsqDJtxr0I0IqJ7h-CvgwTuoO0)
+
 
 (From [here](https://lexica.art/prompt/9e3fe4d4-92ab-4d5f-a076-2c40fd54c80e), [here](https://lexica.art/prompt/29ad931b-78d0-4429-8036-3a987ab49358), and [here](https://lexica.art/prompt/937830f5-19ad-46d0-9592-c885f883bf60))
 
@@ -66,4 +69,3 @@ I’ve kicked off a new [YouTube series](https://www.youtube.com/playlist?list=P
 I’ve started out providing an introduction to the absolute basics of AI art generation, since there’s still plenty to learn about **prompt design** and the purpose of the different **settings **before getting to the more advanced techniques I listed. 
 
 I also plan to publish blog posts here and there to cover specific topics. Stay tuned!
-
