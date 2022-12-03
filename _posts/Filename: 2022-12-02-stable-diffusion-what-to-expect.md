@@ -40,15 +40,21 @@ A head-on perspective, with a lot of **symmetry**, seems to work best. There are
 
 If you start going below the shoulders, though, many of your generations will be “ruined” by unrealistic posing of limbs or incorrect proportions. 
 
-Most critically, though–Stable Diffusion v1.5 seems, for all practical purposes, incapable of generating hands and fingers, or the correct interaction between a person's hands and an object. 
+Most critically, though–Stable Diffusion v1.5 seems, for all practical purposes, **incapable** of generating hands and fingers, or the correct interaction between a person's **hands and an object**. 
 
 ![White Knights](https://drive.google.com/uc?export=view&id=1LZ9J-TKM6xRS7qMKXV1u7DX25SPkacf1)
 
 (From [here](https://lexica.art/?prompt=a5dec1f5-5fb9-47b0-bdae-4706cd848232))
 
-I'd like to be able to use Stable Diffusion to create a **scene**--a **subject** in a **setting**, interacting with one or more **objects**, like a “blacksmith forging a sword in his workshop”...
+![Holding Objects](https://drive.google.com/uc?export=view&id=1rqa5Ji7S1_TjQpZk0eUNj1GryuoZEDfw)
+
+(From [here](https://lexica.art/?q=holding+a+book&prompt=d033c544-8ee5-4317-a024-d805605b5922), [here](https://lexica.art/?q=a+hand+holding+a+cup&prompt=3da96c57-5fda-4262-959d-0ac78d6f3609), and [here](https://lexica.art/?q=eating+a+burrito&prompt=10d96a80-e158-4537-8146-728fa9d36684))
+
+That's pretty discouraging, because most the time when I have an idea for something I want to generate, it's a **scene**--a **subject** in a **setting**, interacting with one or more **objects**. For example, a “blacksmith forging a sword in his workshop”...
 
 ![Blacksmith working](https://drive.google.com/uc?export=view&id=1a5sM-kIMuO26iCazab_AecWvEKmXqiN6)
+
+(From [here](https://lexica.art/prompt/24151852-85ea-4e9c-a890-343442ed746e))
 
 It seems clear to me that you’re just not going to get a polished image straight out of the model on something like this (no matter how much you play with the prompt or settings). 
 
@@ -64,8 +70,6 @@ But there's hope! There are a number of fancy techniques out there that we can t
 
 And, while I don’t want to become a full on graphical artist or photoshop expert, I’d be willing to pick a few of those tricks here or there to get what I want. 😊
 
-I’ve kicked off a new [YouTube series](https://www.youtube.com/playlist?list=PLam9sigHPGwNLOWrCGtJDcBo7oBuJNLy6) to explore all of the above!
-
-I’ve started out providing an introduction to the absolute basics of AI art generation, since there’s still plenty to learn about **prompt design** and the purpose of the different **settings **before getting to the more advanced techniques I listed. 
+I’ve kicked off a new [YouTube series](https://www.youtube.com/playlist?list=PLam9sigHPGwNLOWrCGtJDcBo7oBuJNLy6) to explore all of the above! I’ve started out providing an introduction to the absolute basics of AI art generation, since there’s still plenty to learn about **prompt design** and the purpose of the different **settings** before getting to the more advanced techniques I listed. 
 
 I also plan to publish blog posts here and there to cover specific topics. Stay tuned!
