@@ -14,14 +14,19 @@ tags: Stable Diffusion, AI Art, img2img, Initial Image, img2prompt
 
 ---
 
-Running Stable Diffusion by providing both a **prompt** _and _an **initial image** (a.k.a.”**img2img**” diffusion) can be a powerful technique for creating AI art.
+Running Stable Diffusion by providing both a **prompt** _and_ an **initial image** (a.k.a."**img2img**" diffusion) can be a powerful technique for creating AI art.
 
 In this tutorial I’ll cover:
-
 
 1. A few ways this technique can be useful in practice
 2. What’s actually happening inside the model when you supply an input image.
 
+By Chris McCormick
+
+# Contents
+
+* TOC
+{:toc}
 
 # 1. How it’s used
 
@@ -49,16 +54,11 @@ Another approach that I like to take is to find a piece of human-made artwork th
 
 
 ![Img2prompt tool](https://drive.google.com/uc?export=view&id=1zBWoJZRIemjKUq19uMkOcMrmB8HENcDT)
-
-
 _The initial artwork here is called “steampunk air station” by a concept artist named su An, on artstation [here](https://www.artstation.com/artwork/Qzmmer)._
 
 The tool gave me the following text prompt:
 
-
-```
 `a painting of a train station with people walking around, a detailed matte painting by Tyler Edlin, cgsociety, fantastic realism, steampunk, matte drawing, concept art`
-```
 
 
 I fed this prompt (except I replaced “train station” with “steampunk airship station”) and the initial artwork through img2img, and generated 15 images. The results looked great–here is one of my favorites:
@@ -108,9 +108,9 @@ For the purpose of illustration, let’s assume that we’re running diffusion f
 
 This image strength parameter just corresponds to what percentage of those 50 noise steps we’re going to add to the image.
 
-For example, if you set the value to** 0.8**, then we’re going to add **40 “slices” of noise** to the image, and then diffuse the noisy image for 40 steps.
+For example, if you set the value to **0.8**, then we’re going to add **40 “slices” of noise** to the image, and then diffuse the noisy image for 40 steps.
 
-To illustrate this, I’m going to use this image of Gene Simmons from the band Kiss as my input image, and provide a prompt with the subject “A Xenomorph playing a guitar” (In case you’re not familiar, ‘Xenomorph’ refers to an alien from the _Aliens _movie series).
+To illustrate this, I’m going to use this image of Gene Simmons from the band Kiss as my input image, and provide a prompt with the subject “A Xenomorph playing a guitar” (In case you’re not familiar, ‘Xenomorph’ refers to an alien from the *Aliens* movie series).
 
 If we set the value to 0.8, we’ll add 40 steps of noise.
 
