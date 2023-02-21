@@ -15,7 +15,7 @@ tags: Stable Diffusion, AI Art, Tutorial
 ---
 
 
-The ability for a computer to generate art from nothing but a written description is fascinating! I know that I, for one, would be desperately curious to see what’s actually going on “under the hood” that would make this possible, so I wanted to do what I can here to provide a less superficial explanation of what’s going on even for those who **_aren’t _familiar** with the concepts in **artificial intelligence**. 
+The ability for a computer to generate art from nothing but a written description is fascinating! I know that I, for one, would be desperately curious to see what’s actually going on “under the hood” that would make this possible, so I wanted to do what I can here to provide a less superficial explanation of what’s going on even for those who **_aren’t_ familiar** with the concepts in **artificial intelligence**. 
 
 
 # Overview
@@ -81,7 +81,7 @@ If you gave that task to a graphic artist, they’d throw up their hands–“I 
 
 So how does Stable Diffusion do it? 
 
-At the simplest level, the answer is that it’s a computer program and it has no choice but to do its thing and produce _something _for us. 
+At the simplest level, the answer is that it’s a computer program and it has no choice but to do its thing and produce _something_ for us. 
 
 A deeper answer has to do with the fact that AI models (more technically, “Machine Learning” models) like Stable Diffusion are heavily based on statistics. They estimate probabilities for all of their options, and even if all of the options have extremely low probability of being right, they still just pick whichever path has the highest probability. 
 
@@ -170,7 +170,7 @@ Stable Diffusion works because we figured out the right values to use for each o
 
 Obviously, the authors could not have sat down and decided what numbers to try. Especially when you consider that they’re not “integers” like 1,2,3, but rather what we computer nerds call “floating point” values–the small, very precise fractions that you saw in the tables.
 
-Not only did we not choose these numbers–we can’t even explain a single one of them!** **This is why we can’t fully explain how Stable Diffusion works. We have some decent intuition about what those equations are doing, but a lot of what’s going on is hidden in the values of those numbers, and we can’t fully make sense of it. 
+Not only did we not choose these numbers–we can’t even explain a single one of them! This is why we can’t fully explain how Stable Diffusion works. We have some decent intuition about what those equations are doing, but a lot of what’s going on is hidden in the values of those numbers, and we can’t fully make sense of it. 
 
 Insane, right?
 
