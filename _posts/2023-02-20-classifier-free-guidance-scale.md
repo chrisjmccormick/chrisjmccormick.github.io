@@ -30,7 +30,7 @@ For example, the below image is still pretty rough, but you and I can clearly se
 ![Noisy alien guitar](https://drive.google.com/uc?export=view&id=1FtaSiBxOS_wVpAcXgPqraKxZf0b4oqGG)
 
 
-Of course, in addition to looking at the image, it’s also being **guided **by your **description** of the image to generate.
+Of course, in addition to looking at the image, it’s also being **guided** by your **description** of the image to generate.
 
 Making visual sense of the below image is really hard without knowing that it’s supposed to be a set of stairs leading down into the ocean! 
 
@@ -56,7 +56,7 @@ And what the heck does “Classifier-Free” mean? The inclusion of that term is
 
 ## What to Expect from CFG Scale
 
-When you’re having trouble with a generation, it’s tempting to try getting more and more specific in your description, and to feel like you’re dealing with an **obstinate child**. You think, “_surely _the model understands what I’m asking for, and it’s just being _stubborn_ and not listening to me”, so you crank the CFG hoping it will **start obeying** you.
+When you’re having trouble with a generation, it’s tempting to try getting more and more specific in your description, and to feel like you’re dealing with an **obstinate child**. You think, “_surely_ the model understands what I’m asking for, and it’s just being _stubborn_ and not listening to me”, so you crank the CFG hoping it will **start obeying** you.
 
 In reality, if it doesn’t seem to be understanding the intent of your prompt (even after you’ve generated lots of examples and used various wordings) then it’s probably just beyond the model’s current abilities. 
 
@@ -92,7 +92,7 @@ FYI, Automatic1111 has this feature in the “scripts” section:
 
 The remainder of this article is probably most interesting to more technical readers interested in understanding the implementation, as well as some insight into why the technique is not all that effective in practice.
 
-When you give Stable Diffusion a prompt to generate, it actually generates _two images _in parallel–one guided by your prompt, and one not (technically, the second image is guided by an _empty_ prompt). 
+When you give Stable Diffusion a prompt to generate, it actually generates _two images_ in parallel–one guided by your prompt, and one not (technically, the second image is guided by an _empty_ prompt). 
 
 The difference between the two is considered to be the influence of the prompt, and we scale that influence up or down by multiplying it with the CFG scale.
 
