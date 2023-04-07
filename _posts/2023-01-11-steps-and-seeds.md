@@ -17,8 +17,7 @@ tags: Stable Diffusion, AI Art, Tutorial, Step Count, Seed
 
 In this series of posts I’ll be explaining the most common settings in stable diffusion generation tools, using DreamStudio and Automatic1111 as the examples.
 
-This first post will cover the **steps** slider and the **seed** value, and then further posts will cover the “cfg scale”, and “scheduler”.
-
+This first post will cover the **steps** slider and the **seed** value, and then further posts will cover the “cfg scale”, and “sampler”.
 
 
 ## Steps
@@ -38,6 +37,7 @@ In Automatic1111, it’s labeled “Sampling steps”:
 
 With the following tooltip: “How many times to improve the generated image iteratively; higher values take longer; very low values can produce bad results”. That’s a pretty good summary, but let me give you a little more insight into how it works.
 
+[Update 4/7/23]: A new version of DreamStudio has been released with a re-designed interface! The screenshots in this post come from the original version, which is still accessible [here](https://legacy.dreamstudio.ai/dream). The settings I'm explaining are still there in the new version, just laid out differently.   
 
 ### What Happens in a “Step”
 
@@ -66,8 +66,7 @@ It also seems that you _can_ go **too high**. In this example, it looks like 100
 
 ![Overdoing the steps](https://drive.google.com/uc?export=view&id=1wqAFN1v9Gib66Sxii0kAUb19ZlYu_pPx)
 
-Side Note: The effect of the number of steps also depends on the choice of “scheduler”--something we haven’t addressed yet! One aspect of the scheduler choice is that some are able to generate decent results with fewer steps. We’ll have to come back to this in another post!
-
+Side Note: The effect of the number of steps can also depend significantly on the choice of “sampler”--something we'll look at more closely in a few posts. The illustrations above were generated with "Euler A", which is the default selection in Auto1111.
 
 ### Common Misconceptions
 
