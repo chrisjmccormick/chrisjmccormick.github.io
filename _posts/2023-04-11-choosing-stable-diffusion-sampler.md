@@ -42,7 +42,6 @@ I used a prompt I found on Lexica [here](https://lexica.art/prompt/7f5d6d2c-580e
 
 ## Solving Ordinary Differential Equations (ODEs)
 
-
 My understanding of the math behind the samplers isn’t quite complete, but I know that “Euler” is the most primitive approach to the task that the Sampler is tasked with. 
 
 
@@ -65,12 +64,12 @@ This is why you’ll hear samplers talked about in terms of reducing the number 
 
 
 Besides Euler, “Heun” and “LMS” are other classic ODE solvers you’d find in a textbook. “DDIM” and “PLMS” are the “originals” used with Stable Diffusion, but seem to have been replaced by DPM++.
+
+(Note: A lot of these insights came from reading [this article](https://stable-diffusion-art.com/samplers/), which offers some insight into each of the samplers).       
  
 ## Faster or Just Different?
 
-
 Again, you’ll often hear samplers discussed in terms of their ability to reduce the number of steps required to produce a good result. 
-
 
 That sounds very appealing, because running Stable Diffusion is slow and expensive, and it’d be great if (A) we could get what we want in, e.g., half the time, or at the very least (B) preview seeds more quickly.
 
