@@ -9,7 +9,7 @@ tags: ChatGPT, Long Documents, Summarization, PDF, OCR
 
 <a href="https://colab.research.google.com/github/chrisjmccormick/summarize-long-pdfs/blob/main/Summarizing_Long_PDFs_with_ChatGPT.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-#▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂
 
 # I. Introduction
 
@@ -117,7 +117,7 @@ But I could be wrong on both counts, honestly! Let me know if you try it. 😊
 
 
 
-#▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂
 
 # Part 1 - Extracting Text from PDFs
 
@@ -408,7 +408,7 @@ for (pdf_num, pdf_name) in enumerate(pdf_filenames):
       Elapsed: 0:01:58
 
 
-#▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂
 
 # Part 2 - Summarizing
 
@@ -1129,7 +1129,7 @@ for the key terms that readers might not be familiar with?\n\n" + agg_summary
     
 
 
-#▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂
 
 # Appendix
 
