@@ -3,7 +3,7 @@ layout: post
 title:  "Choosing a Sampler for Stable Diffusion"
 date:   2023-04-11 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1vCaEOyVoWcwBrfObAcdL9eSrAwVBgdKq
+image: https://lh3.googleusercontent.com/d/1vCaEOyVoWcwBrfObAcdL9eSrAwVBgdKq
 tags: Stable Diffusion, Sampler, Euler, Ancestral, DPM++ 2M, Sampler Comparison, AI Art, Techniques
 ---
 
@@ -34,7 +34,7 @@ Here’s a quick look at what these each produce. In the below experiment, after
 
 
 
-[![Euler vs. DPM cyberpunk girl 2](https://drive.google.com/uc?export=view&id=1EOoyN2bXAZ-1t2vxejLiZ3fg6IAjTbuY)](https://drive.google.com/uc?export=view&id=1EOoyN2bXAZ-1t2vxejLiZ3fg6IAjTbuY)
+[![Euler vs. DPM cyberpunk girl 2](https://lh3.googleusercontent.com/d/1EOoyN2bXAZ-1t2vxejLiZ3fg6IAjTbuY)](https://lh3.googleusercontent.com/d/1EOoyN2bXAZ-1t2vxejLiZ3fg6IAjTbuY)
 
 
 I used a prompt I found on Lexica [here](https://lexica.art/prompt/7f5d6d2c-580e-4247-86ce-77e3b9e3c488).
