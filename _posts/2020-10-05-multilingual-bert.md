@@ -411,7 +411,7 @@ But here are the results we got with minimal tuning!
 
 
 
-![Results table](https://drive.google.com/uc?export=view&id=1bYCtE6M3VhaGWGpJb5iukJgbgt4-kd1l)
+![Results table](https://lh3.googleusercontent.com/d/1bYCtE6M3VhaGWGpJb5iukJgbgt4-kd1l)
 
 
 For rows 2-4 of the table, you can further improve these results by fine-tuning on the Arabic XNLI validation examples. (I tried this quickly with XLM-R and confirmed the score went up to 74.2%!)

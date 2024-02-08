@@ -8,7 +8,7 @@ date:   2022-12-06 8:00:00 -0800
 
 comments: true
 
-image: https://drive.google.com/uc?export=view&id=1E0C-Zn5G2d7T-y-toeziObgDnLFVG1bK
+image: https://lh3.googleusercontent.com/d/1E0C-Zn5G2d7T-y-toeziObgDnLFVG1bK
 
 tags: Stable Diffusion, AI Art, img2img, Initial Image, img2prompt
 
@@ -39,7 +39,7 @@ Reddit user and artist TheZakMan shared this example of his workflow [here](http
 
 
 
-![Art from a doodle](https://drive.google.com/uc?export=view&id=1rvPHiwke1lK3UVdmL3MIpbck-tdN9VW4)
+![Art from a doodle](https://lh3.googleusercontent.com/d/1rvPHiwke1lK3UVdmL3MIpbck-tdN9VW4)
 
 (You’ll find in his post that he also took the result back into photoshop to do some additional painting, then sent that through Stable Diffusion again!) 
 
@@ -53,7 +53,7 @@ I’ve found a caveat of this approach to be that the **background** of a scene 
 Another approach that I like to take is to find a piece of human-made artwork that I like (usually on [DeviantArt](deviantart.com)), and start by feeding it through an “Image to Prompt” tool (a whole other topic!) such as this simple, web-based (and free!) [img2prompt tool](https://replicate.com/methexis-inc/img2prompt):
 
 
-![Img2prompt tool](https://drive.google.com/uc?export=view&id=1zBWoJZRIemjKUq19uMkOcMrmB8HENcDT)
+![Img2prompt tool](https://lh3.googleusercontent.com/d/1zBWoJZRIemjKUq19uMkOcMrmB8HENcDT)
 _The initial artwork here is called “steampunk air station” by a concept artist named su An, on artstation [here](https://www.artstation.com/artwork/Qzmmer)._
 
 The tool gave me the following text prompt:
@@ -65,14 +65,14 @@ I fed this prompt (except I replaced “train station” with “steampunk airsh
 
 
 
-![Airship Station Generation](https://drive.google.com/uc?export=view&id=1QKu4grgU7_ifEXPaogaxOGDVjF_uv-pm)
+![Airship Station Generation](https://lh3.googleusercontent.com/d/1QKu4grgU7_ifEXPaogaxOGDVjF_uv-pm)
 
 
 
 You also have the ability to control how similar the outputs are to the input image; here’s an example that’s much closer to the original:
 
 
-![Generation with more similarity to input](https://drive.google.com/uc?export=view&id=1SUefGx_6V2NHVVdFeuP17ZZCLiDB7uXH)
+![Generation with more similarity to input](https://lh3.googleusercontent.com/d/1SUefGx_6V2NHVVdFeuP17ZZCLiDB7uXH)
 
 
 
@@ -115,7 +115,7 @@ To illustrate this, I’m going to use this image of Gene Simmons from the band 
 If we set the value to 0.8, we’ll add 40 steps of noise.
 
  
-![Noise factor of 0.8](https://drive.google.com/uc?export=view&id=1rvA4iftMdJherM3vn0CFUpEhnZcjlmWZ)
+![Noise factor of 0.8](https://lh3.googleusercontent.com/d/1rvA4iftMdJherM3vn0CFUpEhnZcjlmWZ)
 
 
 Adding 40 steps of noise makes the original image completely imperceptible to my eyes, but rest assured it’s still present enough to influence the diffusion process!
@@ -125,21 +125,21 @@ Side note: The code adds an offset of 1 step, so it’s actually 41 steps, but I
 Here’s what a value of **0.5 (25 noise steps)** looks like–you can start to recognize the original image in the noise. I find that the results tend to be lower quality at such a low value, though. 
 
 
-![Noise factor of 0.5](https://drive.google.com/uc?export=view&id=1E0C-Zn5G2d7T-y-toeziObgDnLFVG1bK)
+![Noise factor of 0.5](https://lh3.googleusercontent.com/d/1E0C-Zn5G2d7T-y-toeziObgDnLFVG1bK)
 
 
 
 Below is an illustration of the full set of intermediate noise images. It’s pretty huge, so you’ll want to open it separately for a closer look.
 
 
-[![Intermediate noise images thumbnail](https://drive.google.com/uc?export=view&id=1UaQ6-tZDO4N56x9LjZQJ7LOwCFgzFE5F)](https://drive.google.com/uc?export=view&id=17QlYG4xN3veyoJ8AuttFVbZKt34mlwvZ)
+[![Intermediate noise images thumbnail](https://lh3.googleusercontent.com/d/1UaQ6-tZDO4N56x9LjZQJ7LOwCFgzFE5F)](https://lh3.googleusercontent.com/d/17QlYG4xN3veyoJ8AuttFVbZKt34mlwvZ)
 
 
 
 I also found it interesting to compare a plot of the noise schedule to these images–you can see how the model makes its most dramatic modifications to the image in those early steps. 
 
 
-![Noise Scheduler sigma values](https://drive.google.com/uc?export=view&id=1rkIlWbBQdne8VnncjNjcSjKkQpFVRPem)
+![Noise Scheduler sigma values](https://lh3.googleusercontent.com/d/1rkIlWbBQdne8VnncjNjcSjKkQpFVRPem)
 
 
 (The above plot was for num_steps=20, not 50, but I think you get the point just from seeing the general shape) 
@@ -159,7 +159,7 @@ In the below example, with the strength set to 1.0, you can see evidence of the 
 * In all of the examples I generated, there was a large structure or airship on the right hand side.
 
 
-[![Image overlay at strength of 1.0](https://drive.google.com/uc?export=view&id=1gGpCIamvTn37erMzZ_wf73aGAJz8TzVa)](https://drive.google.com/uc?export=view&id=1gGpCIamvTn37erMzZ_wf73aGAJz8TzVa)
+[![Image overlay at strength of 1.0](https://lh3.googleusercontent.com/d/1gGpCIamvTn37erMzZ_wf73aGAJz8TzVa)](https://lh3.googleusercontent.com/d/1gGpCIamvTn37erMzZ_wf73aGAJz8TzVa)
 
 
 
@@ -167,7 +167,7 @@ In fact, my experience has been that a strength of 1.0 actually generates some o
 
 Here’s my favorite Xenomorph result, with a strength of 1.0 (this is the same image as the top right of that giant illustration):
 
-![Xenomorph favorite](https://drive.google.com/uc?export=view&id=1g947yWyxft9ZGCe6912EBxSh2496XwBm)
+![Xenomorph favorite](https://lh3.googleusercontent.com/d/1g947yWyxft9ZGCe6912EBxSh2496XwBm)
 
 
 _"A Xenomorph standing on a stage playing a stratocaster guitar sticking out its tongue by giger, Zdzisław Beksiński, greg rutkowski"_

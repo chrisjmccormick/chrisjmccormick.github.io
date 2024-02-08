@@ -8,7 +8,7 @@ date:   2023-01-11 8:00:00 -0800
 
 comments: true
 
-image: https://drive.google.com/uc?export=view&id=1SKyqrglsqcdIiybAhGSt5YwDRkhOKhFn
+image: https://lh3.googleusercontent.com/d/1SKyqrglsqcdIiybAhGSt5YwDRkhOKhFn
 
 tags: Stable Diffusion, AI Art, Tutorial, Step Count, Seed
 
@@ -27,12 +27,12 @@ Let’s start with the step count.
 In DreamStudio, this is labeled “Steps”, with the description “How many steps to spend generating (diffusing) your image.”
 
 
-![Inference steps setting in DreamStudio](https://drive.google.com/uc?export=view&id=1t8SeAzjRYDERnXspzNoZ5JoV8idCWr8T)
+![Inference steps setting in DreamStudio](https://lh3.googleusercontent.com/d/1t8SeAzjRYDERnXspzNoZ5JoV8idCWr8T)
 
 In Automatic1111, it’s labeled “Sampling steps”:
 
 
-![Step slider in Auto1111](https://drive.google.com/uc?export=view&id=17xsDvkcIHjDDtEqcPYAmfESkAbP_hta6)
+![Step slider in Auto1111](https://lh3.googleusercontent.com/d/17xsDvkcIHjDDtEqcPYAmfESkAbP_hta6)
 
 
 With the following tooltip: “How many times to improve the generated image iteratively; higher values take longer; very low values can produce bad results”. That’s a pretty good summary, but let me give you a little more insight into how it works.
@@ -45,7 +45,7 @@ Stable Diffusion generates images by starting with **random noise**, and then, u
 
 In the illustration below, the image on the far left is our **initial noise**, and the image on the far right is the finished result. I ran this generation with 25 steps; the center illustration shows the state of the image at each step, and you can see how the image is gradually getting cleaned up.
 
-![From noise to artwork](https://drive.google.com/uc?export=view&id=1vWAL0IUFNWrT3Q5IbULIOmr4svZL9-GW)
+![From noise to artwork](https://lh3.googleusercontent.com/d/1vWAL0IUFNWrT3Q5IbULIOmr4svZL9-GW)
 
 No matter how many steps you use, the process _always starts and ends the same way_–you start with random noise, and end up with a completely de-noised image.
 
@@ -55,16 +55,16 @@ If you use what would be considered a relatively **low** number of steps, you’
 
 In the below examples, the result at 5 steps is a complete mess, and 10 and 15 both have uneven irises. 
 
-![Step count 5 to 20](https://drive.google.com/uc?export=view&id=12c205yfoh272Qgv-rWyCz29ZSCUx1Gwt)
+![Step count 5 to 20](https://lh3.googleusercontent.com/d/12c205yfoh272Qgv-rWyCz29ZSCUx1Gwt)
 
-![Step count 20 to 50](https://drive.google.com/uc?export=view&id=1SKyqrglsqcdIiybAhGSt5YwDRkhOKhFn)
+![Step count 20 to 50](https://lh3.googleusercontent.com/d/1SKyqrglsqcdIiybAhGSt5YwDRkhOKhFn)
 
 
 There does appear to be some correlation between the number of steps and the amount of detail, but I’d argue that beyond a certain point you’re really just getting different variations.
 
 It also seems that you _can_ go **too high**. In this example, it looks like 100 and 150 steps starts to reintroduce some problems.
 
-![Overdoing the steps](https://drive.google.com/uc?export=view&id=1wqAFN1v9Gib66Sxii0kAUb19ZlYu_pPx)
+![Overdoing the steps](https://lh3.googleusercontent.com/d/1wqAFN1v9Gib66Sxii0kAUb19ZlYu_pPx)
 
 Side Note: The effect of the number of steps can also depend significantly on the choice of “sampler”--something we'll look at more closely in a few posts. The illustrations above were generated with "Euler A", which is the default selection in Auto1111.
 
@@ -99,7 +99,7 @@ Below is a **Tesla A100**; its original MSRP was **$32k**! 🤯
 
 When you use a paid tool like DreamStudio, they are going to **charge** you (using a “**credits**” system) based on the number of steps you run. The compute cost is also directly related to the **size of the image** you want to generate, so higher image resolutions are going to cost more credits.
 
-![Credits in DreamStudio](https://drive.google.com/uc?export=view&id=1lakzPtdKM0mS6JLojG_NlpCZ00WH-Xin)
+![Credits in DreamStudio](https://lh3.googleusercontent.com/d/1lakzPtdKM0mS6JLojG_NlpCZ00WH-Xin)
 
 
 ### Preview Images using Few Steps
@@ -113,7 +113,7 @@ The way to “re-run” a particular image is using something called the “seed
 
 The “seed” is a number like `145391` which, if you specify it to Stable Diffusion, will always generate the **exact same image**. (provided you keep everything else the same, too) 
 
-![Manual seed setting in DreamStudio](https://drive.google.com/uc?export=view&id=1vFngK1yT2qHdC55_prXrd7ZGjGh9UbZb)
+![Manual seed setting in DreamStudio](https://lh3.googleusercontent.com/d/1vFngK1yT2qHdC55_prXrd7ZGjGh9UbZb)
 
 This allows you to try and tweak an image that you like. You can, for example, make **small changes** to the **prompt**, or change the number of inference steps, and get results that all look like **variations** of your “base” result. 
 
@@ -121,7 +121,7 @@ This allows you to try and tweak an image that you like. You can, for example, m
 
 Note that there’s _no relationship_ between how close the seed numbers are and how similar the images will be. If you change the seed number by 1, you’ll get a completely different result. For example, the below images have seeds that differ by 1 (…201, …202, and …203). 
 
-![Nearby seeds are different](https://drive.google.com/uc?export=view&id=1PvJBEEYfoVMAe-IEENMyVC7UjvgXDUFn)
+![Nearby seeds are different](https://lh3.googleusercontent.com/d/1PvJBEEYfoVMAe-IEENMyVC7UjvgXDUFn)
 
 They have some similarity, of course, because they all used the same prompt.
 
@@ -147,19 +147,19 @@ I’ll conclude by just pointing out where to locate and set the seed value in t
 
 In **DreamStudio**, if you **hover** over the image, you’ll see the seed value here:
 
-![Find the seed value in DreamStudio](https://drive.google.com/uc?export=view&id=1zhIB4ynyNI-kUhrZxDPMbVsvIyWZipFB)
+![Find the seed value in DreamStudio](https://lh3.googleusercontent.com/d/1zhIB4ynyNI-kUhrZxDPMbVsvIyWZipFB)
 
 Clicking on the seed value seems to copy it to the clipboard and the seed field for you.
 
 In order to actually _set_ the seed value in DreamStudio, you must **set the number of images to 1**. Otherwise the seed field is hidden from view.
 
-![Manual seed setting in DreamStudio](https://drive.google.com/uc?export=view&id=1vFngK1yT2qHdC55_prXrd7ZGjGh9UbZb)
+![Manual seed setting in DreamStudio](https://lh3.googleusercontent.com/d/1vFngK1yT2qHdC55_prXrd7ZGjGh9UbZb)
 
 
 In Automatic1111, it’s more straightforward:
 
 
-![Set the seed value in Automatic1111](https://drive.google.com/uc?export=view&id=1m6At4jC4ZQAr1a0cP7MD27BitmLMK2zF)
+![Set the seed value in Automatic1111](https://lh3.googleusercontent.com/d/1m6At4jC4ZQAr1a0cP7MD27BitmLMK2zF)
 
 
 You can find the seed used to generate an image in Auto1111 by looking at the output window, or the filename, or by opening the image in the “PNG Info” tab.

@@ -3,7 +3,7 @@ layout: post
 title:  "Existing Tools for Named Entity Recognition"
 date:   2020-05-19 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1SfkyBN53SAgfr3yjMLTeu_l1e6IgvJxs
+image: https://lh3.googleusercontent.com/d/1SfkyBN53SAgfr3yjMLTeu_l1e6IgvJxs
 tags: machine learning, deep learning, NER, named entity recognition, NLP, natural language processing, python, BERT, spacy, stanza, flair, pytorch, fine-tune, tutorial, example code, NLP library
 ---
 

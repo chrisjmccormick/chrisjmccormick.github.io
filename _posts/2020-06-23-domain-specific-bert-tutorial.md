@@ -3,7 +3,7 @@ layout: post
 title:  "Domain-Specific BERT Models"
 date:   2020-06-22 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1SxPIV4aXqGJxOpUw-6gkOZUEVWM5iupa
+image: https://lh3.googleusercontent.com/d/1SxPIV4aXqGJxOpUw-6gkOZUEVWM5iupa
 tags: BERT, Transformers, domain-specific text, BioBERT, SciBert, huggingface, Machine Learning, Natural Language Processing, NLP
 ---
 
@@ -58,7 +58,7 @@ The list of domain-specific models in the introduction are just a few examples o
 
 Fortunately, many of the popular models (and many unpopular ones!) have been uploaded by the community into the transformers library; you can browse the full list of models at: [https://huggingface.co/models](https://huggingface.co/models)
 
-'[![screenshot](https://drive.google.com/uc?export=view&id=1SxPIV4aXqGJxOpUw-6gkOZUEVWM5iupa)](https://drive.google.com/uc?export=view&id=1SxPIV4aXqGJxOpUw-6gkOZUEVWM5iupa)'
+'[![screenshot](https://lh3.googleusercontent.com/d/1SxPIV4aXqGJxOpUw-6gkOZUEVWM5iupa)](https://lh3.googleusercontent.com/d/1SxPIV4aXqGJxOpUw-6gkOZUEVWM5iupa)'
 
 It's not very easy to browse, however--there are currently over 1,700 models shared! 
 
@@ -66,7 +66,7 @@ If you know the name of the model you're looking for, you can search this list b
 
 For example, if you filter for "Multilingual" and "Pytorch", it narrows it done to just 10 models.
 
-[![screenshot](https://drive.google.com/uc?export=view&id=1T6nbD9DLxioW1sOdwU5tesYnHK83-USr)](https://drive.google.com/uc?export=view&id=1T6nbD9DLxioW1sOdwU5tesYnHK83-USr)
+[![screenshot](https://lh3.googleusercontent.com/d/1T6nbD9DLxioW1sOdwU5tesYnHK83-USr)](https://lh3.googleusercontent.com/d/1T6nbD9DLxioW1sOdwU5tesYnHK83-USr)
 
 > Side Note: If you skim the full list you'll see that roughly 1,000 of the current models are variants of a single machine translation model from "Helsinki NLP". There is a different variant for every pair of languages. For example, English to French: `Helsinki-NLP/opus-mt-en-fr`
 
@@ -76,7 +76,7 @@ For this Notebook, we'll use SciBERT, a popular BERT variant trained primarily o
 
 Each model has its own page in the huggingface library where you can learn a little more about it: https://huggingface.co/allenai/scibert_scivocab_uncased
 
-[![screenshot](https://drive.google.com/uc?export=view&id=1T4T0vQw9NH7WufIv1nxwQdNepozCbChs)](https://drive.google.com/uc?export=view&id=1T4T0vQw9NH7WufIv1nxwQdNepozCbChs)
+[![screenshot](https://lh3.googleusercontent.com/d/1T4T0vQw9NH7WufIv1nxwQdNepozCbChs)](https://lh3.googleusercontent.com/d/1T4T0vQw9NH7WufIv1nxwQdNepozCbChs)
 
 Here are some highlights:
 * SciBERT was trained on scientific literature--1.14M papers.

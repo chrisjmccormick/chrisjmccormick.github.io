@@ -3,7 +3,7 @@ layout: post
 title:  "GPU Benchmarks for Fine-Tuning BERT"
 date:   2020-07-21 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1V5IJqcui7iAgsiT86Vev_EL4iu-81lUl
+image: https://lh3.googleusercontent.com/d/1V5IJqcui7iAgsiT86Vev_EL4iu-81lUl
 tags: Google Colab, Nvidia, Tesla, GPU, GPU Benchmarks, BERT, Transformers, huggingface, Machine Learning, Natural Language Processing, NLP
 ---
 
@@ -43,7 +43,7 @@ The below timeline shows the relative release dates of the different GPUs. Caref
 
 <br/>
 
-![Release Dates for Nvidia GPUs](https://drive.google.com/uc?export=view&id=1V5IJqcui7iAgsiT86Vev_EL4iu-81lUl)
+![Release Dates for Nvidia GPUs](https://lh3.googleusercontent.com/d/1V5IJqcui7iAgsiT86Vev_EL4iu-81lUl)
 
 <br/>
 
@@ -68,7 +68,7 @@ The **P4** is the **least desirable** of the lineup for BERT work because of it'
 A unique detail of the Tesla K80 is that it is actually two *independent* GPUs on a single PCIe card. 
 
 You can see the mounting points for the two chips if you look at the backside of a K80 card.
-![screenshot](https://drive.google.com/uc?export=view&id=1VJSOgZmoHkYgz_9TmF9XrcMoIcKSs5Qb)
+![screenshot](https://lh3.googleusercontent.com/d/1VJSOgZmoHkYgz_9TmF9XrcMoIcKSs5Qb)
 
 I emphasized that the 2 chips are "independent" because (1) Colab only gives you access to one of them, and (2) even if you had access to both, it requires *multi-GPU programming* (i.e., Nvidia doesn't just magically make them act like one big chip).
 
@@ -85,7 +85,7 @@ Again, memory is a precious resource when training BERT, so it's helpful to know
 
 These numbers are the precise capacity available to you (vs. the rounded marketing numbers).
 
-![bar plot](https://drive.google.com/uc?export=view&id=1V8XSTaU58Fcbzyd42CArtqVFfjbjSruT)
+![bar plot](https://lh3.googleusercontent.com/d/1V8XSTaU58Fcbzyd42CArtqVFfjbjSruT)
 
 If you get a P4, I'd suggest waiting till you're assigned something better :).
 
@@ -100,7 +100,7 @@ The hyped benchmark number for GPU performance is "TFLOPS", meaning "trillions  
 It's a decent number for comparing GPUs, but don't use it to estimate how long a particular operation should take. The magic TFLOPS number has (at least historically) been measured by performing a single matrix multiplication that maximizes the use of the GPU's parrallelism. Many of your GPU operations won't be nearly as efficient.
 
 Here are the TFLOPS for the GPUs currently found on Colab.
-![bar plot](https://drive.google.com/uc?export=view&id=1V6BWVhNpLumSk5ogFpwWTgC1FiJQJhb_)
+![bar plot](https://lh3.googleusercontent.com/d/1V6BWVhNpLumSk5ogFpwWTgC1FiJQJhb_)
 
 FYI, the new A100 is marketed as having 19.5 TFLOPS and 40GB of RAM... Awesome! (From [Wikipedia](https://en.wikipedia.org/wiki/Ampere_(microarchitecture)#:~:text=Announced%20and%20released%20on%20May,s%20of%20graphics%20memory%20bandwidth.))
 
@@ -111,7 +111,7 @@ The most useful speed measurement, of course, is how long the GPU takes to run *
 
 The below training times are for a single training pass over the 20 Newsgroups dataset (taken from my [Multi-Class Classification Example](https://www.chrismccormick.ai/offers/z8d2xA2T/checkout)), with a batch size of 16 and sequence length of 128 tokens. *Lower is better*, of course.
 
-![bar plot](https://drive.google.com/uc?export=view&id=1VJ5JKT8-yDnxqTGp_oBMoAEN4SysPC5T).
+![bar plot](https://lh3.googleusercontent.com/d/1VJ5JKT8-yDnxqTGp_oBMoAEN4SysPC5T).
 
 The P100 is awesome! It's almost 3x faster than the K80, and almost 2x faster than the T4. (Note that these ratios are better than what the TFLOPS numbers would suggest!)
 
@@ -147,7 +147,7 @@ I don't know the *exact* maximum value for each batch_size--but I know these are
 
 Here they are plotted together. The exact maximum value presumably lies somewhere between the red and green lines.
 
-![max parameters plot](https://drive.google.com/uc?export=view&id=1VOlP2V3pLbZ3bfCef65YFyxR5Z6xkikp)
+![max parameters plot](https://lh3.googleusercontent.com/d/1VOlP2V3pLbZ3bfCef65YFyxR5Z6xkikp)
 
 
 

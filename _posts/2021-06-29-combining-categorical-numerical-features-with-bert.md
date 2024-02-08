@@ -3,7 +3,7 @@ layout: post
 title:  "Combining Categorical and Numerical Features with Text in BERT"
 date:   2021-06-29 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1IoG_OPW5dyBwkrYWvEkr6VjLQyWIyuW0
+image: https://lh3.googleusercontent.com/d/1IoG_OPW5dyBwkrYWvEkr6VjLQyWIyuW0
 tags: BERT, Transformers, categorical, numerical, huggingface, Machine Learning, Natural Language Processing, NLP
 ---
 
@@ -783,7 +783,7 @@ pyplot.show()
 ```
 
 
-![xgboost_importance](https://drive.google.com/uc?export=view&id=1h_u_9vhXg7NvSWeVwS-iUpt4j9tURJZJ)
+![xgboost_importance](https://lh3.googleusercontent.com/d/1h_u_9vhXg7NvSWeVwS-iUpt4j9tURJZJ)
 
 
 This shows "Rating" as the strongest feature, which aligns with our understanding. 
@@ -807,7 +807,7 @@ pyplot.xticks(rotation = 90)
 
 
 
-![gain_importance](https://drive.google.com/uc?export=view&id=17oYtq4jvEpRwwowl3-AALK4tKa2kGuzo)
+![gain_importance](https://lh3.googleusercontent.com/d/17oYtq4jvEpRwwowl3-AALK4tKa2kGuzo)
 
 
 This is a pretty different perspective! Again "Rating" is given a lot of weight, but this suggests that the other features aren't particularly useful. 
@@ -1755,7 +1755,7 @@ plt.xticks([1, 2, 3, 4])
 plt.show()
 ```
 
-![learning_curve.png](https://drive.google.com/uc?export=view&id=13eb5x5OCkWAepxPaVMbTPGqpXx2A94pe)
+![learning_curve.png](https://lh3.googleusercontent.com/d/13eb5x5OCkWAepxPaVMbTPGqpXx2A94pe)
 
 
 There does appear to be some over-fitting here. If you really wanted to go for the best accuracy, you could try saving a model checkpoint after each epoch, and see if the third checkpoint does better on the test set.

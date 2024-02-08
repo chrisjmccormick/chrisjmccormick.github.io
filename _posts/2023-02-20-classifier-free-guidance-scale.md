@@ -8,7 +8,7 @@ date:   2023-02-20 8:00:00 -0800
 
 comments: true
 
-image: https://drive.google.com/uc?export=view&id=1NojH3pillX5_46MHZ-e5m6jTwzZRmHCe
+image: https://lh3.googleusercontent.com/d/1NojH3pillX5_46MHZ-e5m6jTwzZRmHCe
 
 tags: Stable Diffusion, AI Art, Tutorial, CFG, Classifier Free Guidance
 
@@ -27,7 +27,7 @@ To decide what improvements to make to the image at each step, it looks at the n
 For example, the below image is still pretty rough, but you and I can clearly see that it’s supposed to be some kind of alien or monster playing a guitar, and we could fix it up if we had the artistic skill.
 
 
-![Noisy alien guitar](https://drive.google.com/uc?export=view&id=1FtaSiBxOS_wVpAcXgPqraKxZf0b4oqGG)
+![Noisy alien guitar](https://lh3.googleusercontent.com/d/1FtaSiBxOS_wVpAcXgPqraKxZf0b4oqGG)
 
 
 Of course, in addition to looking at the image, it’s also being **guided** by your **description** of the image to generate.
@@ -35,7 +35,7 @@ Of course, in addition to looking at the image, it’s also being **guided** by 
 Making visual sense of the below image is really hard without knowing that it’s supposed to be a set of stairs leading down into the ocean! 
 
 
-![Confusing stairs into water](https://drive.google.com/uc?export=view&id=1yspl1CmCjDPyFXY9ySha2FQedzHvXNHi)
+![Confusing stairs into water](https://lh3.googleusercontent.com/d/1yspl1CmCjDPyFXY9ySha2FQedzHvXNHi)
 
 
 This is what “guidance” refers to in “Classifier-Free Guidance”--the image generation being _guided_ by the text description.
@@ -45,7 +45,7 @@ And the CFG “**Scale**” refers to the ability to increase or decrease the am
 This can sometimes improve the quality of the generated result. In the below example of “Bob Ross riding a dragon”, it’s not till a scale of 13 that we get something reasonable.
 
 
-![Bob Ross drag at different scales](https://drive.google.com/uc?export=view&id=145qU11UzxcMw_BcBaNQPjyBoBAOBrFDA)
+![Bob Ross drag at different scales](https://lh3.googleusercontent.com/d/145qU11UzxcMw_BcBaNQPjyBoBAOBrFDA)
 
 
 ## What Does “Classifier-Free” Mean?
@@ -63,7 +63,7 @@ In reality, if it doesn’t seem to be understanding the intent of your prompt (
 In the below example, the prompt subject is “A painting of a horse with **eight legs**, standing in an apocalyptic wasteland”. I really like the seed, but upping the CFG scale doesn’t seem to do anything to increase the number of legs!
 
 
-![Eight legged horse attempt](https://drive.google.com/uc?export=view&id=1tj8zneqhD35BHBIWgCjusNSSwj6oSF5z)
+![Eight legged horse attempt](https://lh3.googleusercontent.com/d/1tj8zneqhD35BHBIWgCjusNSSwj6oSF5z)
 
 The best approach I’m aware of currently for exercising more control is to use image-2-image generation.
 
@@ -74,7 +74,7 @@ In practice, I think it’s best to simply view the CFG scale as another way to 
 Once I’ve found a prompt and seed that I like, I like to use the technique of generating a grid of images to explore different combinations of CFG values and step counts, as in the below example (click the image to view a full resolution version). 
 
 
-[![Wizard grid](https://drive.google.com/uc?export=view&id=1lAVuhic6gXzoofmwZWY1UhmdRzkL1E90)](https://drive.google.com/uc?export=view&id=1lAVuhic6gXzoofmwZWY1UhmdRzkL1E90)
+[![Wizard grid](https://lh3.googleusercontent.com/d/1lAVuhic6gXzoofmwZWY1UhmdRzkL1E90)](https://lh3.googleusercontent.com/d/1lAVuhic6gXzoofmwZWY1UhmdRzkL1E90)
 
 
 
@@ -82,7 +82,7 @@ FYI, Automatic1111 has this feature in the “scripts” section:
 
 
 
-![Grid tool in Auto1111](https://drive.google.com/uc?export=view&id=1f0hsFEt0z8ljzy7x3xiW0ZxxssbR5qq0)
+![Grid tool in Auto1111](https://lh3.googleusercontent.com/d/1f0hsFEt0z8ljzy7x3xiW0ZxxssbR5qq0)
 
 
 
@@ -120,7 +120,7 @@ I have to imagine that setting the scale to, e.g., 1,000 would just “break” 
 
 
 
-[![High CFG examples](https://drive.google.com/uc?export=view&id=1ZCwP-el4BJYJbioCa0Boapi_XyqnVo8S)](https://drive.google.com/uc?export=view&id=1ZCwP-el4BJYJbioCa0Boapi_XyqnVo8S)
+[![High CFG examples](https://lh3.googleusercontent.com/d/1ZCwP-el4BJYJbioCa0Boapi_XyqnVo8S)](https://lh3.googleusercontent.com/d/1ZCwP-el4BJYJbioCa0Boapi_XyqnVo8S)
 
 
 

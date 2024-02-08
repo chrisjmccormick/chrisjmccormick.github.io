@@ -3,7 +3,7 @@ layout: post
 title:  "How To Build Your Own Question Answering System"
 date:   2021-05-27 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1EFXsuUDkykjeieTT8M9b76w0ZMcOmygB
+image: https://lh3.googleusercontent.com/d/1EFXsuUDkykjeieTT8M9b76w0ZMcOmygB
 tags: tutorial, python, pytorch, huggingface, deep learning, NLP, natural language processing, question answering, BERT, SQUAD, TF-IDF, chatbot, conversational AI
 ---
 
@@ -34,7 +34,7 @@ Our question answering system will take in a natural language question as input 
 
 
 
-![Question Answering Diagram](https://drive.google.com/uc?export=view&id=1EFXsuUDkykjeieTT8M9b76w0ZMcOmygB)
+![Question Answering Diagram](https://lh3.googleusercontent.com/d/1EFXsuUDkykjeieTT8M9b76w0ZMcOmygB)
 
 
 

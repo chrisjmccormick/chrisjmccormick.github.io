@@ -3,7 +3,7 @@ layout: post
 title:  "2020 NLP and NeurIPS Highlights"
 date:   2021-03-23 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1zTQWjYN-sIN1-dxw2NXxRN4tjPpgfkPd
+image: https://lh3.googleusercontent.com/d/1zTQWjYN-sIN1-dxw2NXxRN4tjPpgfkPd
 tags: Artificial Intelligence, NLP, Natural Language Processing, Machine Learning, Deep Learning, NeurIPS, BERT, Huggingface, Transformers
 ---
 
@@ -18,7 +18,7 @@ by Nick Ryan
 
 # Trends in NLP
 
-![BERT Family](https://drive.google.com/uc?export=view&id=1zTQWjYN-sIN1-dxw2NXxRN4tjPpgfkPd)
+![BERT Family](https://lh3.googleusercontent.com/d/1zTQWjYN-sIN1-dxw2NXxRN4tjPpgfkPd)
 
 There was an explosion of new language models in 2020. The Huggingface [transformers library](https://github.com/huggingface/transformers) now directly supports over 40 language model architectures, compared to 13 language models at the beginning of 2020. Besides minor improvements to benchmark scores, these language models demonstrate a creative variety of applications including tabular data understanding, cross-lingual understanding, style-controlled text generation, etc.
 
@@ -32,7 +32,7 @@ In addition to more language models came growing interest in a number of related
 
 - **Multilingual language models** and monolingual language models in a wide variety of different languages are now widely available (see the [huggingface community models](https://huggingface.co/models) page). In addition, new datasets for non-English benchmarking such as XTREME, XQuaD, and XGLUE have made multilingual evaluation easier.
 
-![mBERT overlap](https://drive.google.com/uc?export=view&id=1CMCil3JHRkbm1g5Zgdy5YBvIYYVW6nt1)
+![mBERT overlap](https://lh3.googleusercontent.com/d/1CMCil3JHRkbm1g5Zgdy5YBvIYYVW6nt1)
 
 In the drive to produce more accurate natural language understanding, new models have attempted to squeeze out more performance on benchmark tasks with an enormous variety of approaches. Typical approaches include:
 
@@ -51,7 +51,7 @@ Many of the year's most interesting ideas both in an outside of NLP were discuss
 
 ### EfficientQA Competition
 
-![EfficientQA Competition](https://drive.google.com/uc?export=view&id=1Tggv83pAwQRKyZVwyWWCxK7kEIE8vGxj)
+![EfficientQA Competition](https://lh3.googleusercontent.com/d/1Tggv83pAwQRKyZVwyWWCxK7kEIE8vGxj)
 
 (System designers presenting in [Efficient QA Competition: Computer Systems](https://www.youtube.com/watch?v=rdQcqze5XvQ&ab_channel=JordanBoyd-Graber))
 
@@ -75,7 +75,7 @@ Here are some takeaways from the [write-up](https://efficientqa.github.io/assets
 [This tutorial](https://neurips.cc/virtual/2020/public/tutorial_87dbe662a0f9238ddd0fca0f5cc1bb67.html) led by Fung and her colleagues at Hong Kong University presented some state of the art approaches for creating chatbots. The talk does a great job of providing a framework to help break down into fine-grained detail the goals and difficulties within a domain as large and varied as chatbot agents that are asked to perform tasks, answer knowledge, chitchat with users, empathize, etc. A great overview of a topic that we'll be covering in an upcoming post - stay tuned! 
 
 ## Bias and Ethics
-![Isbell Talk](https://drive.google.com/uc?export=view&id=1gFQL2OA25TJaGi7ufQc844gbPGVqhW8G)
+![Isbell Talk](https://lh3.googleusercontent.com/d/1gFQL2OA25TJaGi7ufQc844gbPGVqhW8G)
 
 The machine learning community is increasingly stepping up by calling on itself and others to pay more attention to the biases in their models and the ethics of applying these models in real world applications.
 
@@ -91,7 +91,7 @@ In addition to Isbell and the many other talks on fairness, the conference itsel
 
 
 
-![Zador Talk](https://drive.google.com/uc?export=view&id=1qw6ylkMk-1vu2ey3wNxBeFi0e4LGHKV9)
+![Zador Talk](https://lh3.googleusercontent.com/d/1qw6ylkMk-1vu2ey3wNxBeFi0e4LGHKV9)
 
 (From Zador's [The Genomic Bottleneck: A Lesson from Biology](https://neurips.cc/virtual/2020/public/invited_16167.html))
 
@@ -117,7 +117,7 @@ The other type of abstraction takes place in a discrete domain. It is therefore 
 
 This framework provides a compelling distinction between those aspects of intelligence that deep learning excels at and struggles with, and provides a concrete reason for this distinction that suggests new directions that do not rely on deep learning.
 
-![ARC dataset example](https://drive.google.com/uc?export=view&id=1sT11ShFHQumJOU4CmwOIbtIgbBY-Vhzm)
+![ARC dataset example](https://lh3.googleusercontent.com/d/1sT11ShFHQumJOU4CmwOIbtIgbBY-Vhzm)
 
 
 Chollet has created a dataset, [ARC](https://arxiv.org/pdf/1911.01547.pdf), intended to measure general human-like intelligence that deep learning systems specifically struggle with. The task presents sequences of colorful patterns arranged on grids and asks the system to create the logical continuation of the patterns. 

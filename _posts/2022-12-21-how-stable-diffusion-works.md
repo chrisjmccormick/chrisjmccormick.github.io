@@ -8,7 +8,7 @@ date:   2022-12-21 8:00:00 -0800
 
 comments: true
 
-image: https://drive.google.com/uc?export=view&id=13itxbgrFzQ93LzkrgRXL1TjQ6zmckYxf
+image: https://lh3.googleusercontent.com/d/13itxbgrFzQ93LzkrgRXL1TjQ6zmckYxf
 
 tags: Stable Diffusion, AI Art, Tutorial
 
@@ -47,7 +47,7 @@ It’s much more sophisticated than the noise removal slider in your phone’s i
 For example, imagine if I gave the below image on the left to a skilled graphic artist and told them that it’s a painting of an alien playing a guitar in the style of H.R. Giger. I bet they could go in and painstakingly clean it up to create something like the image on the right. 
 
 
-![Ask a graphic artist to de-noise](https://drive.google.com/uc?export=view&id=1AYBesow7BoIxZdnnnjZSXkZjrOJFqc2U)
+![Ask a graphic artist to de-noise](https://lh3.googleusercontent.com/d/1AYBesow7BoIxZdnnnjZSXkZjrOJFqc2U)
 
 (These are actual images from Stable Diffusion!)
 
@@ -61,7 +61,7 @@ Are you familiar with the “Inference Steps” slider in most art generation to
 Here’s an example of running it for 25 steps:
 
 
-![De-noising in 25 steps](https://drive.google.com/uc?export=view&id=1pSPqWssd1N2zeUHLnFAqEFZtNGb_zaph)
+![De-noising in 25 steps](https://lh3.googleusercontent.com/d/1pSPqWssd1N2zeUHLnFAqEFZtNGb_zaph)
 
 
 The alien guitarist example makes more sense, because you can make out what it’s supposed to be much more clearly… but in the image above, the starting image looks completely **unrecognizable**! 
@@ -69,7 +69,7 @@ The alien guitarist example makes more sense, because you can make out what it�
 In fact, that noisy alien example was actually taken from about halfway through the process–it actually started out as complete noise as well!
 
 
-![Giger Guitar Denoising](https://drive.google.com/uc?export=view&id=13itxbgrFzQ93LzkrgRXL1TjQ6zmckYxf)
+![Giger Guitar Denoising](https://lh3.googleusercontent.com/d/13itxbgrFzQ93LzkrgRXL1TjQ6zmckYxf)
 
 
 
@@ -101,7 +101,7 @@ The truth is nothing like that–it doesn’t have a database of images to refer
 And I don’t mean that in the sense of “well, sure, computers are ultimately just big calculators, and everything they do boils down to math”. I’m talking about the “bewildering equations on a chalkboard” kind of math, like the ones below:
 
 
-![Crazy equations](https://drive.google.com/uc?export=view&id=1wsff7Rw14GvpU3dNPyLy0M5befB1EUeG)
+![Crazy equations](https://lh3.googleusercontent.com/d/1wsff7Rw14GvpU3dNPyLy0M5befB1EUeG)
 
 
 (That’s from a technical tutorial I wrote on one of the many building blocks of Stable Diffusion called “Attention”.)
@@ -115,11 +115,11 @@ In order to apply these equations, we need to represent that initial noise image
 
 You might already be familiar with how images are represented, but let’s look at an example. Here’s a long exposure photo I took at high tide:
 
-![My water on stairs photo](https://drive.google.com/uc?export=view&id=1VyLwKFKtE8eaBimBgyJ7wYEAfca2GfVb)
+![My water on stairs photo](https://lh3.googleusercontent.com/d/1VyLwKFKtE8eaBimBgyJ7wYEAfca2GfVb)
 
 And here’s how it’s represented mathematically. It’s 512 x 512 pixels, so we represent it as a table with 512 rows and 512 columns. But we actually need three tables to represent an image, because each pixel is made up of a mixture of Red, Green, and Blue (RGB). Here are the actual values for the above image.
 
-![Image as table of floating point RGB values](https://drive.google.com/uc?export=view&id=1VViTdo53eiLy8vlyJEKYpDpTrggp9CJg)
+![Image as table of floating point RGB values](https://lh3.googleusercontent.com/d/1VViTdo53eiLy8vlyJEKYpDpTrggp9CJg)
 
 With Stable Diffusion, we also work with text. Here’s a description I might write for the image:
 
@@ -129,7 +129,7 @@ A long exposure color photograph of decaying concrete steps leading down into th
 
 And here’s how this is represented as a table of numbers. There is one row for each of the words, and each word is represented by 768 numbers. These are the actual numbers used in Stable Diffusion v1.5 to represent these words: 
 
-![Table of values for the image description](https://drive.google.com/uc?export=view&id=1VcGnChFxnf44iedqb_81iXkxY1O8U4W5)
+![Table of values for the image description](https://lh3.googleusercontent.com/d/1VcGnChFxnf44iedqb_81iXkxY1O8U4W5)
 
 How we choose the numbers to represent a word is a fascinating topic, but also fairly technical. You can loosely think of those numbers as each representing a different aspect of the meaning of a word.
 
@@ -147,7 +147,7 @@ There is a much, _much_ larger set of numbers that we plug into those equations 
 
 Remember plotting lines in high school with equations like `y = 3x + 2`?
 
-![Plot of a simple equation](https://drive.google.com/uc?export=view&id=1Zx_F2h-BW7WtcwNwO2-Tcj84U9y1DHXP)
+![Plot of a simple equation](https://lh3.googleusercontent.com/d/1Zx_F2h-BW7WtcwNwO2-Tcj84U9y1DHXP)
 
 If this were Stable Diffusion, then ‘x’ is our input, ‘y’ is the final image, and the numbers 3 and 2 are our parameters. (And, of course, the equations are wildly more complex 😝).
 

@@ -3,7 +3,7 @@ layout: post
 title:  "Smart Batching Tutorial - Speed Up BERT Training"
 date:   2020-07-29 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?export=view&id=1UjQaOAkN-zPh10fSoXmZ-68jMdFLq2y_
+image: https://lh3.googleusercontent.com/d/1UjQaOAkN-zPh10fSoXmZ-68jMdFLq2y_
 tags: BERT, Transformers, huggingface, Machine Learning, Natural Language Processing, NLP
 ---
 
@@ -40,7 +40,7 @@ We also provide the model with an "attention mask" for each sample, which identi
 
 Below are some example sentences from a French dataset that have been tokenized with a French BERT model called CamemBERT. For the sake of illustration, let's say that our dataset only consists of these 12 sentences, and we're dividing them into 3 batches of 4 samples each.
 
-![Fixed Padding Length](https://drive.google.com/uc?export=view&id=1UaVW3gxTSAD0E9CrCX48kn6QF_L_slP9)
+![Fixed Padding Length](https://lh3.googleusercontent.com/d/1UaVW3gxTSAD0E9CrCX48kn6QF_L_slP9)
 
 In order to feed multiple samples into BERT at once, we are padding out all of the sentences to a length of 14 (to match the length of the longest sentence(s) in the dataset).
 
@@ -62,7 +62,7 @@ And although all of the samples *within a batch* need to be of the same length, 
 
 (If you think about it, there's nowhere in our code that we ever explicitly tell BERT what sequence length to expect from us. We pad our dataset to whatever length we want, and BERT processes it just fine).
 
-![Dynamic padding](https://drive.google.com/uc?export=view&id=1UfJJ2sj1w6prvwQPwyqbQCgJbJ9qIC9V)
+![Dynamic padding](https://lh3.googleusercontent.com/d/1UfJJ2sj1w6prvwQPwyqbQCgJbJ9qIC9V)
 
 So, if we're willing to get more sophisticated with our code, we can customize our padding for each batch. This shouldn't have any impact on our accuracy, and Michaël confirmed this with his experiments.
 
@@ -73,7 +73,7 @@ So, if we're willing to get more sophisticated with our code, we can customize o
 
 We can go a step further, and sort our dataset by length before creating the batches, to be even more efficient.
 
-![Uniform Length Batching](https://drive.google.com/uc?export=view&id=1UjQaOAkN-zPh10fSoXmZ-68jMdFLq2y_)
+![Uniform Length Batching](https://lh3.googleusercontent.com/d/1UjQaOAkN-zPh10fSoXmZ-68jMdFLq2y_)
 
 *Note: In the above illustration I've selected the batches in sequence, but we'll actually be selecting them more randomly, to allow for more randomness to the order of the training data.*
 
