@@ -122,7 +122,7 @@ Here is that same example, this time comparing Euler to Euler A.
 
 
 
-[![Euler vs. Euler A](https://drive.google.com/uc?export=view&id=15Ir-YOl4LNRAQC3Xki_Zg7Ip4yjScAl-)](https://drive.google.com/uc?export=view&id=15Ir-YOl4LNRAQC3Xki_Zg7Ip4yjScAl-)
+[![Euler vs. Euler A](https://lh3.googleusercontent.com/d/15Ir-YOl4LNRAQC3Xki_Zg7Ip4yjScAl-)](https://lh3.googleusercontent.com/d/15Ir-YOl4LNRAQC3Xki_Zg7Ip4yjScAl-)
 
 
 Certainly the Euler A results are very striking, but:
@@ -167,7 +167,7 @@ _Landscape_
 “Rivendell”
 
 
-[![Eulver vs. DPM Rivendell](https://drive.google.com/uc?export=view&id=17WdAbF-bJRSofXN-CUSwMBveYhPcyceD)](https://drive.google.com/uc?export=view&id=17WdAbF-bJRSofXN-CUSwMBveYhPcyceD)
+[![Eulver vs. DPM Rivendell](https://lh3.googleusercontent.com/d/17WdAbF-bJRSofXN-CUSwMBveYhPcyceD)](https://lh3.googleusercontent.com/d/17WdAbF-bJRSofXN-CUSwMBveYhPcyceD)
 
 
 The prompt is from [here](https://lexica.art/?q=fantasy+landscape&prompt=c06ccb12-0b44-40e2-84cb-e8ec3d92941d), and the full prompt and settings are at the end of the post.
