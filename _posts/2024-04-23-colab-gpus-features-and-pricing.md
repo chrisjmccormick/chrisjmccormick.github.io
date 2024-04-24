@@ -72,10 +72,10 @@ Because a unit costs 1/10th of a dollar, you can easily calculate the price by s
 
 The fourth column shows you how much time you'll get (in hours:minutes) for your $10.
 
-| GPU ｜ | Units/hr ｜ | $/hr  ｜ | Time (h:m) ｜ | Date Checked |
+| GPU  | Units/hr  | $/hr   | Time (h:m)  | Date Checked |
 |------|--------------|----------|----------------------|---------|
-| T4   | 1.84         | \$0.18    | 54:20                |   |
-| V100 | 4.91         | \$0.49    | 20:21                |   |
+| T4   | 1.84         | \$0.18    | 54:20                |  2024-04-10 |
+| V100 | 4.91         | \$0.49    | 20:21                |  2024-04-10 |
 | L4   | 4.82         | \$0.48    | 20:47                |  2024-04-22 |
 | A100 | 11.77        | \$1.18    | 8:30                 |  2024-04-22 |
 
@@ -96,45 +96,13 @@ The Wikipedia page for Tesla cards [here](https://en.wikipedia.org/wiki/Nvidia_T
 Note that the "Launch Date" is tricky--I tried to capture when they actually started shipping / became available in the cloud as opposed to when they were announced.
 
 
+| GPU Model | Architecture | Launch Date | VRAM   | Website                                             |
+|-----------|--------------|-------------|--------|-----------------------------------------------------|
+| V100      | Volta        | 6/21/17     | 16 GB  | [Details](https://www.nvidia.com/en-us/data-center/v100/) |
+| T4        | Turing       | 9/13/18     | 15 GB  | [Details](https://www.nvidia.com/en-us/data-center/tesla-t4/) |
+| A100      | Ampere       | 5/14/20     | 40 GB  | [Details](https://www.nvidia.com/en-us/data-center/a100/) |
+| L4        | Ada Lovelace | 3/21/23     | 22.5 GB| [Details](https://www.nvidia.com/en-us/data-center/l4/) |
 
-
-<table>
-  <tr height="40">
-    <th width="100" align="Center">GPU Model</th>
-    <th width="100" align="Left">Architecture</th>
-    <th width="80" align="Left">Launch Date</th>
-    <th width="80" align="Center">VRAM</th>
-    <th>Website</th>
-  </tr>
-  <tr height="35" bgcolor="#e6f5e6">
-    <td align="center">V100</td>
-    <td>Volta</td>
-    <td><font face="Courier New">6/21/17</font></td>
-    <td><font face="Courier New">&nbsp&nbsp16 GB</font></td>
-    <td><a href="https://www.nvidia.com/en-us/data-center/v100/">Details</a></td>
-  </tr>
-  <tr height="35" >
-    <td align="center">T4</td>
-    <td >Turing</td>
-    <td><font face="Courier New">9/13/18</font></td>
-    <td><font face="Courier New">&nbsp&nbsp15 GB</font></td>
-    <td><a href="https://www.nvidia.com/en-us/data-center/tesla-t4/">Details</a></td>
-  </tr>
-  <tr height="35"  bgcolor="#e6f5e6">
-    <td align="center">A100</td>
-    <td>Ampere</td>
-    <td><font face="Courier New">5/14/20</font></td>
-    <td><font face="Courier New">&nbsp&nbsp40 GB</font></td>
-    <td><a href="https://www.nvidia.com/en-us/data-center/a100/">Details</a></td>
-  </tr>
-  <tr height="35" >
-    <td align="center">L4</td>
-    <td>Ada Lovelace</td>
-    <td><font face="Courier New">3/21/23</font></td>
-    <td><font face="Courier New">22.5 GB</font></td>
-    <td><a href="https://www.nvidia.com/en-us/data-center/l4/">Details</a></td>
-  </tr>
-</table>
 
 
 Some notes:
