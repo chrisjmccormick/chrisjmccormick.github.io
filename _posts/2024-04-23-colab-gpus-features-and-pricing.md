@@ -8,13 +8,13 @@ tags: Colab, Fine-Tuning, huggingface, Machine Learning, Natural Language Proces
 ---
 
 
-Recently I've been researching the topic of fine-tuning Large Language Models (LLMs) like GPT on a single GPU in Colab (a challenging feat!), comparing both the free (Tesla T4) and paid (L4, A100) options.
+Recently I've been researching the topic of fine-tuning Large Language Models (LLMs) like GPT on a single GPU in Colab (a challenging feat!), comparing both the free (Tesla T4) and paid options.
 
 I just saw the Nvidia "L4" added as _yet another_ option in the list of GPUs, so I decided it was time to assemble a table to make better sense of the choices.
 
-By Chris McCormick 
+By Chris McCormick
 
-<a href="https://colab.research.google.com/github/chrisjmccormick/llm-tuning-examples/blob/main/tutorials/Colab_GPU_Pricing_%26_Features.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+Part of my [llm-tuning-examples]((https://github.com/chrisjmccormick/llm-tuning-examples/)) project.
 
 # Contents
 
@@ -44,7 +44,7 @@ The actual hourly cost of the different GPUs isn't presented clearly (that I've 
 
 First off, you pay for GPU time using the "compute units" in your account.
 
-These cost $ \frac{\text{\$10}}{\text{100 units}} $, or $ \frac{\text{\$0.10}}{\text{unit}} $
+These cost \\( \frac{\text{\$10}}{\text{100 units}} \\), or \\( \frac{\text{\$0.10}}{\text{unit}} \\)
 
 The only way to get units is to pay $10 for 100 of them--pretty simple. There's no bulk discount.
 
@@ -259,11 +259,11 @@ If you try selelction "flash_attention_2" on the T4, you'll get an error. But ag
 
 "Brain Floating Point" or "`bfloat16`", (named because it was developed at Google Brain) is a data type with advantages for neural network training over `float16`. It has to implemented in hardware, and is supported by the newer GPUs (A100 and L4) but not the older GPUs (V100 and T4).
 
-Compared to `float16` it's able to represent **much tinier** numbers (all the way down to about $ 1.2 \times 10^{−38} $) and **much bigger** numbers (all the way up to about $ 3.4 \times 10^{38} $).
+Compared to `float16` it's able to represent **much tinier** numbers (all the way down to about \\( 1.2 \times 10^{−38} \\)) and **much bigger** numbers (all the way up to about \\( 3.4 \times 10^{38} \\)).
 
 Neural networks, particularly deep ones, can have problems with gradients getting very large or very small, and `bfloat16` has much less rounding error than `float16` in these domains.
 
-The trade-off is that `bfloat16` has _more_ rounding error inside the range of values that `float16` can represent, $ 6 \times 10^{-8} $ to $ 64\text{K} $, but neural networks are apparently less impacted by reduced precision in that range.
+The trade-off is that `bfloat16` has _more_ rounding error inside the range of values that `float16` can represent, \\( 6 \times 10^{-8} \\) to \\( 64\text{K} \\), but neural networks are apparently less impacted by reduced precision in that range.
 
 > Side Note: I thought it was interesting to learn that `bfloat16` uses the same number of bits for the exponent as `float32`, and is able to represent the same range of values as `float32`, just with less precision.
 
