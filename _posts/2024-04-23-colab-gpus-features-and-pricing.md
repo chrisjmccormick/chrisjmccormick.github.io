@@ -14,7 +14,7 @@ I just saw the Nvidia "L4" added as _yet another_ option in the list of GPUs, so
 
 By Chris McCormick
 
-Part of my [llm-tuning-examples]((https://github.com/chrisjmccormick/llm-tuning-examples/)) project.
+Part of my [llm-tuning-examples](https://github.com/chrisjmccormick/llm-tuning-examples/) project.
 
 # Contents
 
