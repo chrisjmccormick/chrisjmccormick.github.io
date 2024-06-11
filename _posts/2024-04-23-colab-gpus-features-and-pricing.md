@@ -44,7 +44,7 @@ The actual hourly cost of the different GPUs isn't presented clearly (that I've 
 
 First off, you pay for GPU time using the "compute units" in your account.
 
-These cost \\( \frac{\text{$10}}{\text{100 units}} \\), or \\( \frac{\text{$0.10}}{\text{unit}} \\)
+These cost \\( \frac{\text{10 usd}}{\text{100 units}} \\), or \\( \frac{\text{\0.10 usd}}{\text{unit}} \\)
 
 The only way to get units is to pay $10 for 100 of them--pretty simple. There's no bulk discount.
 
