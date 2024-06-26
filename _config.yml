@@ -38,4 +38,6 @@ gems:
   - jekyll-paginate
   - jekyll-gist
 
-analytics_id:       UA-76624103-1
+#analytics_id:       UA-76624103-1
+ga_analytics:        UA-76624103-1
+
