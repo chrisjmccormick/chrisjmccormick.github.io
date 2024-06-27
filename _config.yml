@@ -39,5 +39,5 @@ gems:
   - jekyll-gist
 
 #analytics_id:       UA-76624103-1
-ga_analytics:        UA-76624103-1
+google_analytics_id: G-E25JX7SE8R
 
