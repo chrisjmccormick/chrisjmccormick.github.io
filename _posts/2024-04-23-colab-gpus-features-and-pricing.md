@@ -270,4 +270,45 @@ I think the topic of fine-tuning LLMs is eventually going to take me into the mu
 
 (The big cloud platforms can be very daunting to use--I'd suggest [Lambda Labs](https://lambdalabs.com/service/gpu-cloud) if you're looking for a Colab-like experience with access to multiple GPU instances).
 
-Hope you found this info helpful. If you have further insights to share--leave a comment, or come join me on our Discord!
+# Appendix
+
+## Discord
+
+Questions or Feedback? Leave a comment below, or better yet join us on our discord! 
+
+[![Discord Button](https://lh3.googleusercontent.com/d/1kWYDt8JEJ-EXoaBWjZoil_d7W4bBQ9iy)](https://discord.gg/3QMCn7fNe5) 
+
+## Acknowledgements
+
+Thanks [Chris Perry](https://x.com/thechrisperry) (Colab Product Lead) for looking over the post!
+
+## Membership
+
+Members of my site can also go [here](https://www.chrismccormick.ai/products/colab-gpus-features-pricing) for more, including:
+
+* A video walkthrough
+* Quick Review notes
+* Links to additional resources  
+
+[Join today!](https://www.chrismccormick.ai/membership)
+
+## 📚 Cite
+
+Please use the following BibTex for citing this article.
+
+```
+@misc{mccormick2024colabgpus, 
+  title={Colab GPUs Features and Pricing},
+  author={McCormick, C},
+  year={2024},
+  url={https://mccormickml.com/2024/04/23/colab-gpus-features-and-pricing/}
+}
+```
+
+Or
+
+```
+McCormick, C (2024). Colab GPUs Features and Pricing [Blog post]. Retrieved from https://mccormickml.com/2024/04/23/colab-gpus-features-and-pricing/ 
+```
+
+
