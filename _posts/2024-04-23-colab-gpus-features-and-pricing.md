@@ -272,17 +272,21 @@ I think the topic of fine-tuning LLMs is eventually going to take me into the mu
 
 # Appendix
 
-## Discord
+**Discord**
 
 Questions or Feedback? Leave a comment below, or better yet join us on our discord! 
 
 [![Discord Button](https://lh3.googleusercontent.com/d/1kWYDt8JEJ-EXoaBWjZoil_d7W4bBQ9iy)](https://discord.gg/3QMCn7fNe5) 
 
-## Acknowledgements
+--------
+
+**Acknowledgements**
 
 Thanks [Chris Perry](https://x.com/thechrisperry) (Colab Product Lead) for looking over the post!
 
-## Membership
+---------
+
+**Membership**
 
 Members of my site can also go [here](https://www.chrismccormick.ai/products/colab-gpus-features-pricing) for more, including:
 
@@ -292,7 +296,9 @@ Members of my site can also go [here](https://www.chrismccormick.ai/products/col
 
 [Join today!](https://www.chrismccormick.ai/membership)
 
-## 📚 Cite
+-----------
+
+**📚 Cite**
 
 Please use the following BibTex for citing this article.
 
@@ -311,4 +317,5 @@ Or
 McCormick, C (2024). Colab GPUs Features and Pricing [Blog post]. Retrieved from https://mccormickml.com/2024/04/23/colab-gpus-features-and-pricing/ 
 ```
 
+-----------
 
