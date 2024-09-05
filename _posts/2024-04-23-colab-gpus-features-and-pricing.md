@@ -121,6 +121,8 @@ Also, below are a couple cards that aren't on Colab yet. The `Hopper` and `Ada L
 | H100      | Hopper       | 3/21/23     | 80GB | [Details](https://www.nvidia.com/en-us/data-center/h100/) |
 | B100      | Blackwell    | Coming 2024 | ? | .. |
 
+[![Join Our Newsletter](https://lh3.googleusercontent.com/d/1JIQOdjp869nHAoob3Zh5PLBb3CpvgJOO)](https://www.chrismccormick.ai/subscribe?utm_source=blog&utm_medium=banner&utm_campaign=newsletter&utm_content=post8)
+
 # S5. Performance & Features
 
 ### 5.1. Speed
