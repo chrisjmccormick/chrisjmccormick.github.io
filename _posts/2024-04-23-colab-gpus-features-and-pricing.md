@@ -298,7 +298,7 @@ Members of my site can also go [here](https://www.chrismccormick.ai/products/col
 * Quick Review notes
 * Links to additional resources  
 
-[Join today!](https://www.chrismccormick.ai/membership)
+[Join today!](https://www.chrismccormick.ai/membership?utm_source=blog&utm_medium=link&utm_campaign=membership&utm_content=post8)
 
 -----------
 
