@@ -29,6 +29,7 @@ That said,
 2. Decompression is trivial/fast (it just adds an extra multiplication), and
 3. It's enabled us to play with these massive 7-billion parameter LLMs on a single GPU!
 
+There's also a Colab version of this post here:
 <a href="https://colab.research.google.com/drive/1cAp_dWgXrQSeg0irgvVZS0NdazaqeOZD" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ### Contents
@@ -531,7 +532,7 @@ Notice how the orange bars (the decompressed numbers) only take on a limited set
 
 $$ \text{-|max|}, \quad -\frac{6}{7}\text{|max|}, \quad -\frac{5}{7}\text{|max|}, \quad ..., \quad \frac{6}{7}\text{|max|}, \quad \text{|max|}  $$
 
-For this block, we made use of 14 of the 15 possible values (count up the number of groups of orange bars to see this. The only value we didn't use is $\text{-|max|}$).
+For this block, we made use of 14 of the 15 possible values (count up the number of groups of orange bars to see this. The only value we didn't use is `-|max|`).
 
 That seems like a good sign--we're making great use of the available precision. It's like we've created a custom 4-bit data type that best represents these 64 numbers!
 
@@ -609,7 +610,7 @@ A couple observations:
 
 1. Because NF4 only has seven negative values but eight positive values, the negative values are a little further spread out (and lighter in color).
 2. Comparing the two, I think you could summarize the difference as:
-    * NF4 drops the ability to represent -6/7|max| and +6/7|max|.
+    * NF4 drops the ability to represent `-6/7|max|` and `+6/7|max|`.
     * This allows NF4 to squeeze three additional values (the third comes from using all 16!) bettwen the range -5/7 to 5/7.
 
 
