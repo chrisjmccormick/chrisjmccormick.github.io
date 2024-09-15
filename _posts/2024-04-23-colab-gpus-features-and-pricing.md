@@ -44,7 +44,9 @@ The actual hourly cost of the different GPUs isn't presented clearly (that I've 
 
 First off, you pay for GPU time using the "compute units" in your account.
 
-These cost \\( \frac{\text{\$10}}{\text{100 units}} \\), or \\( \frac{\text{\$0.10}}{\text{unit}} \\)
+These cost $\frac{\text{\\$10}}{\text{100 units}}$, or $\frac{\text{\\$0.10}}{\text{unit}}$
+
+
 
 The only way to get units is to pay $10 for 100 of them--pretty simple. There's no bulk discount.
 
@@ -231,7 +233,7 @@ If you try selelction "flash_attention_2" on the T4, you'll get an error. But ag
 
 "Brain Floating Point" or "`bfloat16`", (named because it was developed at Google Brain) is a data type with advantages for neural network training over `float16`. It has to implemented in hardware, and is supported by the newer GPUs (A100 and L4) but not the older GPUs (V100 and T4).
 
-Compared to `float16` it's able to represent **much tinier** numbers (all the way down to about \\( 1.2 \times 10^{−38} \\)) and **much bigger** numbers (all the way up to about \\( 3.4 \times 10^{38} \\)).
+Compared to `float16` it's able to represent **much tinier** numbers (all the way down to about $1.2 \times 10^{−38}$) and **much bigger** numbers (all the way up to about \\( 3.4 \times 10^{38} \\)).
 
 Neural networks, particularly deep ones, can have problems with gradients getting very large or very small, and `bfloat16` has much less rounding error than `float16` in these domains.
 
