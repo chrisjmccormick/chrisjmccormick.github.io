@@ -3,7 +3,7 @@ layout: post
 title:  "How to Apply BERT to Arabic and Other Languages"
 date:   2020-10-05 8:00:00 -0800
 comments: true
-image: https://drive.google.com/uc?id=1W0NEUcNqygscj4xehwh_IIOXuMRJLEOF
+image: https://lh3.googleusercontent.com/d/1W0NEUcNqygscj4xehwh_IIOXuMRJLEOF
 tags: BERT, Transformers, Multilingual, Monolingual, Arabic, Cross-Lingual Transfer, XLM-Roberta, XLM-R, XNLI, MNLI, huggingface, Machine Learning, Natural Language Processing, NLP
 ---
 
@@ -31,9 +31,7 @@ In this post and the accompanying Notebooks, we'll be playing with a specific mu
 
 While the original BERT was pre-trained on English Wikipedia and BooksCorpus (a collection of self-published books) XLM-R was pre-trained on Wikipedia and Common Crawl data from **100 different languages**! Not 100 different models trained on 100 different languages, but a *single* BERT-type model that was pre-trained on all of this text together. 
 
-
-
-![Difference in pre-training](https://drive.google.com/uc?id=1W0NEUcNqygscj4xehwh_IIOXuMRJLEOF)
+![Difference in pre-training](https://lh3.googleusercontent.com/d/1W0NEUcNqygscj4xehwh_IIOXuMRJLEOF)
 
 
 There really isn't anything here that's trying to deliberately differentiate between languages. For example, in XLM-R:
@@ -61,7 +59,7 @@ XLM-R provides another avenue called "Cross-Lingual Transfer". You can fine-tune
 
 
 
-![Cross-Lingual Transfer](https://drive.google.com/uc?id=1bKt1XG7XQj77ZdkSu5-YxtPyjH_7Xk_6)
+![Cross-Lingual Transfer](https://lh3.googleusercontent.com/d/1bKt1XG7XQj77ZdkSu5-YxtPyjH_7Xk_6)
 
 
 
@@ -90,7 +88,7 @@ The following bar plot shows, for a small selection of languages, how much text 
 
 
 
-![Bar plot of training data for example languages](https://drive.google.com/uc?id=1VzrIB_5RKgVlAwEbG2sIQkhsXqm-rHaN)
+![Bar plot of training data for example languages](https://lh3.googleusercontent.com/d/1VzrIB_5RKgVlAwEbG2sIQkhsXqm-rHaN)
 
 
 
@@ -107,7 +105,7 @@ I adapted the above bar plot from Figure 1 of the XLM-R [paper](https://arxiv.or
 
 
 
-![Bar plot of training data for 88 languages](https://drive.google.com/uc?id=1WAh9OYT2CUR5TGXGOzkn_uRVeBc0y2O_)
+![Bar plot of training data for 88 languages](https://lh3.googleusercontent.com/d/1WAh9OYT2CUR5TGXGOzkn_uRVeBc0y2O_)
 
 
 
@@ -148,7 +146,7 @@ You could rely entirely on English models, and translate any and all Arabic text
 
 
 
-![Translate all to English](https://drive.google.com/uc?id=1bIFFnT5GQqFp2273ciMzuT1_E-kXWjlZ)
+![Translate all to English](https://lh3.googleusercontent.com/d/1bIFFnT5GQqFp2273ciMzuT1_E-kXWjlZ)
 
 
 This approach has the same problems as the monolingual model approach. The best translation tools use machine learning, and have the same limitation around available training data. In other words, the translation tools for medium and low resource languages aren't good enough to be an easy solution to our problem--currently, a multilingual BERT model like XLM-R is probably the better way to go.
@@ -158,7 +156,7 @@ This approach has the same problems as the monolingual model approach. The best 
 If there already exists a large amount of labeled *English* text for your task, then you could translate this labeled text into Arabic and use it to augment your available *Arabic* training data.
 
 
-![Augment training data](https://drive.google.com/uc?id=1bKJ_xtWQ2bXzpSGiL94kuISfCRVJz0Mj)
+![Augment training data](https://lh3.googleusercontent.com/d/1bKJ_xtWQ2bXzpSGiL94kuISfCRVJz0Mj)
 
 
 If there is a decent monolingual model available in your language, and there is a large English dataset available for your task, then this is a great technique. We applied this technique to Arabic in one of our accompanying Notebooks and it outperformed XLM-R (at least in our initial results--we didn't perform a rigorous benchmark).
@@ -394,7 +392,7 @@ With this cross-lingual transfer approach, we got an accuracy of 71.6% on the Ar
 
 The authors of XML-RoBERTa reported a score of 73.8% on Arabic in their [paper](https://arxiv.org/pdf/1911.02116.pdf) in Table 1:
 
-![Arabic results](https://drive.google.com/uc?id=1bO0h0_72uRXK3fv4ILb8mPtWZSZz6tXA)
+![Arabic results](https://lh3.googleusercontent.com/d/1bO0h0_72uRXK3fv4ILb8mPtWZSZz6tXA)
 
 The model in the bottom row of the table is larger--it matches the scale of BERT-large. We used the smaller 'base' size in our example.
 
