@@ -29,6 +29,7 @@ That said,
 2. Decompression is trivial/fast (it just adds an extra multiplication), and
 3. It's enabled us to play with these massive 7-billion parameter LLMs on a single GPU!
 
+There's also a Colab version of this post here:
 <a href="https://colab.research.google.com/drive/1cAp_dWgXrQSeg0irgvVZS0NdazaqeOZD" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ### Contents
@@ -55,11 +56,11 @@ Also, compressed weights are frozen and can't be updated (we'll see why), which 
 
 Still, cutting down the model size by 3.76x is a big win! If a 7B parameter model requires:
 
-<center> $ 7B \text{ parameters} \times \frac{16 \text{-bits}}{\text{parameter}} \times \frac{2 \text{ bytes}}{16 \text{-bits}} = \mathbf{14GB} $ </center>
+$$ 7B \text{ parameters} \times \frac{16 \text{-bits}}{\text{parameter}} \times \frac{2 \text{ bytes}}{16 \text{-bits}} = \mathbf{14GB} $$
 
 Then 4Q cuts this down to:
 
-<center> $ \frac{14 \text{GB}}{3.76 \text{x}} = \mathbf{3.72GB} $ </center>
+$$ \frac{14 \text{GB}}{3.76 \text{x}} = \mathbf{3.72GB} $$
 
 Now we can feasibly use that model in Colab on a single GPU, even on the free 15GB Tesla T4 they give you!
 
@@ -290,9 +291,9 @@ Now that all of the values are confined to the range -1 to +1, we'll see that it
 
 One approach is to simply round them to the closest of 15 evenly spaced values, which turns out to be all of the multiples of one-seventh, so I refer to this as the "sevenths" approach.
 
-\begin{align*}
+$$ \begin{align*}
 -1, & \quad -\frac{6}{7}, \quad -\frac{5}{7}, \quad -\frac{4}{7}, \quad -\frac{3}{7}, \quad -\frac{2}{7}, \quad -\frac{1}{7}, \quad 0, \quad \frac{1}{7}, \quad \frac{2}{7}, \quad \frac{3}{7}, \quad \frac{4}{7}, \quad \frac{5}{7}, \quad \frac{6}{7}, \quad 1
-\end{align*}
+\end{align*} $$
 
 
 
@@ -529,9 +530,9 @@ Not too bad!
 
 Notice how the orange bars (the decompressed numbers) only take on a limited set of values--the possible values are the fifteen numbers from
 
-$ \text{-|max|}, \quad -\frac{6}{7}\text{|max|}, \quad -\frac{5}{7}\text{|max|}, \quad ..., \quad \frac{6}{7}\text{|max|}, \quad \text{|max|}  $
+$$ \text{-|max|}, \quad -\frac{6}{7}\text{|max|}, \quad -\frac{5}{7}\text{|max|}, \quad ..., \quad \frac{6}{7}\text{|max|}, \quad \text{|max|}  $$
 
-For this block, we made use of 14 of the 15 possible values (count up the number of groups of orange bars to see this. The only value we didn't use is $ \text{-|max|} $).  
+For this block, we made use of 14 of the 15 possible values (count up the number of groups of orange bars to see this. The only value we didn't use is `-|max|`).
 
 That seems like a good sign--we're making great use of the available precision. It's like we've created a custom 4-bit data type that best represents these 64 numbers!
 
@@ -609,7 +610,7 @@ A couple observations:
 
 1. Because NF4 only has seven negative values but eight positive values, the negative values are a little further spread out (and lighter in color).
 2. Comparing the two, I think you could summarize the difference as:
-    * NF4 drops the ability to represent -6/7|max| and +6/7|max|.
+    * NF4 drops the ability to represent `-6/7|max|` and `+6/7|max|`.
     * This allows NF4 to squeeze three additional values (the third comes from using all 16!) bettwen the range -5/7 to 5/7.
 
 
@@ -709,7 +710,7 @@ decompd_values = run_4Q(block_values, use_nf4 = True)
 
 This time, the possible values are (roughly):
 
-$ \text{-|max|}, \quad -0.696\text{|max|}, \quad -0.525\text{|max|}, \quad ..., \quad 0.723\text{|max|}, \quad \text{|max|}  $
+$$ \text{-|max|}, \quad -0.696\text{|max|}, \quad -0.525\text{|max|}, \quad ..., \quad 0.723\text{|max|}, \quad \text{|max|}  $$
 
 I'll also define a function for the scatter plot.
 
