@@ -29,10 +29,9 @@ github:
 
 # This is the list of pages to include in the header of the website.
 pages_list:       
-  About: '/about/'
-  Newsletter: 'https://www.chrismccormick.ai/subscribe?utm_source=blog&utm_medium=banner&utm_campaign=newsletter&utm_content=blog_menu1'
-  Membership: 'https://www.chrismccormick.ai/membership?utm_source=blog&utm_medium=banner&utm_campaign=membership&utm_content=blog_header2'
-  Blog Archive: '/archive/'
+  Live Walkthroughs: 'https://www.chrismccormick.ai/weekly-discussion-group?utm_source=blog&utm_medium=banner&utm_campaign=session_signup&utm_content=blog_menu1'
+  Support My Work: 'https://www.chrismccormick.ai/offers/cdtpxYGz?utm_source=blog&utm_medium=banner&utm_campaign=support_offer&utm_content=blog_menu1'
+  Archive: '/archive/'
 
 # Gems
 gems:
