@@ -175,7 +175,12 @@ From what I've gathered, here's where I think you might use CPT and/or SFT:
 We'll see in this example that CPT on a small amount of data is enough to get it to specialize on a particular writing style.
 
 
-TODO - I asked GPT to explain the differences. I thought about re-writing it, but it feels like a really solid summary that I'm not sure how much I can improve on, so I'm just including it here in full.
+### GPT's Explanation
+
+
+
+
+I asked GPT to explain the differences and it feels like a really solid summary that I'm not sure I could improve on much, so just note that the remainder of this section is written by GPT.
 
 
 ---
@@ -588,7 +593,6 @@ print("GPU memory used: {:}".format(gpu_mem_used()))
 GPU memory used: 4.78 GB
 
 ```
-<a name="Data"></a>
 ## S3. Data Prep
 
 
@@ -1046,7 +1050,7 @@ The Hugging Face paradigm for applying LoRA, which is followed here as well, is 
 
 "peft" standards for "Parameter-Efficient Fine-Tuning", which is the general name for techniques like LoRA, but LoRA is the dominant approach.
 
-Refer back to the "CPT Considerations" section for some reflections on the use of LoRA for CPT. LoRA is a requirement when using quantization, and can help avoid overfitting (particularly with smaller training datasets?). But if you're trying to make big changes to the model's knowledge or writing style, it may be too limiting.
+Refer back to the "CPT Considerations" section for some reflections on the use of LoRA for CPT. LoRA is a requirement when using quantization, and can help avoid overfitting (particularly with smaller training datasets?). But if you're trying to make big changes to the model's knowledge or writing style, it may be too limiting?
 
 
 **Choosing Targets**
@@ -1063,41 +1067,16 @@ The typical exceptions are:
 For CPT, it makes more sense to allow these input and output vocabularies to be modified by the training. See the "CPT Considerations" section for more.
 
 
-**Rank**
+**Rank**, `r`
 
-You can think of `r` as how many additional neurons we want to add to each component of the model. Adding more means we can make bigger changes to the model, but also requires more training data to avoid overfitting.
+You can think of `r` as how many additional neurons we want to add to each component of the model. Adding more means we can make bigger changes to the model's knowledge and behavior, but also requires more training data to avoid overfitting.
 
+If you want to try playing with the rank, the following approach makes sense to me:
 
-**Scaling Factor**
-
-The magnitude of the weight updates tends to scale proportionally with the number of parameters we add (via `r`).
-
-This means that when trying out different values of `r`, we'd end up making proportional changes to the learning rate to balance this out.
-
-To avoid this, the authors added a scaling factor (call it `s`) which does two things:
-
-1. For smaller values of `r`, the weight updates are actually too small, so we scale them up.
-2. But as we increase `r`, we decrease s proportionally.
-
-The way you do this is by choosing a (somewhat arbitrary) constant alpha--32 is the value used here--and then internally the scaling factor is calculated as `s = alpha / r`.
-
-This way, you can leave alpha fixed, play with different values of `r`, and not have to re-tune your learning rate every time.
-
-
-**"Rank Stabilized" Scaling**
-
-It's been found ([here](https://arxiv.org/abs/2312.03732)) that this _directly_ proportional scaling doesn't quite hold true for larger ranks--e.g., 32 / r is too small when r = 128.
-
-So rsLoRA just calculates s as alpha / sqrt(r) to keep the scaling factor larger.
-
-
-<img src='https://lh3.googleusercontent.com/d/1zX7ct75DG-_SyxuU-4eRdZNIjyIX4OHP' alt='Scaling factor with Rank Stabilized LoRA' width='600' />
-
-
-For the purpose of the illustration, I chose a different alpha for rsLoRA so that they'd produce the same initial scaling factor.
-
-Simply put, the rsLoRA equation decreases the scaling factor less aggressively.
-
+1. **Initial Rank**: Start with a small rank, like 8, to avoid over-fitting. Leave alpha at 32 and don't mess with it.
+2. **Tune Learning Rate**: Before playing with the rank, tune the batch size and learning rate to find a good combo.
+3. **Tune Rank**: Play with different values of `r`, _but leave `alpha` alone_--it's purpose is to allow you to try different values for `r` without having to re-tune the learning rate.
+3. **Re-Tune Learning Rate**: Once you've found a good `r` value, re-tune the learning rate to see if the ideal value has changed.
 
 
 **Apply LoRA!**
@@ -1114,16 +1093,13 @@ model = FastLanguageModel.get_peft_model(
     # Larger values of r make sense for CPT on large datasets.
     r = 128, # Choose any number > 0 ! Suggested 8, 16, 32, 64, 128
 
-    # The value of 'alpha' kinda doesn't matter--just leave it alone and
-    # 1. Find a good learning rate, then
-    # 2. Play with different values of `r`.
-    # Alpha is part of the equation LoRA uses to allow you to play with
-    # different `r` values without having to re-tune the learning rate every
-    # time.
+    # The value of 'alpha' kinda doesn't matter--just pick a value and stick
+    # with it. Tuning alpha and tuning the learning rate are redundant.
     lora_alpha = 32,
 
-    # "Rank stabilized" LoRA just uses a better version of that scaling
-    # scaling equation.
+    # "Rank stabilized" LoRA changes the scaling behavior (from alpha) such that
+    # higher values of r (like 128 or 256) don't have their gradients scaled
+    # down too much.
     use_rslora = True,  # We support rank stabilized LoRA
 
     # Which parts of the model to apply LoRA to (i.e., define new matrices and
@@ -1187,6 +1163,11 @@ Unsloth: Training lm_head in mixed precision to save VRAM
 
 There are some interesting details in the output of the previous cell...
 
+
+
+
+
+
 **Offloading Embeddings**
 
 It mentions removing the input and output (LM head) embeddings from the GPU:
@@ -1209,6 +1190,9 @@ _Impact on Backprop_
    * The output embedding for the target word.
    * The input embeddings for the tokens in our text.
 
+
+
+
 **LoRA Summary**
 
 This line shows how many parts of the model we're applying LoRA weights to. Llama 3 has 32 layers, so the numbers make sense. It doesn't mention the input or output embeddings, though?
@@ -1216,6 +1200,9 @@ This line shows how many parts of the model we're applying LoRA weights to. Llam
 ```
 Unsloth 2025.1.5 patched 32 layers with 32 QKV layers, 32 O layers and 32 MLP layers.
 ```
+
+
+
 
 **Mixed Precision**
 
@@ -1227,15 +1214,15 @@ Unsloth: Training lm_head in mixed precision to save VRAM
 ```
 
 
-Adding the LoRA parameters takes a small amount of additional memory.
+**LoRA Memory Use**
 
-* **TODO** - But does the Unsloth unloading actually reduce it?
+Adding the LoRA parameters typically takes a small amount of additional memory, but a rank of 128 is actually pretty large, and the weights are adding another ~1.2 GB.
 
 
 ```python
 gpu_mem_lora = gpu_mem_used()
 
-print("GPU memory used: {:}".format(gpu_mem_used()))
+print("Total GPU memory used after adding LoRA weights: {:}".format(gpu_mem_used()))
 ```
 
 
@@ -1243,7 +1230,6 @@ print("GPU memory used: {:}".format(gpu_mem_used()))
 GPU memory used: 6.17 GB
 
 ```
-<a name="Train"></a>
 ## S6. Run Continued Pretraining
 
 
@@ -1353,10 +1339,6 @@ Each "step" refers to training on one batch of samples (in this case, 16 samples
 
 The Training Loss is displayed as a way to ensure that the model is learning successfully. The Loss can be erratic, but it should be trending downward. If not, there's something wrong with the setup.
 
-`trainer_stats`
-
-* TODO - I'd be curious to explore what's in here. Probably includes the training loss so that you could plot the "learning curve".
-
 
 ```python
 trainer_stats = trainer.train()
@@ -1386,18 +1368,20 @@ print(f"{round(trainer_stats.metrics['train_runtime']/60, 2)} minutes used for t
 ```
 The below code is from the original Notebook.
 
-* TODO - Check this again--I may have impacted this by doing the inference step prior to training.
+Note how significant the additional memory use is for the training step, compared to just storing the model.
 
 
 ```python
 used_memory = round(torch.cuda.max_memory_reserved() / 1024 / 1024 / 1024, 3)
 print(f"Peak reserved memory = {used_memory} GB.")
 
-used_memory_for_lora = round(used_memory - start_gpu_memory, 3)
-print(f"Peak reserved memory for training = {used_memory_for_lora} GB.")
-
 used_percentage = round(used_memory         /max_memory*100, 3)
 print(f"Peak reserved memory % of max memory = {used_percentage} %.")
+
+print("\n----\n")
+
+used_memory_for_lora = round(used_memory - start_gpu_memory, 3)
+print(f"Peak reserved memory for training = {used_memory_for_lora} GB.")
 
 lora_percentage = round(used_memory_for_lora/max_memory*100, 3)
 print(f"Peak reserved memory for training % of max memory = {lora_percentage} %.")
@@ -1411,13 +1395,15 @@ Peak reserved memory % of max memory = 23.587 %.
 Peak reserved memory for training % of max memory = 12.559 %.
 
 ```
-For comparison, with NVIDIA SMI:
+I've found that the `torch.cuda.max_memory_reserved()` always under-reports, I think it only can report the memory used by torch.
+
+The NVIDIA SMI tool gives the true total.
 
 
 ```python
 gpu_mem_train = gpu_mem_used()
 
-print("GPU memory used: {:}".format(gpu_mem_used()))
+print("Total GPU memory used after training: {:}".format(gpu_mem_used()))
 ```
 
 
@@ -1425,7 +1411,6 @@ print("GPU memory used: {:}".format(gpu_mem_used()))
 GPU memory used: 9.85 GB
 
 ```
-<a name="Inference"></a>
 ## S7. Inference After Training
 
 
@@ -1654,38 +1639,24 @@ together.</s>
 
 Our relatively small training run seems to have been very successful in adapting the model to write in the style of the dataset!
 
-
-Some more specific (but not very important?) observations on the output:
-
-The generated output has some strong resemblances to the first sample in the dataset--both are:
-   * About a girl named Lily,
-   * Who finds an object,
-   * And interacts with her parents about it.
-
-However, sample number 5 is also about "Lily", so perhaps she's a common name in the dataset.
-
-The generated example does seem to follow the theme of there being some type of lesson learned, but doesn't end on quite as positive of a note.
-
-
-
-
-**TODOs and Further Research**
-
-1. What if, after training, we try something not story related?
-    * Feed it a math problem to complete,
-    * or the first few lines of some python code?
-    * Or maybe some medical or legal text--can it still write with a more sophisticated vocabulary?
+It seems like a pretty simple objective, though, so it'd be interesting to try this on something that feels more challenging?
 
 
 ---
 
 
-## S6. Unsloth Conclusion
+## S8. Unsloth
 
 
-And we're done! If you have any questions on Unsloth, we have a [Discord](https://discord.gg/u54VK8m8tk) channel! If you find any bugs or want to keep updated with the latest LLM stuff, or need help, join projects etc, feel free to join our Discord!
+(Below are the Unsloth promotions from the original Notebook--wanted to make sure I preserved these.)
 
-Some other links:
+
+_Unsloth Discord_
+
+If you have any questions on Unsloth, we have a [Discord](https://discord.gg/u54VK8m8tk) channel! If you find any bugs or want to keep updated with the latest LLM stuff, or need help, join projects etc, feel free to join our Discord!
+
+_Additional Unsloth Notebooks_
+
 1. Zephyr DPO 2x faster [free Colab](https://colab.research.google.com/drive/15vttTpzzVXv_tJwEk-hIcQ0S9FcEWvwP?usp=sharing)
 2. Llama 7b 2x faster [free Colab](https://colab.research.google.com/drive/1lBzz5KeZJKXjvivbYvmGarix9Ao6Wxe5?usp=sharing)
 3. TinyLlama 4x faster full Alpaca 52K in 1 hour [free Colab](https://colab.research.google.com/drive/1AZghoNBQaMDgWJpi4RbffGM1h6raLUj9?usp=sharing)
@@ -1695,30 +1666,11 @@ Some other links:
 7. `ChatML` for ShareGPT datasets, [conversational notebook](https://colab.research.google.com/drive/1Aau3lgPzeZKQ-98h69CCu1UJcvIBLmy2?usp=sharing)
 8. Gemma 6 trillion tokens is 2.5x faster! [free Colab](https://colab.research.google.com/drive/10NbwlsRChbma1v55m8LAPYG15uQv6HLo?usp=sharing)
 
-<div class="align-center">
-  <a href="https://github.com/unslothai/unsloth"><img src="https://github.com/unslothai/unsloth/raw/main/images/unsloth%20new%20logo.png" width="115"></a>
-  <a href="https://discord.gg/u54VK8m8tk"><img src="https://github.com/unslothai/unsloth/raw/main/images/Discord.png" width="145"></a>
-  <a href="https://ko-fi.com/unsloth"><img src="https://github.com/unslothai/unsloth/raw/main/images/Kofi button.png" width="145"></a></a> Support our work if you can! Thanks!
-</div>
-
-
-
-To run this, press "Runtime" and press "Run all" on a **free** Tesla T4 Google Colab instance!
-<div class="align-center">
-  <a href="https://github.com/unslothai/unsloth"><img src="https://github.com/unslothai/unsloth/raw/main/images/unsloth%20new%20logo.png" width="115"></a>
-  <a href="https://discord.gg/u54VK8m8tk"><img src="https://github.com/unslothai/unsloth/raw/main/images/Discord.png" width="145"></a>
-  <a href="https://ko-fi.com/unsloth"><img src="https://github.com/unslothai/unsloth/raw/main/images/Kofi button.png" width="145"></a></a> Join Discord if you need help + ⭐ <i>Star us on <a href="https://github.com/unslothai/unsloth">Github</a> </i> ⭐
-</div>
+_Local Installation_
 
 To install Unsloth on your own computer, follow the installation instructions on our Github page [here](https://github.com/unslothai/unsloth#installation-instructions---conda).
 
-
-
-
-You will learn how to do [data prep](#Data), how to [train](#Train), how to [run the model](#Inference), & [how to save it](#Save) (eg for Llama.cpp).
-
-
-Some features of unsloth:
+_Unsloth Features_
 
 * We support Llama, Mistral, CodeLlama, TinyLlama, Vicuna, Open Hermes etc
 * And Yi, Qwen, Deepseek, all Llama, Mistral derived archs.
@@ -1727,41 +1679,18 @@ Some features of unsloth:
 * [**NEW**] We make Llama-3 15 trillion tokens **2x faster**! See our [Llama-3 notebook](https://colab.research.google.com/drive/135ced7oHytdxu3N2DNe1Z0kqjyYIkDXp?usp=sharing)
 
 
+<div class="align-center">
+  <a href="https://github.com/unslothai/unsloth"><img src="https://github.com/unslothai/unsloth/raw/main/images/unsloth%20new%20logo.png" width="115"></a>
+  <a href="https://discord.gg/u54VK8m8tk"><img src="https://github.com/unslothai/unsloth/raw/main/images/Discord.png" width="145"></a>
+  <a href="https://ko-fi.com/unsloth"><img src="https://github.com/unslothai/unsloth/raw/main/images/Kofi button.png" width="145"></a></a>
+</div>
+
+Support our work if you can! Thanks!
+
+⭐ <i>Star us on <a href="https://github.com/unslothai/unsloth">Github</a> </i> ⭐
+
+
 # ▂▂▂▂▂▂▂▂▂▂▂▂
-
-
-# Further research
-
-
-
-> This is a community notebook collaboration with [Mithex].
-
-* You can see the full collection of unsloth Notebooks [here](https://docs.unsloth.ai/get-started/unsloth-notebooks). I feel like there's a github folder somewhere though that might have more community contributed ones?
-
-
-
-```python
-
-```
-
-
-_References_
-
-Unsloth docs for continued-pretraining are [here](https://docs.unsloth.ai/basics/continued-pretraining), though I'm not sure there's much there beyond what's covered in this post.
-
-You can see the full collection of unsloth Notebooks here. I feel like there's a github folder somewhere though that might have more community contributed ones?
-
-
-
-_Ideas for more:_
-
-* Look around the web for other CPT examples--maybe a different dataset / different objective to the task?
-* Check out the Discord for other discussions around CPT.
-
-
-_Notebook on Learning Korean_
-
-* For learning Korean, they use Mistral v3. Looks like it was trained on English but does have Korean--just because it's too hard to clean other languages out of the datasets?
 
 
 # Appendix
@@ -1770,268 +1699,43 @@ _Notebook on Learning Korean_
 ## Memory Use
 
 
-```python
-print("After inferencing (post-training):", gpu_mem_used())
-```
-
-
-```
-10.12 GB
-
-```
-This aligns with what's shown in the Colab resources monitor:
-
-
-<img src='https://lh3.googleusercontent.com/d/1ZkS9THoJPaNOnpYkzho4WKRR2c3ZJBWj' alt='Screenshot of Colab GPU resource monitor' width='150' />
-
+Here are the memory statistics captured after each step.
 
 
 ```python
-gpu = "A100"
-gpu_memory = "39.564 GB"
-gpu_batch_size = 16
+# Record the final total memory use (after running inference again,
+# post-training).
+final_gpu_memory = gpu_mem_used()
 
+"""
+print("Total memory useage over the course of the notebook:")
+print("1. Loading the model:", gpu_mem_model)
+print("2. After running a forward pass:", gpu_mem_forward_pass)
+print("3. After adding LoRA weights:", gpu_mem_lora)
+print("4. After training:", gpu_mem_train)
+print("5. After running inference again:", final_gpu_memory)
+"""
+
+# Define a consistent padding length for descriptions
+pad = 40
+
+print("Total memory usage over the course of the notebook:")
+print(f"1. Loading the model:".ljust(pad), gpu_mem_model)
+print(f"2. After running a forward pass:".ljust(pad), gpu_mem_forward_pass)
+print(f"3. After adding LoRA weights:".ljust(pad), gpu_mem_lora)
+print(f"4. After training:".ljust(pad), gpu_mem_train)
+print(f"5. After running inference again:".ljust(pad), final_gpu_memory)
 ```
 
 
 ```
 '\ngpu_mem_model="4.78 GB"\ngpu_mem_forward_pass="4.78 GB"\ngpu_mem_lora = "6.11 GB"\ngpu_mem_train = "9.85 GB"\n'
 ```
-```python
-import matplotlib.pyplot as plt
-import numpy as np
+The final total given by NVIDIA SMI aligns with what's shown in the Colab resources monitor:
 
-# Convert the string values to floats
-gm_model = float(gpu_mem_model.split()[0])
-gm_forward_pass = float(gpu_mem_forward_pass.split()[0])
-gm_lora = float(gpu_mem_lora.split()[0])
-gm_train = float(gpu_mem_train.split()[0])
-gm_total = float(gpu_memory.split()[0])
+<img src='https://lh3.googleusercontent.com/d/1ZkS9THoJPaNOnpYkzho4WKRR2c3ZJBWj' alt='Screenshot of Colab GPU resource monitor' width='150' />
 
-# Calculate the incremental memory added by each step
-memory_additions = [
-    gm_model,  # Compressed Model
-    gm_forward_pass - gm_model,  # Forward Pass
-    gm_lora - gm_forward_pass,   # Adding LoRA
-    gm_train - gm_lora           # Training
-]
+Bar plot of the memory use broken down by step:
 
-# Update labels with memory added information
-labels = [
-    f'+{memory_additions[0]:.2f} GB - Compressed Model',
-    f'+{memory_additions[1]:.2f} GB - Forward Pass',
-    f'+{memory_additions[2]:.2f} GB - Adding LoRA',
-    f'+{memory_additions[3]:.2f} GB - Training'
-]
-
-# Create a stacked bar plot with updated labels and proper y-limit
-fig, ax = plt.subplots(figsize=(2, 5), dpi=150)  # Reduced figure width for a narrower bar, higher resolution
-
-# Plot a horizontal line representing total used.
-ax.axhline(y=gm_total, color='b', linestyle='--', label=f'Used: {gpu_mem_train}')
-
-# Plot a horizontal line representing the total GPU memory available.
-ax.axhline(y=gm_total, color='r', linestyle='--', label=f'{gpu:>4}: {gpu_memory}')
-
-# Use a stacked bar chart where each bar adds to the total
-ax.bar(".", memory_additions[0], label=labels[0], color='skyblue')
-ax.bar(".", memory_additions[1], bottom=memory_additions[0], label=labels[1], color='lightgreen')
-ax.bar(".", memory_additions[2], bottom=memory_additions[0] + memory_additions[1], label=labels[2], color='orange')
-ax.bar(".", memory_additions[3], bottom=memory_additions[0] + memory_additions[1] + memory_additions[2], label=labels[3], color='salmon')
-
-
-# Adjust the y-limit to make sure the total GPU memory line is visible
-ax.set_ylim(0, gm_total + 1)  # Add some space above the total GPU memory
-
-# Add labels and title
-ax.set_ylabel('Memory Usage (GB)', fontsize=10)
-ax.set_title('GPU Batch: {:}\n      Seq Len: {:}'.format(gpu_batch_size, max_seq_length), fontsize=10)
-
-# Reverse the legend order to match the order of the bars, and move it outside the plot
-handles, labels = ax.get_legend_handles_labels()
-
-handles = list(reversed(handles))
-reversed_labels = list(reversed(labels))
-
-handles = handles[-2:] + handles[:-2]
-reversed_labels = reversed_labels[-2:] + reversed_labels[:-2]
-
-ax.legend(handles,
-          reversed_labels,
-          loc='center left', bbox_to_anchor=(1, 0.5),
-          prop={'size': 10, 'family': 'monospace'})
-
-# Adjust x-axis to make the single bar narrower visually
-ax.set_xlim(-0.75, 0.75)
-
-ax.tick_params(axis='y', labelsize=10)  # Adjust '8' to your desired font size
-
-# Show the plot
-plt.show()
-```
-
-
-<img src='https://lh3.googleusercontent.com/d/1s5BHBe_kqWkF0pLQ5g74xhFbcOIFVrcb' alt='Breakdown of GPU Memory consumption' width='512' />
-
-
-## Other Inputs
-
-
-```python
-input_text = """# Setting the maximum width for printed text.
-max_print_width = 80
-
-# We'll track the character count of the current line. Testinnggggggggggggggggggggg
-line_length = 0
-
-# Starting the thread to begin text generation (i.e., invoke `model.generate`)
-thread.start()
-
-# Looping through the streamed text output.
-for j, new_text in enumerate(text_streamer):
-"""
-```
-
-
-```python
-import textwrap
-
-# Split the input text into lines based on existing newlines
-lines_with_newlines_preserved = []
-for line in input_text.splitlines():
-    # Wrap each line separately and add it to the result list
-    wrapped_lines = textwrap.wrap(
-        line,
-        width=max_print_width,
-        drop_whitespace=False
-    )
-    lines_with_newlines_preserved.extend(wrapped_lines or [''])  # Preserve empty lines
-
-# Get the length of the final line.
-line_length = len(lines_with_newlines_preserved[-1])
-
-# Join the wrapped lines with newline characters
-result = '\n'.join(lines_with_newlines_preserved)
-```
-
-
-```python
-print(result)
-```
-
-
-```
-# Setting the maximum width for printed text.
-max_print_width = 80
-
-# We'll track the character count of the current line. 
-Testinnggggggggggggggggggggg
-line_length = 0
-
-# Starting the thread to begin text generation (i.e., invoke `model.generate`)
-thread.start()
-
-# Looping through the streamed text output.
-for j, new_text in enumerate(text_streamer):
-
-```
-```python
-# Use `textwrap` to split the input text into multiple lines.
-# It returns a list of strings (one per line)
-lines = textwrap.wrap(
-    input_text,
-    width = max_print_width,
-    drop_whitespace = False # Make sure it doesn't strip the space off
-                            # the end of the last line.
-)
-
-print(lines)
-
-```
-
-
-```
-["# Setting the maximum width for printed text. max_print_width = 80  # We'll ", 'track the character count of the current line. Testinnggggggggggggggggggggg ', 'line_length = 0  # Starting the thread to begin text generation (i.e., invoke ', '`model.generate`) thread.start()  # Looping through the streamed text output. ', 'for j, new_text in enumerate(text_streamer): ']
-
-```
-```
-<s> # Setting the maximum width for printed text.  max_print_width = 80    #
-We'll track the character count of the current line.  line_length = 0    #
-Starting the thread to begin text generation (i.e., invoke `model.generate`)  
-thread.start()    # Looping through the streamed text output.  for j, new_text
-in enumerate(text_streamer):     # If the line is too long, we'll break it up
-into two lines.
-
-   if line_length + len(new_text) > max_print_width:
-
-       # We'll print the first part of the line.
-
-       print(text[:line_length])
-
-       # We'll set the line length to zero.
-
-       line_length = 0
-
-
-
-   # We'll add the new text to the line.
-
-   line_length += len(new_text)
-
-
-
-   # We'll print the second part of the line.
-
-   print(text[line_length:])</s>
-```
-
-
-## rsLoRA Plot
-
-
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Define r values (logarithmic base 2)
-r = np.logspace(np.log2(8), np.log2(256), base=2, num=500)
-
-# Define s values
-s1 = 32 / r
-s2 = 11.313 / np.sqrt(r)
-
-# Create the plot
-plt.figure(figsize=(8, 6))
-plt.plot(r, s1, label=r"$s = \frac{\alpha}{r}$", color='blue')
-plt.plot(r, s2, label=r"$s = \frac{\alpha' }{\sqrt{r}}$", color='orange')
-
-# Add annotations for LoRA and rsLoRA
-plt.text(32, 5/8, "LoRA", color='blue', fontsize=12, ha='center', va='center')
-plt.text(32, 3, "rsLoRA", color='orange', fontsize=12, ha='center', va='center')
-
-# Set x-axis to logarithmic with base 2
-plt.xscale('log', base=2)
-plt.xticks([8, 16, 32, 64, 128, 256], labels=["8", "16", "32", "64", "128", "256"])
-
-# Set y-axis to logarithmic with custom ticks and range
-plt.yscale('log')
-plt.ylim(3/32, 5)
-plt.yticks([1/16, 1/8, 1/4, 1/2, 1, 2, 4], labels=["1/16", "1/8", "1/4", "1/2", "1", "2", "4"])
-
-# Add labels and title
-plt.xlabel("Rank (powers of 2)", fontsize=12)
-plt.ylabel("Scaling Factor", fontsize=12)
-plt.title("Scaling Factor of LoRA vs. rsLoRA", fontsize=14)
-
-# Add legend
-plt.legend(fontsize=12)
-
-# Add grid for better readability
-plt.grid(which="both", linestyle="--", linewidth=0.5)
-
-# Show the plot
-plt.tight_layout()
-plt.show()
-
-```
+<img src='https://lh3.googleusercontent.com/d/1s5BHBe_kqWkF0pLQ5g74xhFbcOIFVrcb' alt='Breakdown of GPU Memory consumption' width='400' />
 
