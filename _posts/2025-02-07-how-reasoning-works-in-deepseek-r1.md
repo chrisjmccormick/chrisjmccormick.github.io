@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "How DeepSeek-R1 Implements Reasoning"
+title:  "How Reasoning Works in DeepSeek-R1"
 date:   2025-02-07 8:00:00 -0800
 comments: true
 image: 
-tags: Machine Learning, Natural Language Processing, NLP, LLMs, Reasoning Models, OpenAI o1, DeepSeek-R1, DeepSeek-V3, Chain-of-Thought, CoT, TTC, Test-Time Compute
+tags: Machine Learning, Natural Language Processing, NLP, LLMs, Reasoning Models, OpenAI o1, DeepSeek, DeepSeek-R1, DeepSeek-V3, Chain-of-Thought, CoT, TTC, Test-Time Compute
 ---
 
 I’ve been really curious to know what’s actually happening behind the scenes when you ask OpenAI’s o1 model a question. From what they do show us, it seems pretty clear that the model is breaking the question down, tackling the problem in steps, reviewing its own work, etc. But considering how long the responses took to generate, and that the process was kept a secret, I assumed there must be something pretty exotic going on behind the scenes to make it all work.
