@@ -37,8 +37,7 @@ It's well-illustrated by the prompt DeepSeek used during part of their training 
 
 ----
 
-
-A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant first thinks about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within `<think> </think>` and `<answer> </answer>` tags, respectively, i.e., <b><font color="green">`<think>`</font></b> <font color="navy">reasoning process here</font><b><font color="green">`</think>`</font></b> <font color="orange">`<answer>`</font><font color="navy"> answer here </font><font color="orange">`</answer>`</font>. User: prompt. Assistant:
+A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant first thinks about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within `<think> </think>` and `<answer> </answer>` tags, respectively, i.e., <b><font color="green">&lt;think&gt;</font></b><font color="navy"> reasoning process here </font><b><font color="green">&lt;/think&gt;</font> <font color="orange">&lt;answer&gt;</font></b><font color="navy"> answer here </font><b><font color="orange">&lt;/answer&gt;</font></b>. User: <font color="red">prompt</font>. Assistant:
 
 ----
 
