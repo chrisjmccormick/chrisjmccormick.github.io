@@ -36,16 +36,15 @@ MultiHead(Q, K, V) is a way of indicating that these three attention inputs can 
 
 We replace the "Attention" function with just the "scores", and move out the Value projection.
 
+$$
 \begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{values}_i \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{X W_i^Q (X W_i^K)^T}{\sqrt{d_k}}\right) \\\\
     \text{values}_i &= X W_i^V W^O_i
 \end{aligned}
-
+$$
 
 ## 3. Introducing Messages $M$
-
-
 
 So far, we have treated $W^V$ and $W^O$ as separate transformations. However, they can be seen as a **low-rank decomposition** of a larger transformation. Defining a single matrix $W^M$, we rewrite:
 
@@ -55,14 +54,13 @@ $$
 
 Each row in $M_i$ represents a **message** passed between tokens in the attention mechanism. Attention scores determine **how much influence each message has** on a given token.
 
-
-
+$$
 \begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{messages}_i, \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{X W_i^Q (X W_i^K)^T}{\sqrt{d_k}}\right) \\\\
     \text{messages}_i &= X W^M_i
 \end{aligned}
-
+$$
 
 
 ## 4. Introducing Patterns $P$
@@ -95,21 +93,21 @@ This reformulation keeps attention in **model space**, making it more interpreta
 ## 5. Updated Multi-Head Attention Formulation
 
 
-
+$$
 \begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{messages}_i \\\\
     \text{patterns}_i &= X W^P_i \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
     \text{messages}_i &= X W^M_i
 \end{aligned}
+$$
 
 
-
-
+$$
 \begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot M_i \\\\
     P_i &= X W^P_i \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
     M_i &= X W^M_i
 \end{aligned}
-
+$$
