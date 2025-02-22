@@ -11,12 +11,13 @@ _I figure I'll publish another post on this each day until it's fully birthed. U
 
 The original formulation of multi-head attention from Vaswani et. al concatenates multiple attention heads before applying the output projection matrix $W^O$:
 
+$$
 \begin{aligned}
     \text{MultiHead}(Q, K, V) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O \\
     \text{head}_i &= \text{Attention}(Q W_i^Q, K W_i^K, V W_i^V) \\
     \text{Attention}(Q, K, V) &= \text{softmax} \left(\frac{Q K^T}{\sqrt{d_k}}\right) V
 \end{aligned}
-
+$$
 
 
 ## 1. Splitting $W^O$ by Head
