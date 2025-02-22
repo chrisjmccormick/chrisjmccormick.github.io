@@ -7,10 +7,6 @@ image:
 tags: Machine Learning, Transformers, Attention Mechanism, NLP, LLMs, Rank Factorization, Low-Rank Attention, Multi-Head Attention, Optimization
 ---
 
-# Inspecting Head Behavior through Pattern Projections
-
-
-
 In this post, I explore a novel way to interpret attention head functionality in transformer models by reformulating the Query and Key projections into a single matrix, $W^P = (W^Q)^T W^K$. This formulation allows us to view each head not just as a black-box attention unit but as a distinct pattern extractor operating in model space. By projecting an input embedding onto $W^P$, we obtain a “pattern vector” that can be directly compared to vocabulary embeddings using cosine similarity. This method opens up a new avenue for understanding what each head is “searching for” in the input sequence.
 
 Rather than attempting to provide a definitive explanation of attention, the aim here is to demonstrate the potential of this approach through some initial experiments. I’ll start by applying the method to BERT’s early layers—where patterns tend to be more syntactic and less confounded by positional or deeper semantic factors—and then extend the analysis to GPT‑2. The following code shows how to extract these pattern projection matrices and leverage them to probe head behavior.
