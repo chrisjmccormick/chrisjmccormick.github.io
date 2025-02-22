@@ -11,11 +11,11 @@ _I figure I'll publish another post on this each day until it's fully birthed. U
 
 The original formulation of multi-head attention from Vaswani et. al concatenates multiple attention heads before applying the output projection matrix $W^O$:
 
-\begin{align}
+\begin{aligned}
     \text{MultiHead}(Q, K, V) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O, \\\\
     \text{head}_i &= \text{Attention}(Q W_i^Q, K W_i^K, V W_i^V), \\\\
     \text{Attention}(Q, K, V) &= \text{softmax} \left(\frac{Q K^T}{\sqrt{d_k}}\right) V
-\end{align}
+\end{aligned}
 
 
 
@@ -35,11 +35,11 @@ MultiHead(Q, K, V) is a way of indicating that these three attention inputs can 
 
 We replace the "Attention" function with just the "scores", and move out the Value projection.
 
-\begin{align}
+\begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{values}_i \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{X W_i^Q (X W_i^K)^T}{\sqrt{d_k}}\right) \\\\
     \text{values}_i &= X W_i^V W^O_i
-\end{align}
+\end{aligned}
 
 
 ## 3. Introducing Messages $M$
@@ -56,11 +56,11 @@ Each row in $M_i$ represents a **message** passed between tokens in the attentio
 
 
 
-\begin{align}
+\begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{messages}_i, \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{X W_i^Q (X W_i^K)^T}{\sqrt{d_k}}\right) \\\\
     \text{messages}_i &= X W^M_i
-\end{align}
+\end{aligned}
 
 
 
@@ -95,20 +95,20 @@ This reformulation keeps attention in **model space**, making it more interpreta
 
 
 
-\begin{align}
+\begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{messages}_i \\\\
     \text{patterns}_i &= X W^P_i \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
     \text{messages}_i &= X W^M_i
-\end{align}
+\end{aligned}
 
 
 
 
-\begin{align}
+\begin{aligned}
     \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot M_i \\\\
     P_i &= X W^P_i \\\\
     \text{scores}_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
     M_i &= X W^M_i
-\end{align}
+\end{aligned}
 
