@@ -1,14 +1,19 @@
 ---
 layout: post
-title:  "Rethinking Value and Output Matrices in Multi-Head Attention: A Low-Rank Decomposition Perspective"
+title:  "The Hidden Messages of Multi-Head Attention"
 date:   2025-02-17 17:00:00 -0800
 comments: true
 image: 
 tags: Machine Learning, Transformers, Attention Mechanism, NLP, LLMs, Rank Factorization, Low-Rank Attention, Multi-Head Attention, Optimization
 ---
 
-## The Hidden Structure in $W_O$
+In this post, we'll look at how a tiny bit of algebra suddenly opens up a wealth of insight. 
 
+I want to clarify up front that none of the "rearranging" that I do in this post is intended to change how we _implement_ Attention. It's about _exposing underlying operations that are already there_--we just haven't noticed them because of the (important!) emphasis we place on finding computationally efficient algorithms.  
+
+Let's see what happens when we prioritize conceptual clarity over GPU efficiency!
+
+## The Hidden Structure in $W_O$
 
 When we write out Transformer attention, the final step is to recombine the output of the heads using the matrix $W_O$:
 
@@ -23,12 +28,6 @@ $$
 The concatenation step allows us to perform a single, large matrix multiplication in order to combine the results of the heads and project them back up to the same space as the input embedding (the "model space").
 
 I assume that's a good move computationally, but it obscures important insights about what is actually going on in the attention math.
-
-In this post, we'll look at how a tiny bit of algebra suddenly opens up a wealth of insight. 
-
-I want to clarify up front that none of the "rearranging" that I do in this post is intended to change how we _implement_ Attention. It's about _exposing underlying operations that are already there_--we just haven't noticed them because of the (important!) emphasis we place on finding computationally efficient algorithms.  
-
-Let's see what happens when we prioritize conceptual clarity over GPU efficiency!
 
 ## $W^O_i$
 
