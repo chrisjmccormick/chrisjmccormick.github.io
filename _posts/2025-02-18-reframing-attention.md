@@ -387,4 +387,18 @@ MLA is a good example of how "more efficient" can also mean "better performance"
 
 My hypothesis is that if we merge-and-unmerge these weights, and tune the model to the new parameters with a little more pre-training, that we may get a free lunch--a more efficient and more performant model. We'll see!
 
+# Conclusion
+
+I'm thinking to name these:
+
+**Fused Attention**
+(or F-Attn, because I F'd around with the Attention equations and this all just fell out 😜)
+This describes the conceptual model of Attention where the query-key and value-output matrices have been fused into patterns and messages.
+
+**Fuse And Rank Reduce (FaRR)**
+(Or "Fa-Ra-Re" if you want to sound distinguished)
+This describes the technique of fusing two weight matrices and then applying a matrix decomposition technique such as SVD to produce two lower rank matrices to replace the originals.
+
+
+
 
