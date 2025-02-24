@@ -3,7 +3,7 @@ layout: post
 title:  "Reframing Attention: A Matrix Decomposition Perspective"
 date:   2025-02-18 17:00:00 -0800
 comments: true
-image:
+image: https://lh3.googleusercontent.com/d/1fSOZ_RDAvFQTHbgg1SC3q1-_QSZdsfD_
 tags: Machine Learning, Transformers, Attention Mechanism, NLP, LLMs, Rank Factorization, Low-Rank Attention, Multi-Head Attention, Optimization
 ---
 
@@ -12,236 +12,379 @@ The Attention equations from Vaswani et al. are a **reflection of computational 
 One issue is that we often view Attention as a **monolithic process**, where we focus on the full multi-head representation instead of examining the behavior per head. The equations define per-head operations, yet our tendency is to pull back and look at large matrix multiplications over all heads at once. This obscures **key insights**.
 
 
-### Per-Head Outputs
-
-A major example: the **output projection matrix**. The standard attention equations present $W_O$ as a single learned transformation, but this hides the fact that **$W_O$ is actually a concatenation of per-head $W^O_i$ matrices**. 
-
-Once we make this distinction, we can rewrite the equations more simply in terms of the behavior of a **single head**, revealing new insights into how attention operates.
+## Per-Head Outputs
 
 
-$$
-O_i = a_i (X W^V_i) W^O_i
-$$
+A major example: the **output projection matrix**. The standard attention equations present $W_O$ as a single learned transformation, but this hides the fact that **$W_O$ is actually a concatenation of per-head $W^O_i$ matrices**.
 
-(TODO)
+Once we make this distinction, we can rewrite the equations to show the **re-projected**
+(model space) output of a **single head**.
 
-### Separating Query-Key and Value-Output Transformations
+For a single input (query) vector $x_q$, attending to a sequence of tokens in $X$:
 
-Another issue is that we associate the **Value projection** ($W^V$) too closely with the **Query and Key projections** ($W^Q, W^K$). 
+<br/>
 
-Illustrations typically show the query, key and value vectors all entering into an attention block together, and then the Output matrix applied as a final step over everything.
+$\mathbf{o}_i = \alpha_i \,\bigl(X\,W^V_i\bigr)\,W^O_i \quad\in\;\mathbb{R}^{1\times d_{\text{model}}}$
 
-This is again a reflection of how things are done optimally on the GPU, and obscures the fact that within each head, there are two independent processes going on:
+<br/>
 
-1. The Query-Key process is calculating attention scores.
-2. The Value-Output process is calculating updates to make to the input embedding. 
-
-The scores from (1) are then used to take a weighted average of the update vectors from (2), and this produces a single vector which is the output of an attention head.
-
-By representing $W_O$ as a single matrix which is multiplied over all of the concatenated heads, it's easy to misinterpret this as taking a weighted combination of the head outputs. 
-
-In fact, the output of each head is a vector in _model space_, and these are summed together and added to the input embedding to create the final output of MHA.
-
-
-Side Note: A further source of confusion is the equating of $d_k$ (the key/query dimension) to $d_v$ (the value dimension). These are **independent**, but since models typically set them equal ($d_v = d_k$), they are collapsed into a single "head size" parameter.
-
-
-## Inspiration from MLA
-
-
-DeepSeek-V2 introduced **Multi-Head Latent Attention (MLA)**, where they **explicitly decomposed** the Query, Key, and Value projection matrices.
-
-Instead of projecting directly, they introduce a compressed latent space:
-
-- A shared projection **$W^{KVD}$** compresses the input into a latent space of dimension 512.
-    - TODO - Is this per-head? I don't think so.
-- A **$W^{KU}_i$** and **$W^{VU}_i$** which project the compressed latent representation "Up" into Key and Value space.
-    - (I put "Up" in quotes because the per-head Key and Value dimensions are actually smaller, 128, so it's more like "Down-Down")
-
-This is primarily done to **reduce KV cache size**—a crucial optimization for large models.
-
-But here’s where it gets interesting: they realized that, through basic algebra, they could **fold** these projections into **$W^O$ and $W^Q$**. That is:
-
-- **$W^{VU}$ merges into $W^O$**
-- **$W^{KU}$ merges into $W^Q$**
-
-This is similar to **LoRA**, where we train with a decomposition and then fold the trained low-rank matrices back into the main weight matrix for inference.
-
-
-## A Matrix Decomposition Perspective on Attention
-
-
-It shocked me that they could simply merge these operations away. And yet, thinking about it--$W^Q$ and $W^K$ are just linear transformations, and $W^V$ and $W^O$ are also just linear transformations. 
-
-They need to be learned separately, but once the model has been trained, they certainly _could_ be collapsed for inference.
-
-We don't do this in practice because it increases the amount of computation required to evaluate attention, but it does lead to some interesting perspectives.  
-
-
-### **1. The Merged Query-Key Matrix: $W^{P}$**
-
-
-For a single head, we typically think in terms of first projecting the tokens, $X$ onto Query space and Key space:
-
-$Q_i = X W^Q_i$
-
-$K_i = X W^K_i$ 
-
-And then computing the logits as 
-
-$$
-\text{Attention logits} = Q_i K_i^T
-$$
-
-However, we can change the order of operations in this equation to produce a different interpretation.
-
-First, collapse the two projection matrices into a single larger one, 
-
-$$
-W^P_i = W^Q_i (W^K_i)^T
-$$
-
-Then, project the token embeddings:
-
-$$
-P_i = X W^P_i
-$$
-
-And finally calculate attention logits:
-
-$$
-\text{Attention logits} = P_i X^T
-$$
-
-
-**1. Low Rank Interpretation**
-
-This reframes the query and key matrices as the decomposition of a larger matrix with rank $\le d_k$.   
-
-
-**2. Model Space**
-
-The embeddings in $P_i$ are in model space. This is significant for interpretability, because "model space" is the one that we can interpret--it ties to the token embeddings. 
-Words are points in this space, and the distance between them reflects semantics. We can compare vectors with cosine similarity, and do arithmetic on them like the classic (queen - king) + prince = ?  
-
-I demonstrate the value of this with experimental results further down.
 
 ---
 
-If we write self-attention in terms of per-head operations, we see that attention **logits** are computed as:
+<img src='https://lh3.googleusercontent.com/d/1Y5jpuM_xOw58qoCYtXKItXPCYBNMv8Sz' alt='Single head re-projected output for a single input' width='250'/>
+
+---
+
+Previously, our equations and illustrations have only highlighted either:
+
+* $z_i$ - The output of an attention head in the compressed **value space** $d_v$.
+* $o$ - The **sum** of all head outputs, re-projected.
+
+
+
+---
+
+> _Side Note: I actually hit on this in a YouTube [video](https://youtu.be/kkJx_uarTmU?si=CxMkUgnj5g1cCyRI&t=1115) back in 2022 without realizing its significance!_
+>
+> _The video also captures the confusion that $W^O$ caused me--I explain it as taking a **weighted** combination of the heads._
+
+---
+
+
+
+## Separating Query-Key and Value-Output
+
+
+Another issue is that we associate the **Value projection** ($W^V$) too closely with the **Query and Key projections** ($W^Q, W^K$).
+
+Many illustrations show the query, key and value vectors all entering into an attention block together, and then the Output matrix applied as a final step over everything. This follows the original illustration in _Attention is All You Need_:
+
+
+<img src='https://lh3.googleusercontent.com/d/1hnFPip3AwiOd44QbAxgZpfg4VqaR-JfP' alt='Original Attention is All You Need illustration' width='250'/>
+
+This is again a reflection of how things are done optimally on the GPU, and obscures the fact that within each head, there are two independent processes going on:
+
+1. The **Query-Key** process is calculating attention scores.
+2. The **Value-Output** process is calculating updates to make to the input embedding.
+
+
+
+On the GPU, we perform:
+
+<br/>
+
+$o = \text{Concat}\bigl(\alpha_i \,\bigl(X\,W^V_i\bigr)\bigr)\,W^O $
+
+<br/>
+
+But if we break apart the concatenation, and then apply the output projection _before_ the scores:
+
+<br/>
+
+$\mathbf{o}_i = \alpha_i \,\bigl(\bigl(X\,W^V_i\bigr)\,W^O_i\bigr) $
+
+<br/>
+
+The distinction between the two processes becomes much more clear.
+
+<img src='https://lh3.googleusercontent.com/d/1AeHb7ZhG1pvGsVJHNGj3VDH-xb19up4f' alt='Separating the Query-Key and Value-Output processes' width='250'/>
+
+What is the matrix that results from this Value-Output process, $ \bigl(\bigl(X\,W^V_i\bigr)\,W^O_i\bigr) $?
+
+We've never noticed it. We don't have a name or a variable for it.
+
+It's a matrix with size $T \times d_\text{model}$, and it contains the per-head, _per-token_, re-projected output.
+
+Each row is a vector, in model-space, which carries the information that a token will contribute to the output of this attention head, if it is selected to do so by the Query-Key process. (i.e., it will be weighted by the token's attention score).
+
+
+
+
+
+## Token Messages
+
+To reflect the intuition that "tokens send and receive information through attention" I'm referring to these vectors as **messages**.
+
+For a given query vector, we have the messages matrix:
+
+<br/>
 
 $$
-\text{Attention logits} = (X W^Q_i) (X W^K_i)^T
+\mathbf{M}_i = \bigl(\bigl(X\,W^V_i\bigr)\,W^O_i\bigr) \quad\in\;\mathbb{R}^{T\times d_{\text{model}}}
 $$
 
-This can be refactored such that we first compute 
+<br/>
 
-But we can rewrite this in a form that **reveals an implicit low-rank structure**:
-
-$$
-X W^{QK}_i X^T, \quad \text{where } W^{QK}_i = W^Q_i (W^K_i)^T
-$$
-
-This means that **each head applies a rank-limited transformation to model space**, computing a new representation before scoring interactions between tokens.
+Where each row is a message, $m_i$, from a token.
 
 
 
-### **2. The Merged Value-Output Matrix: $W^M$**
+<img src='https://lh3.googleusercontent.com/d/1fSOZ_RDAvFQTHbgg1SC3q1-_QSZdsfD_' alt='The emergence of the Messages matrix' width='250'/>
 
+For a given input vector, the output of attention head $i$ can now be elegantly viewed as the sum of the token messages, weighted by the attention scores.
 
-Once we've broken up $W_O$ into heads, the output of a head can be expressed as: 
+$o_i = \alpha_i \,M_i $
 
-$$
-O_i = a_i (X W^V_i) W^O_i
-$$
+where
 
-Here again we can **collapse** $ W^V $ and $ W^O $ into a single transformation:
+* $\alpha_i \in \mathbb{R}^{1\times T}$  contains the attention scores for each token, and
+* $M_i \in \mathbb{R}^{T\times d_{\text{model}}}$ are the tokens' messsages.
 
-$$
-W^M_i = W^V_i W^O_i
-$$
+<br/>
 
-And the output becomes
+The final output of the Attention block (including the residual connection) is the sum over the heads:
+
+<br/>
 
 $$
-O_i = a_i (X W^M_i)
+x^\prime = x + \sum_i{\alpha_i M_i}
 $$
 
-TODO, GPT's take: This tells us that each head’s behavior can be fully described as a **low-rank transformation on input embeddings**, with rank at most $ d_v $.
+<br/>
 
-The final output of attention is the straight sum across the heads.
+---
 
-$ o_t = x_t + \sum{o_i,t} $
+> _Side Note: I think that the residual connection is critical for correctly understanding attention--it doesn't create a **new** vector to replace the input, it calculates an **adjustment** vector that's added to the input._
 
-TODO
-
-
-## **Experiment: Investigating Head Patterns**
+---
 
 
-Here's why I chose the letters $P$ and $M$.
+It's important to note that what we've defined here is a _conceptual_ implementation of Attention. It doesn't describe how Attention is calculated _in practice_, but rather defines a more intuitive explanation of what is happening.
 
-Because they are in model space, I believe they have clear interpretations which can be demonstrated by experiment.
-
-**Query-Key --> Patterns**
-
-When we project an input embedding $x$ onto $W^P_i$, we are extracting a **pattern**, $p_i$, in model space, which **the head is looking for**.
-
-We can infer this because the attention scores are calculated as the dot product between $p_i$ and all of the embeddings in the sequence, $X$. If the pattern is present in a particular token embedding, the dot product with $p_i$ will be high and the score will be high. 
-
-**Value-Output --> Modifiers**
-
-In the Value-Output process, each head outputs a matrix of "**modifier**" vectors, $M_i$. (With dimensions $ T \times d_\text{model}$) 
-
-Each of these vectors $m_\text{i,t}$ represents that token's proposed modification to the input. A head's final contribution to the attention output is a weighted average of these modifier vectors. The weights are the attention scores.
+Because of the order of operations we take on the GPU, these message vectors are never _explicitly calculated_ during Attention. However, we can choose to calculate them for the purpose of interpreting the model.
 
 
-## Experiment: Comparing Attention "Patterns" and "Modifiers" to the Vocabulary 
+## Interpreting Messages
+
+
+Uncovering these message vectors gives us a new way to **probe** the attention heads and learn more about their behavior.
+
+**Messages are "Query Agnostic"**
+
+A key insight from viewing Query-Key and Value-Output as two independent, parallel processes is that tokens _construct their messages without any knowledge of the attention scoring_.
+
+In the Value-Output process, a token doesn't know what the current query is, so it is constructing the message it wants to communicate, through a particular head, _independent_ of whether it ends up selected by the scoring mechanism.
+
+Instead of looking at what tokens are being attended to, we can come at an attention head from the opposite direction and see what each token _would_ send through that head if it got selected.
 
 
 
-I ran an experiment where I extracted the **pattern vectors** $p = x W^{P}_i$ for a few tokens and a number of different heads, and then compared these patterns to the vocabulary embeddings via cosine similarity.
+**Messages are in Model Space**
+
+Furthermore, these messages are in model space, the same space as the input embedding and output embeddings.
+
+The messages are a payload carried by the input embedding into the FFN and then onto the next layer.
+
+We can potentially find the **message's recipient** by looking at:
+1. Which **neurons** in the FFN the message aligns with.
+2. Which **heads** in the **next layer** the message aligns with.
+
+In order to perform the second analysis, we need to uncover the correllary to the "messages" in the Query-Key process--what I'm referring to as the head "patterns".
 
 
-* TODO - Next, extracted the modifier vectors for those words, and compared these to the vocabulary. 
+## Head Patterns
 
-Here are some interesting results from BERT-base:
+In the same way that we've uncovered a per-token "message" in model space by re-arranging the order of operations, we can also compute a per-head "pattern".
 
+To calculate our attention scores, we normally:
 
-**Layer 0, Head 3, Word = "happy"**
+1. Project our tokens onto query and key space.
+2. Multiply the query against the keys to get the attention logits.
+3. Scale down, and normalize the result with the softmax function.
 
-
-
-_Search Pattern_
-
-The pattern vector extracted by head 3, layer 0 is closest to:
-  - make, making, made, makes, people
-
-This tells us that for the query word "happy", this head is "searching for" that second list of words. 
+For a single query vector $x_q$ and a sequence of tokens $X$, this can be expressed as:
 
 
+$$
+\alpha_i = \mathrm{softmax}\!\Bigl(\frac{(x_q \, W^Q_i)\,{\bigl(X \, W^K_i\bigr)}^\top}{\sqrt{d_k}}\Bigr),
+$$
+
+where  $ \alpha_i \in \mathbb{R}^{1 \times T} $ holds the attention score between the query and every token.
+
+As before, we can change the order of operations in this equation to produce a unique and valuable interpretation.
+
+Instead of producing queries and keys, we can multiply the two projection matrices first, and then calculate the attention logits as:
+
+<br/>
+
+$x_q(W^Q_i {W^K_i}^\top){X}^\top$
+
+<br/>
+
+Our pattern vector comes from the first three terms:
+
+<br/>
+
+$p_i = x_q(W^Q_i {W^K_i}^\top)$
+
+<br/>
+
+Now, the attention scores are based on the dot product between this "pattern" vector and each of the token embeddings:
+
+<br/>
+
+$$
+\alpha_i = \mathrm{softmax}\!\left(\frac{p_i X^\top}{\sqrt{d_k}}\right)
+$$
+
+<br/>
+
+This ordering of operations isn't efficient computationally--it increases the number of operations by a factor of $\frac{d_{model}}{2d_v}$, requiring more memory and more compute.
+
+But as with the messages, it's something we can choose to compute for the value of interpretability.
 
 
-_Head Modification_
+## Interpreting Head Patterns
 
-This suggests that if we extract the modifier vector for "make" via $ m = xW^M_i $ we might see something interesting... (TODO) 
+Attention scores are based on how well a token embedding aligns with a pattern vector (i.e., how large their dot product is).
+
+For an input vector $x_q$ and a particular head $i$, we can think of $p_i$ as the pattern that the head is looking for among the tokens in the sequence.
+
+That's the same description that we'd give to the existing approach of comparing a query to the keys, but with a key distinction--the $p_i$ vectors are in **model space**.
+
+This means that we can compare these head patterns to:
+
+1. The **vocabulary embeddings**: We can search the vocabulary to identify any and all tokens that this pattern would align with well. 
+2. The **position encodings**: We can easily see which positions the head is biased towards or against. 
+3. The **messages**: Multiply every token's message with every head's pattern to see how the tokens in one layer communicate with the heads in the next.
+4. The **output neurons**: Which FFN outputs is the head sensitive to?
+
+I've explored the first 2 concepts in a later post with interesting results--I'm excited to explore 3 and 4!
+
+---
+
+> _Side Note: Mapping the messages may be more complicated because of the FFN's contribution. Perhaps sending the input embedding through the FFN with just a single message attached to it will help us isolate the mappings?_
+
+---
+
+## Singular Value Analysis
+
+In the next section we'll look at another exciting revelation that arises from this "conceptual" version of the Attention equations: merging $W^QW^K$ to form $W^P$, the projection matrix for the patterns, and merging $W^VW^O$ to form $W^M$, the projection matrix for the messages.
+
+If we construct those larger matrices and then apply Singular Value Decomposition (SVD) we can analyze their top singular vectors, which could serve as another tool for interpretability. 
+
+I haven't explored this yet, but GPT seems to like the idea, so I'll share its thoughts for now:
+
+---
+
+* Top Singular Vectors in $W^P$ might reveal dominant directions that might correspond to specific token categories or syntactic roles.  
+* Top Singular Vectors in $W^M$ might uncover latent dimensions that inform how the model communicates or transforms information internally.  
+    * This could further our understanding of how “messages” are encoded and whether they align with semantic or syntactic distinctions.  
+* Inverting $W^P$--"Reverse Mapping":
+    * Inverting $W^P$ (or using a pseudo-inverse) might allow you to map pattern vectors back into the original embedding space.  
+    * This could shed light on how well the projection preserves information and might reveal hidden correlations or transformations that are not immediately obvious.
+
+---
+
+
+# A Matrix Decomposition Perspective on Attention
+
+
+The inspiration for this decomposition perspective came from my recent deep dives into LoRA and Multihead Latent Attention (MLA).
+
+It stood out most clearly first on the Value-Output side of attention, so I'll start there.
+
+
+## The Merged Value-Output Matrix: $W^M$
 
 
 
-## **Why This Matters**
 
-This reframing has several implications:
+In the equation for the re-projected head output:
 
-- **Reveals rank constraints**: Each head operates with rank at most $d_v$, which may limit how information is represented.
-- **New ways to regularize attention**: Understanding per-head transformations could inspire better weight constraints or alternative decompositions.
-- **Better interpretability**: Instead of treating attention as a black box, we can analyze how each head rewrites meaning.
+<br/>
+
+$\mathbf{o}_i = \alpha_i \,X\,W^V_i\,W^O_i $
+
+<br/>
+
+it becomes more apparent that $W^V_i \in \mathbb{R}^{d_{\text{model}} \times d_v}$ and
+$W^O_i \in \mathbb{R}^{d_v \times d_{\text{model}}}$ can be viewed as the decomposed version of a larger matrix with rank $\le d_v$.
+
+Conceptually, this larger matrix is what performs the **transformation** of our input vectors into **messages**, so we'll name it accordingly.
+
+<br/>
+
+$W^M_i = W^V_i W^O_i$
+
+<br/>
+
+For a given head $i$, the messages for all of the tokens could be computed as:
+
+<br/>
+
+$M_i = XW^M_i$
+
+<br/>
+
+
+## The Merged Query-Key Matrix: $W^{P}$
+
+
+In the previous post, I noted how we can re-order the calculation of the attention logits from comparing query and keys:
+
+<br/>
+
+$(x_q \, W^Q_i)\,{\bigl(X \, W^K_i\bigr)}^\top$
+
+
+  ⬇
+
+
+
+$x_q(W^Q_i {W^K_i}^\top){X}^\top$
+
+<br/>
+
+The result of that central matrix multiplication is our **pattern projection** matrix, 
+
+<br/>
+
+$$
+W^P_i = W^Q_i {W^K_i}^\top
+$$
+
+<br/>
+
+For a given input vector $x_q$ and head $i$, the head's pattern vector can be calculated as:
+
+$p_i = x_qW^P_i$
 
 
 
 
-## **Final Thoughts**
 
-This reframing doesn’t change how Transformers are implemented, but it **changes how we think about them**. Rather than seeing multi-head attention as **concatenation followed by an output projection**, we can view it as **a sum of independent, low-rank modifications to model space**.
+Calculating the messages this way, though, would be inefficient. We've increased the number of parameters in the Value-Output process dramatically
+(by a factor of $\frac{d_{model}}{2d_v}$), requiring more memory and more compute.
 
-Could enforcing sparsity or alternative decompositions improve future architectures? There's a lot to explore.
+What is incredible here, though, is that we can form this $W^M_i$ matrix, **and then decompose it again**. This has big implications for **interpretability**, **efficiency**, and **performance**.
+
+
+## Efficiency and Performance Gains
+
+I think the most dramatic implication, though, is that this fuse-and-re-factor step can yield **fewer** and possibly **higher quality** parameters for us to use.
+
+If a matrix has a low effective rank, we can use SVD to decompose it and keep only its "top" singular values. The result can be a close approximation of the original but with fewer parameters.
+
+We already know that $W^P_i$ and $W^M_i$ have "low rank" because we created them from pairs of smaller matrices (dimensions $d_k$ and $d_v$)--the rank can't be any higher than that--but we also know that the weight matrices in LLMs (especially the bigger ones, according to GPT?) tend to have an even lower effective rank.
+
+Applying this trick to the attention matrices has already been done. For example, in a later post in this series, I modified an existing example Notebook which applied SVD to decompose the four attention matrices in T5-flan to cut the number of attention parameters in half with only a small drop in benchmark score.
+
+Fusing and Re-factoring $W^M$ and $W^P$ is significantly different, however, because:
+
+1. We are able to take advantage of additional structure that exists only in their "reconstituted" form.
+2. Decomosing normally means we end up with additional matrices--extra steps. Here, we start and end with the same number of matrices (with a small diagonal matrix in between?).
+
+This hasn't been tried before because we didn't know these two matrices existed.
+
+Applying this technique to the T5-flan example, I was able to cut the size of the matrices in half without any loss in performance compared to the base model.
+
+At a minimum, this technique will allow us to create more efficient models.
+
+I'll need to experiment more, but I suspect that this technique may allow us to _improve the performance_ of _existing_ pre-trained models. 
+
+MLA is a good example of how "more efficient" can also mean "better performance". When we slim down the weights via SVD we are keeping what matters most and discarding noise. 
+
+My hypothesis is that if we merge-and-unmerge these weights, and tune the model to the new parameters with a little more pre-training, that we may get a free lunch--a more efficient and more performant model. We'll see!
+
 
