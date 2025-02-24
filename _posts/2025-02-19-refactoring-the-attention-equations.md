@@ -92,22 +92,44 @@ This reformulation keeps attention in **model space**, making it more interpreta
 
 ## 5. Updated Multi-Head Attention Formulation
 
+Here is the final version, in rough English. Note that this is for full self-attention, meaning all queries against all keys. 
 
 $$
 \begin{aligned}
-    \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot \text{messages}_i \\\\
-    \text{patterns}_i &= X W^P_i \\\\
-    \text{scores}_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
+    \text{MultiHead}(X) &= \sum_{i=1}^{h} \bigl(\text{scores}_i \cdot \text{messages}_i \bigr) \\\\
+    \text{scores}_i &= \text{softmax} \left(\frac{\text{patterns}_i \cdot X^T}{\sqrt{d_k}} \right) \\\\
+    \text{patterns}_i &= X W^P_i \\
     \text{messages}_i &= X W^M_i
 \end{aligned}
 $$
 
+<br/>
+
+---
+
+
+Or in variables as:
 
 $$
 \begin{aligned}
-    \text{MultiHead}(X) &= \sum_{i=1}^{h} \text{scores}_i \cdot M_i \\\\
-    P_i &= X W^P_i \\\\
-    \text{scores}_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
+    \text{MultiHead}(X) &= \sum_{i=1}^{h} \alpha_i M_i \\\\
+    \alpha_i &= \text{softmax} \left(\frac{P_i X^T}{\sqrt{d_k}} \right) \\\\
+    P_i &= X W^P_i \\
     M_i &= X W^M_i
 \end{aligned}
 $$
+
+Where:
+
+$$
+\begin{aligned}
+    \text{Tokens}& \quad\quad X \in \mathbb{R}^{T \times d_{\text{model}}} \\
+    \text{Scores}& \quad\quad \alpha_i \in \mathbb{R}^{T \times T} \\
+    \text{Patterns}& \quad\quad P_i \in \mathbb{R}^{T \times d_{\text{model}}} \\
+    \text{Messages}& \quad\quad M_i \in \mathbb{R}^{T \times d_{\text{model}}} \\
+\end{aligned}
+$$
+
+<br/>
+
+For the single query version, replace $P_i$ with $p_i = x_qW^P_i$
