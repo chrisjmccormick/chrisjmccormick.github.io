@@ -3,7 +3,7 @@ layout: post
 title:  "The Hidden Messages of Multi-Head Attention"
 date:   2025-02-17 17:00:00 -0800
 comments: true
-image: 
+image: https://lh3.googleusercontent.com/d/1yL8t8FBrAOw1G1060ar2KZ6FU1whPxMP
 tags: Machine Learning, Transformers, Attention Mechanism, NLP, LLMs, Rank Factorization, Low-Rank Attention, Multi-Head Attention, Optimization
 ---
 
