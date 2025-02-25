@@ -97,13 +97,11 @@ It's a matrix with size $T \times d_\text{model}$, and it contains the per-head,
 
 Each row is a vector, in model-space, which carries the information that a token will contribute to the output of this attention head, if it is selected to do so by the Query-Key process. (i.e., it will be weighted by the token's attention score).
 
-
-
-
-
 ## Token Messages
 
-To reflect the intuition that "tokens send and receive information through attention" I'm referring to these vectors as **messages**.
+There are interesting parallels between Graph Neural Networks and Transformers. Both models involve receiving information from context. In GNNs, a node receives an embedding from each node that its connected to, and these are referred to as **messages**. In a Transformer, tokens also receive embeddings from context, except globally (i.e., from every token in the sequence), and this label captures well that the "attention block" is how **tokens send and receive information**. 
+
+> _Note: The language of GNNs has already had some adoption in Transformers, and GPT cued me into this. So far the term has only been used to describe the value vectors, not their more interpretable model-space representations. I think adopting the language here will really help with our mental models of Attention!_ 
 
 For a given query vector, we have the messages matrix:
 
@@ -351,54 +349,14 @@ For a given input vector $x_q$ and head $i$, the head's pattern vector can be ca
 $p_i = x_qW^P_i$
 
 
-
-
-
 Calculating the messages this way, though, would be inefficient. We've increased the number of parameters in the Value-Output process dramatically
 (by a factor of $\frac{d_{model}}{2d_v}$), requiring more memory and more compute.
 
-What is incredible here, though, is that we can form this $W^M_i$ matrix, **and then decompose it again**. This has big implications for **interpretability**, **efficiency**, and **performance**.
-
-
-## Efficiency and Performance Gains
-
-I think the most dramatic implication, though, is that this fuse-and-re-factor step can yield **fewer** and possibly **higher quality** parameters for us to use.
-
-If a matrix has a low effective rank, we can use SVD to decompose it and keep only its "top" singular values. The result can be a close approximation of the original but with fewer parameters.
-
-We already know that $W^P_i$ and $W^M_i$ have "low rank" because we created them from pairs of smaller matrices (dimensions $d_k$ and $d_v$)--the rank can't be any higher than that--but we also know that the weight matrices in LLMs (especially the bigger ones, according to GPT?) tend to have an even lower effective rank.
-
-Applying this trick to the attention matrices has already been done. For example, in a later post in this series, I modified an existing example Notebook which applied SVD to decompose the four attention matrices in T5-flan to cut the number of attention parameters in half with only a small drop in benchmark score.
-
-Fusing and Re-factoring $W^M$ and $W^P$ is significantly different, however, because:
-
-1. We are able to take advantage of additional structure that exists only in their "reconstituted" form.
-2. Decomosing normally means we end up with additional matrices--extra steps. Here, we start and end with the same number of matrices (with a small diagonal matrix in between?).
-
-This hasn't been tried before because we didn't know these two matrices existed.
-
-Applying this technique to the T5-flan example, I was able to cut the size of the matrices in half without any loss in performance compared to the base model.
-
-At a minimum, this technique will allow us to create more efficient models.
-
-I'll need to experiment more, but I suspect that this technique may allow us to _improve the performance_ of _existing_ pre-trained models. 
-
-MLA is a good example of how "more efficient" can also mean "better performance". When we slim down the weights via SVD we are keeping what matters most and discarding noise. 
-
-My hypothesis is that if we merge-and-unmerge these weights, and tune the model to the new parameters with a little more pre-training, that we may get a free lunch--a more efficient and more performant model. We'll see!
+But they open up interesting opportunities for interpretation!
 
 # Conclusion
 
-I'm thinking to name these:
+I think we could call this the Fused model of Attention, because it describes the conceptual model of Attention where the query-key and value-output matrices have been fused into patterns and messages.. However... I think a common mistake is to name developments in a way that references what came before.
 
-**Fused Attention**
-(or F-Attn, because I F'd around with the Attention equations and this all just fell out 😜)
-This describes the conceptual model of Attention where the query-key and value-output matrices have been fused into patterns and messages.
-
-**Fuse And Rank Reduce (FaRR)**
-(Or "Fa-Ra-Re" if you want to sound distinguished)
-This describes the technique of fusing two weight matrices and then applying a matrix decomposition technique such as SVD to produce two lower rank matrices to replace the originals.
-
-
-
+I think there is an opportunity to move forward here and find better expressions. There is additional valuable terminology to be borrowed from GNNs--for instance, "attention" merely describes the scoring process, a node also "Aggregates" its messages. Perhaps the overall block becomes something more like the message "Aggregator"?
 
