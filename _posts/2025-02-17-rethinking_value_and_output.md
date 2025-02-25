@@ -269,9 +269,9 @@ I brainstormed with GPT and, after proposing a few options, this is what it had 
 
 I think that's a really interesting framing!
 
+> _Side Note: I wasn't aware at the time, but this "messages" language is standard in graph neural networks and has started to have some adoption in Transformers, particularly in papers bridging the two concepts. That said, the term has only been used to describe the value vectors, not their more interpretable model-space representations. I think adopting the language here will really help with our mental models of Attention!_
 
 ### Interpretation
-
 
 
 What does it mean?
