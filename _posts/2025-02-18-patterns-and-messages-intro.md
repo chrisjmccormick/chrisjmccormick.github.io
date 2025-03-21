@@ -50,7 +50,7 @@ The remainder of this post is an outline of the posts and their key insights.
 I've also included references to the corresponding points in the "Key Takeaways" section of the Transformer Circuits paper.
 
 
-## Part 1: Breaking Apart the Heads
+## Part 1 - Breaking Apart the Heads
 
 
 It all begins with recognizing that:
