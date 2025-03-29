@@ -82,48 +82,120 @@ Second, evaluate the updated network on that same input vector.
 
 The output vector for this head and the others are all added to the current "residual stream". The residual stream is simply the input embedding with all of the head outputs and FFN outputs added on top. I'll explore this more in the next post.
 
-## Pros and Cons
+## Network Sizes
 
-The difference between this and our existing framing seems subtle--you could replace "patterns" and "messages" with "keys" and "values" and achieve similar insights. Incorporating $W^Q$ and $W^O$ into that picture unnecessarily complicates things, though.
-
-Mostly, it seems to provide a fresh perspective that can inspire creativity.
+Which is bigger in the Transformer--the FFNs or the Attention blocks?
 
 
+Let's borrow the dimensions from Llama 3 8B again:
 
-### Benefits
+| Attribute | Size |
+| --------- | ---- |
+| Layers | 32 |
+| Embedding | 4096 (4k) |
+| Heads | 32 |
+| Head Size | 128 |
+| FFN Size | 14,336 (14k) |
+
+(For simplicity, let's ignore GQA and assume it's vanilla attention)
 
 
+**Number of Learned Parameters**
 
-Here are some thoughts I've had around it.
+The FFNs have 3 matrices--input, output, and gate, with $56M$ parameters each, so $168M$ total per layer.
 
-**Group Query Attention as Weight Tying**
+The Attention blocks have 4 square projection matrices, $16M$ parameters each, so $64M$ parameters total per layer.
 
-This neural network formulation helped me better understand GQA. In Llama 3 8B, groups of four AHNs have distinct pattern vectors / input neurons, but they all share the same messages / output neurons. It allows for four different blends of the same messages.
+Compared to the Attention Projection matrices, the FFN has almost **3x** as many parameters!
+
+But what about this "Attention Head Network" that we've defined?
+
+
+**AHN vs. FFN Size**
+
+Comparing the number of parameters and compute cost of the AHNs versus the FFNs is tricky, because we employ tricks like matrix decomposition and GQA to cut down the cost of Attention.
+
+I think it's interesting, though, to compare the two in terms of **number of neurons**, or output neurons to be specific.
+
+_Attention Head Networks:_
+
+Each token produces a message for each head--these are the output neurons of the AHN.
+
+With 32 layers and 32 heads, there are 1,024 heads total, which means there **1,024 messages _per token_**.
+
+_Feed Forward Networks:_
+
+The number of FFN outputs is fixed at 32 layers x $14k$ = **494k** output neurons.
+
+
+_Comparison:_
+
+The massive pre-trained weights of the FFNs dominate the model initially, but each new token adds another 1,024 neurons to our dynamically built Attention Head Networks.
+
+The AHNs surpass the FFNs in size once the sequence length grows past **494 tokens**!
+
+At the maximum sequence of 8,192 tokens, there are **8M** messages vs. **494K** output neurons.
+
+
+**Efficiency Insights**
+
+This alternate framing provides another way of looking at a problem we're already very aware of--that attention gets increasingly expensive as we add tokens.
+
+Perhaps it's a fresh perspective that can inspire creativity--what ideas could we borrow from FFNs to try applying to these AHNs?
+
+For example, another way to frame Group Query Attention is as a form of "weight tying"--groups of four AHNs share output weights.
+
+With FFNs we have an understanding and techniques around there being 'unneccessary neurons'. I haven't explored the research in this area yet, but here are some thoughts I had around applying those insights to AHNs.
+
+## Routing and Filtering
 
 **Token Filtering**
 
-As we get further along in processing / generating text, these AHNs get very big and expensive to compute! Do we really need to add every token to all of them? Can we recognize when $W^M_i$ isn't relevant to a token, or when the resulting message $m_i$ is meaningless, and refrain from including it?
+These AHNs are clearly flexibile--they manage to function whether they contain just 5 neurons, or 5,000.
+
+As we build each of them--does every token really need to be added to every head?
+
+I'm curious whether the message projections, $W^M_i$, have learned to recognize when a token isn't relevant, and so they record a message $m_i$ that is just "harmless noise".
+
+If so, could we detect this condition instead, and refrain from adding the token to that AHN?
+
+**Routing**
+
+Seeing the heads as neural networks draws the comparison to Mixture of Experts. MoE works by clustering related neurons (based on their input neurons) so that we can route inputs to only, e.g., 8 clusters by comparing them to the cluster centroids.
+
+The corollary here is the pattern vectors / key vectors, which serve as the input neurons.
+
+Could we partition the KV cache to store the keys in clusters, and use their centroids to route query vectors to only the top matching groups of keys?
+
 
 **Gating**
 
 We're dynamically creating input and output neurons; should we be dynamically creating gates for them as well?
 
-**Input Routing**
+Gates feel highly intuitive to me. They
+seem to separate out the task of "is this input neuron relevant?" so that the neuron can focus on "how much of my output should be added _or subtracted_ from the result?".
 
-Seeing the heads as neural networks draws the comparison to Mixture of Experts. MoE works by clustering related neurons so that we can filter inputs by comparing to their centroid.
-Are the pattern vectors for a head similar enough to each other to have a representative centroid we could use for routing the queries?
+I think we use SoftMax instead partly because it handles a key problem--we don't want the magnitude of the output to keep growing as we add more neurons to the AHNs. The SoftMax normalizes the scores to mitigate this.
+
+Instead of normalizing--in the same way that LoRA divides the outputs by the square root of the rank, could we divide the head outputs by the square root of the number of neurons?
 
 
 
 
 
-### Concerns
 
-The main problem with this perspective, which applies to patterns and messages in general, is that it hides the fact that they are low rank.
 
-It's important to remember that, unlike the FFN, these Attention Head Networks have been "bottlenecked" through low rank decomposition so that they only modify a particular "subpace" of the token vector.
+**Inspiration**
 
-In the same way that LoRA limits how much impact the fine-tuning process has on the model weights, these AHNs have limited impact on the token compared to the FFN.
+That's all just speculation, and may have already been explored, but I like how this perspective "got my wheels turning"!
+
+## Remember Low Rank
+
+If there's a drawback to this perspective (and to patterns and messages in general), it's that it hides the fact that the neurons are low rank, compared to the FFNs.
+
+It's important to remember that these Attention Head Networks have been "bottlenecked" through low rank decomposition so that they only modify a particular "subpace" of the token vector.
+
+In the same way that LoRA limits how much impact the fine-tuning process has on the model weights, each AHN _has a far lower impact on the word vector_ compared to the FFN.
 
 ## Conclusion
 
@@ -132,8 +204,8 @@ Collapsing down from "QKVO" to "PM" helps us see attention from a new angle, as 
 This framing encourages us to ask questions like:
 
 * Does every context token need to add a message to every head?
-* Does every input token need to be routed to every head?
-* And / or, should we gate the scores instead of normalizing them?
+* Does every input token need to be compared to every context token?
+* Should we gate the scores instead of normalizing them?
 
 In the next post, we'll look at another concept from Mechanistic Interpretability called "The Residual Stream", which pulls the concepts in this post together to describe the behavior of a layer and the Transformer overall.
 
