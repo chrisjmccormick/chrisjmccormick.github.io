@@ -29,8 +29,7 @@ github:
 
 # This is the list of pages to include in the header of the website.
 pages_list:       
-  Live Walkthroughs: 'https://www.chrismccormick.ai/weekly-discussion-group?utm_source=blog&utm_medium=banner&utm_campaign=session_signup&utm_content=blog_menu1'
-  Support My Work: 'https://www.chrismccormick.ai/offers/cdtpxYGz?utm_source=blog&utm_medium=banner&utm_campaign=support_offer&utm_content=blog_menu1'
+  Patterns & Messages: 'https://mccormickml.com/2025/02/18/patterns-and-messages-intro/'
   Archive: '/archive/'
 
 # Gems
