@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Patterns and Messages - Intro and Overview"
+title:  "Patterns and Messages: A New Framing of Transformer Attention"
 date:   2025-02-18 12:00:00 -0800
 comments: true
 image: https://lh3.googleusercontent.com/d/1o954cnOGwZyxq7JW6mgLqXaNjrfw_cRM
