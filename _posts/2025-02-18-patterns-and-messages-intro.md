@@ -246,4 +246,8 @@ The "Transformer Circuits" paper provides a framework for tracing those messages
 
 > Side Note: I owe Nick a beer. On multiple occassions he tried to get me to read the work of Chris Olah (a popular blogger, co-founder of Anthropic, and credited as the founder of Mechanistic Interpretability). "Seems like if we're trying to explain this stuff we ought to study the research of people trying to understand it." I consider it quite the achievement that I was able to ignore such logical advice.
 
+**Cite**  
+
+McCormick, C. (2025). *Patterns and Messages: A New Framing of Transformer Attention.*  
+Retrieved from https://mccormickml.com/2025/02/18/patterns-and-messages-intro/
 
