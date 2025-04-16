@@ -28,7 +28,16 @@
   
   <!-- Updated MathJax Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>  
-  
+
+{% if page.image %}
+  <meta property="og:image" content="{{ page.image | absolute_url }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ page.image | absolute_url }}">
+{% endif %}
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ page.title | escape }}" />
+  <meta property="og:description" content="{{ page.excerpt | strip_html | strip_newlines | truncate: 160 | escape }}" />
 
 </head>
 
