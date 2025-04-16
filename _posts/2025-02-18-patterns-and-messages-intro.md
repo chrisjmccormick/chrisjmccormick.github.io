@@ -55,6 +55,7 @@ For each post, I've also included references to the corresponding points in the 
 
 ## Part 1 - Breaking Apart the Heads
 
+([Link to post](https://mccormickml.com/2025/02/18/patterns-and-messages-part-1-wo-i/))
 
 It all begins with recognizing that:
 
@@ -113,6 +114,8 @@ This reformulation does motivate some further shifts, though, which can offer a 
 
 ## Part 2 - Patterns and Messages
 
+([Link to post](https://mccormickml.com/2025/02/18/patterns-and-messages-part-2-token-communication/))
+
 The separation of the Query-Key and Value-Output processes makes it clear that $W^V$ and $W^O$ are in fact a **low-rank decomposition** of some larger matrix.
 
 Less obvious in the math, but still a logical next step, is to recognize that $W^Q$ and $W^K$ are a low rank decomposition as well.
@@ -160,6 +163,8 @@ First, I think this framing gives us a more "fundamental" version of Attention w
 
 ## Part 3 - Alternative Decompositions
 
+([Link to post](https://mccormickml.com/2025/02/19/patterns-and-messages-part-3-alternative-decompositions/))
+
 The merged-matrix concept is a helpful mental model, but not a good implementation. We know we have (at least) three issues to resolve:
 
 1. **Compute Cost** - $W^P_i$ and $W^M_i$ are expensive to project on to,
@@ -174,6 +179,8 @@ Personally, I found Patterns and Messages to be a remarkably satisfying way of m
 
 
 ## Part 4 - Attention as a Dynamic Neural Network
+
+([Link to post](https://mccormickml.com/2025/02/19/patterns-and-messages-part-4-a-dynamic-neural-network/))
 
 Reducing the number of Attention matrices from four to two makes it easier to view an Attention head as a standard neural network, except whose weights are dynamically created by the projection matrices during inference.
 
@@ -197,6 +204,8 @@ It's a fresh perspective and motivates some interesting questions--for example, 
 
 ## Part 5 - The Residual Stream
 
+([Link to post](https://mccormickml.com/2025/02/20/patterns-and-messages-part-5-the-residual-stream/))
+
 Something I find really helpful about this merged-matrix perspective is that it puts everything in "model space". The patterns and messages and their projection matrices all have the same length as the word embeddings.
 
 Once you view attention this way, it becomes clear that the entire transformer process is additive. The output word vector is nothing more than the **input embedding** plus a weighted sum of **all messages** plus a weighted sum of **all output neurons**.
@@ -219,6 +228,8 @@ From the Transformers Circuits paper:
 > * All components of a transformer (the token embedding, attention heads, MLP layers, and unembedding) communicate with each other by reading and writing to different subspaces of the residual stream. Rather than analyze the residual stream vectors, it can be helpful to decompose the residual stream into all these different communication channels, corresponding to paths through the model.
 
 ## Part 6 - Vocabulary-Based Visualizations
+
+([Link to post](https://mccormickml.com/2025/02/21/patterns-and-messages-part-6-vocabulary-based-analysis/))
 
 Because the pattern and message vectors live in model space—the same space as the vocabulary embeddings—we can sometimes compare them directly to actual words.
 
