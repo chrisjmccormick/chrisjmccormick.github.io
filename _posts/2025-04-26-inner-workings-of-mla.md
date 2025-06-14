@@ -191,3 +191,26 @@ $a_1 = q_1K_1^T, \quad a_2 = q_2K_2^T, \quad ..., \quad a_{128} = q_{128}K_{128}
 This requires reading in a separate set of keys for every head.
 
 
+
+
+**High Compute Requirement**
+
+This is a neat trick, but there's a big problem here that you may have noticed.
+
+That $W^P_i$ matrix is _huge_. It's 7K $\: \times \:$ 7K, and there is one per head.
+
+The patterns are the same size as the embeddings, so instead of multiplying a length 128 query with a length 128 key, we'd be multiplying a length 7K pattern with a length 7K token vector!
+
+The two approaches are mathematically equivalent--they produce the exact same attention score--but the pattern formulation requires far more operations.
+
+MLA solves this by _compressing the input vectors prior to attention_.
+
+
+### Compressions
+
+The size of the pattern matrix is dictated by the size of the input vectors; we can shrink it by shrinking the inputs.
+
+In standard attention we'd calculate the attention logits for head $i$ as:
+
+$a_i = xW^P_iX^\top$
+
