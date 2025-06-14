@@ -146,3 +146,48 @@ Let’s start with a key insight from interpretability research (notably from Ch
 The attention equations can be re-ordered to show that, for a given head $i$, the query and key matrices $W^Q_i$ and $W^K_i$ can be thought of as a low-rank decomposition of some larger matrix, $W^{QK}_i$
 
 
+
+### Pattern Projection
+
+
+I like to write this conceptual larger matrix as:
+
+$W^P_i = W^Q_iW^{K^T}_i$
+
+Where 'P' stands for "pattern", because this matrix is used to project a kind of template vector to be matched against all of the tokens in the sequence.
+
+
+<img src='https://lh3.googleusercontent.com/d/18fiJf-r1QIrSkHcbyaiNCYNLceKIdqN2' alt='Merging the query and key projection matrices into the pattern projection' width='400'/>
+
+
+
+We can write the formula for attention very cleanly with this matrix.
+
+For each head, the input vector (the query) is projected to produce its pattern vector:
+
+$p_i = xW^P_i$
+
+The attention logits for head $i$ are simply the dot product between this and all of the token vectors in the sequence:
+
+$a_i = p_iX^T$
+
+This perspective provides a more "fundamental", _conceptual_ definition of attention that's very useful here because it highlights:
+
+1. That our "Query and Key" matrices are **just one way** to decompose attention--we'll see that MLA does it differently.
+2. That **we don't have to project both sides** of the equation--it's enough to project _just the input vector_ and compare that to the raw token vectors.
+
+The second insight is powerful because it allows us to leverage **broadcasting** to do the same math with **fewer memory reads**.
+
+Attention is calculated separately for each head, but we get to use the same token vectors across all heads:
+
+$a_1 = p_1X^T, \quad a_2 = p_2X^T, \quad ..., \quad a_{128} = p_{128}X^T$
+
+i.e., we'll produce a per-head pattern vector, but then broadcast these across the sequence.
+
+In contrast, standard attention requires producing per-head representations on both sides:
+
+$a_1 = q_1K_1^T, \quad a_2 = q_2K_2^T, \quad ..., \quad a_{128} = q_{128}K_{128}^T$
+
+This requires reading in a separate set of keys for every head.
+
+
