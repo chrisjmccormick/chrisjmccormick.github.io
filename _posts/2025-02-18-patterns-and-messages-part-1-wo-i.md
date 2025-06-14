@@ -59,7 +59,7 @@ Concatenation is a bit of a bizarre operation for linear algebra--the resulting 
 
 Typically, we're multiplying every vector in one matrix against every vector in the other--i.e., all of the "items" in `A` interact with all of the ones in `B`. But it's different when you stack matrices like this.
 
-The values in $\text{head}_1$ _only_ get multiplied against the values in their corresponding output matrix, $W^O_1$. They don't see any of the other parameters.
+The values in $\text{head}_1$ only get multiplied against the values in their corresponding output matrix, $W^O_1$. They don't see any of the other parameters.
 
 The effect is the same as multiplying each of the corresponding smaller matrices against each other, and then summing the result:
 
