@@ -28,7 +28,7 @@ This post expands on these concepts, and takes a detailed look at the algebra, i
 
 _Dimensions_
 
-Throughout this post I'll be using the actual dimensions of DeepSeek-V3, since I often find it easier to refer to / think about matrix shapes by their specific values instead of a sea of variables $d^h, d^c, $ etc. I'll be using the base-2 notation of "K". In particular, DeepSeek-V3 has an embedding size of 7,168, so I'll write that as simply "7K", and a query compression dimension of 1,536, or "1.5K".
+Throughout this post I'll be using the actual dimensions of DeepSeek-V3, since I often find it easier to refer to / think about matrix shapes by their specific values instead of a sea of variables $d^h$, $d^c$, etc. I'll be using the base-2 notation of "K". In particular, DeepSeek-V3 has an embedding size of 7,168, so I'll write that as simply "7K", and a query compression dimension of 1,536, or "1.5K".
 
 ## Contents
 
