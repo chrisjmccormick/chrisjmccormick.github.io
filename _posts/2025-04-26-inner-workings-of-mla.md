@@ -193,11 +193,12 @@ This requires reading in a separate set of keys for every head.
 
 
 
+
 **High Compute Requirement**
 
 This is a neat trick, but there's a big problem here that you may have noticed.
 
-That $W^P_i$ matrix is _huge_. It's 7K $\: \times \:$ 7K, and there is one per head.
+That $W^P_i$ matrix is _huge_. It's 7K $\times$ 7K, and there is one per head.
 
 The patterns are the same size as the embeddings, so instead of multiplying a length 128 query with a length 128 key, we'd be multiplying a length 7K pattern with a length 7K token vector!
 
@@ -214,3 +215,166 @@ In standard attention we'd calculate the attention logits for head $i$ as:
 
 $a_i = xW^P_iX^\top$
 
+Where,
+
+| Symbol       | Shape                  | Description                                               |
+|--------------|------------------------|-----------------------------------------------------------|
+| $x$          | 1 $\times$7K   | Input vector for query   |                          |
+| $W^P_i$      | 7K $\times$7K        | Head $i$'s pattern projection matrix                      |
+| $X^\top$     | 7K $\times$ n         | Sequence vectors for keys    |
+| $a_i$        | 1 $\times$ n           | Head $i$’s attention pattern over the sequence            |
+
+But MLA first compresses the inputs (to different lengths!) so that we have:
+
+$a_i = c^QW^P_iC^{KV^{\top}}$
+
+Where,
+
+| Symbol       | Shape                  | Description                                               |
+|--------------|------------------------|-----------------------------------------------------------|
+| $c^Q$          | 1 $\times$ 1.5K   | Compressed input vector for query   |                          |
+| $W^P_i$      | 1.5K $\times$ 512        | Head $i$'s pattern projection matrix                      |
+| $C^{KV^{\top}}$     | 512 $\times$ n         | Compressed sequence vectors for keys (and values)   |
+| $a_i$        | 1 $\times$ n           | Head $i$’s attention pattern over the sequence            |
+
+<br/>
+
+> Note that, in both cases, we will (further) decompose $W^P_i$ into $W^Q_iW^{K^{\top}}_i$ with an inner dimension of 128--we'll do this in the next section.
+
+
+**Compression Matrices**
+
+These compressed vectors are created from two learned matrices, which are shared by all heads in a layer:
+
+<br/>
+
+| Symbol         | Shape                  | Description                                               |
+|----------------|------------------------|-----------------------------------------------------------|
+| $W^{DQ}$       | 7K $\times$ 1.5K | Compression matrix for the **query** input               |
+| $W^{DKV}$      | 7K $\times$ 512  | Shared compression matrix for the **key** and **value** inputs |
+
+<br/>
+
+These produce the compressed representations we saw above:
+
+<br/>
+
+| Symbol         | Shape                  | Description                                               |
+|----------------|------------------------|-----------------------------------------------------------|
+| $c^Q$          | 1 $\times$ 1.5K  | Compressed input vector for query: $xW^{DQ}$             |
+| $C^{KV}$       | n $\times$ 512   | Compressed sequence vectors for keys and values: $XW^{DKV}$  |
+
+<br/>
+
+The below illustration shows these compressions.
+
+
+
+<img src='https://lh3.googleusercontent.com/d/1I1xH9FJBPajsmwSgV2kUF4deW6RhztrI' alt='Illustration of the two compression matrices, one for the query and one for the shared key value latent' width='900'/>
+
+
+
+The key-value latents are stored in the KV cache to be re-used as we continue to generate new tokens.
+
+But note the massive difference there!
+
+In standard attention, each layer of the DeepSeek model would produce and cache 128 key vectors and 128 value vectors per token, each of length 128. That's 32K floats total.
+
+In contrast, MLA stores a single length 512 latent per token.
+
+> Again, that yields a 64x smaller footprint, but note that the bandwidth savings are only half that, since the latents must be read twice.
+
+
+
+**Side Note: Interpretability**
+
+This is a fascinating quality of MLA to me, from an interpretability perspective. (Maybe skip this bit if you're not versed in that field?)
+
+Each key and value head is allowed to project its own 128-dimensional subspace to read from / write to, but they are all constrained to operate within the same 512-dimensional subspace of the residual stream.
+
+Could that maybe force the heads in a given layer to have a more homogenous set of functions? I'd love to dig into that!
+
+**Decompression Step?**
+
+Initially, I had assumed that the model would need to be trained with a decompression step, $W^{UKV}$ with shape 512 $\times$ 7K, in order to learn this "compression" behavior, but that's not the case. (This lead to a lot of confusion on my part, unfortunately!)
+
+You could think of $W^{UKV}$ as being folded into the key and value projections, or just dismiss the notion entirely.
+
+> Side note: The authors chose to rename the QKV projection matrices to each include a "U"--e.g., $W^{UK}$--and I think that's partially what lead to my confusion. Conceptually, the QKV matrices are further _down_ projections to the 128 dimensional heads.
+
+
+
+
+### Decomposition into Query-Key
+
+We still want to decompose the pattern projection, as usual, into a $W^Q_iW^{K^\top}_i$ with a small inner dimension (the head size, 128).
+
+Let's first look at the creation of the pattern vectors, since this done as a separate step before computing attention.
+
+Head $i$ extracts a "template vector" / pattern $p_i$ to match against the sequence tokens:
+
+$p_i = c^Q \cdot W^{UQ}_i \cdot W^{UK}_i$
+
+Where,
+
+| Symbol                 | Shape                        | Description                                                        |
+|------------------------|-------------------------------|--------------------------------------------------------------------|
+| $c^Q$                  | 1 $\times$ 1.5K         | Compressed input vector for the query                              |
+| $W^{UQ}_i$             | 1.5K $\times$ 128       | Query projection matrix for head $i$                               |
+| $W^{UK^\top}_i$             | 128 $\times$ 512       | Key projection matrix for head $i$                                 |
+| $p_i$                  | 1 $\times$ 512            | Head $i$’s pattern vector for the input token   |
+
+The 128-dimensional head size makes the pattern projection cheaper to compute, but perhaps more importantly it "bottlenecks" the attention head to avoid it being over-parameterized / add sparsity / learn to specialize / pick your favorite interpretation.
+
+The below illustration captures this step.
+
+
+<img src='https://lh3.googleusercontent.com/d/1TkaHaLIG31pjUKYizLssDhnT_V364lJt' alt='Illustration of the path from query latent to pattern vector' width='900'/>
+
+
+
+### Attention Scoring
+
+
+
+
+So the attention scores for head $i$ are now:
+
+$a_i = p_i \cdot C^{KV^\top}$
+
+This is shown in the below illustration--for convenience, I've ignored proper matrix orientation. Think of $C^{KV}$ as a table of latents, one per row. Take the dot product between the pattern vector and a latent to produce the corresponding logit.
+
+
+<img src='https://lh3.googleusercontent.com/d/1zBmmMz_X7YmyGDX3W9doWfqh5rILQhJy' alt='Illustration of calculating the attention logits by multiplying the pattern vector with the sequence latents' width='500'/>
+
+
+This is the multiplication of a 512-dim pattern vector with 512-dim token latents--far fewer operations than 7K times 7K, but still _4x_ higher than our usual queries-times-keys operation (done at 128-dims).
+
+That's quite the cost to pay, but it's considered a worthwhile trade-off due to the savings on **memory bandwidth**--the attention calculation is often _memory-bound_ rather than compute-bound.
+
+
+**Multihead View**
+
+A multihead illustration is helpful, I think, for highlighting the difference between MLA and MHA.
+
+In the below to illustrations, we are calculating attention between **one** input token and the full sequence of **n** tokens.
+
+
+_Multihead Latent Attention_
+
+<img src='https://lh3.googleusercontent.com/d/1_XFLly-vAccjiRnY4kr1yvY4mtilDh0E' alt='Multihead perspective of calculating attention logits using per-head patterns and per-layer latents' width='500'/>
+
+
+_Multihead Attention_
+
+<img src='https://lh3.googleusercontent.com/d/1p7CtjkQOnqQTaPxMNJGHqHogmUTcRh1k' alt='Multihead perspective of calculating attention logits showing per head queries and per head keys' width='500'/>
+
+
+
+
+
+Note, _critically_, that there is a per-head pattern vector, but only a single set of sequence latents.
+
+For each token, instead of reading 128-dim keys from 128 heads (16k values total) we're just reading a 512-dim latent. That's **32x less memory reads**  for calculating the attention scores.
+
+We can achieve similar gains on the output side of attention as well.
