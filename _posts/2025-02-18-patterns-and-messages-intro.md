@@ -80,7 +80,7 @@ This change makes it clear that:
 
 
 
-The outputs are simply summed together (I usually think of $W^O$ as re-projecting and recombining the values, and recombining" seems to imply a more complex process than just summing).
+The outputs are simply summed together (I usually think of $W^O$ as re-projecting and recombining the values, and "recombining" seems to imply a more complex process than just summing).
 
 This simple explanation is obscured by the way we concatenate all of the weight matrices together in practice, and especially by how we concatenate the value vectors prior to the output matrix.
 
