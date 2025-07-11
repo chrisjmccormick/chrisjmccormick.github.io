@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Reading and Writing with Projections"
-date:   2025-07-10 21:00:00 -0800
+date:   2025-07-10 08:00:00 -0800
 comments: true
 image: https://lh3.googleusercontent.com/d/1y5FIs7s2z52wLg7331c7HP96r1WQM1Fm
 tags: Transformers, Linear Algebra, Projections, Interpretability, Features
