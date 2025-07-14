@@ -390,32 +390,24 @@ To illustrate this, I found 513 directions to use, and then made sure to store d
 
 Much better!
 
-Side Note:
+Still, it seems surprisingly bad for adding only a single extra feature to the space.
 
-I will say--I expected the interference to be lower given that we only added a single feature to the vector.
+That's because, in practice, we store _far fewer values_ in a vector than the number of directions defined. 
 
-I did use uniformly random values for the settings, whereas the values in our models tend to be normally distributed (and maybe normalized as well?)--perhaps that is important? 
-
-Also, I did store values along every single direction--perhaps a critical piece is that a given vector rarely carries around that many feature values all at once?
+Let's wrap up with some similarly important clarifying insights about how this all works in a Transformer.
 
 ## Features in Transformers
 
-I think it's fair to say that a given Transformer model has learned a large underlying feature-direction matrix, with more columns than rows (i.e., more directions than the length of the token embedding).
+Some important clarifications about how this all seems to work in practice:
 
-But do the various weights and activations we see in the model correspond to those features?
+1. The model doesn't manage to learn a **single**, **globally optimal** set of ~orthogonal directions like we've done here. What we observe instead are **functional groups** of well-spaced directions.
 
-Unfortunately, no. Because these operations are linear, they can be combined! 
+2. At any given point the token vector is probably only carrying data along a **smaller subset** of the directions—this sparsity is key to avoiding catastrophic interference. 
 
-Instead of writing to one of these "true" feature directions directly, the model composites them by combining other vectors.
+3. Beyond reading individual features, activation functions allow the model to extract more abstract features through **nonlinear combinations** of these directions.
+    * However, the **updates** are always made through simple **addition** to the token vector.
 
-The model can read the value stored along $v$ by executing $xv$, but it can also read it by calculating $x(a + b + c)$ if those three vectors sum up to $v$.
-
-Similarly, the model could be adjusting $v_1$ by 0.2 and $v_2$ by -0.1, but all we get to see is the combination of multiple such updates, making them hard to tease apart.
-
-And, as we can see clearly in simpler machine learning models, additional meaningful features can exist as linear or non-linear combinations of these ~orthogonal directions.
-
-Quite a lot to untangle when doing interpretability research!
-
+4. Another helpful intuition and mental picture of these concepts is that the **value** along a direction is tied to the **magnitude** of the vector.
 
 ## Conclusion
 
