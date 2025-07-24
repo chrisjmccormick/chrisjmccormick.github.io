@@ -10,12 +10,13 @@ layout: default
   
   <div class="post-nav">
     {% if page.previous %}
-      <p>← Previous: </p><a class="prev-post" href="{{ page.previous.url }}">{{ page.previous.title }}</a>
+      <p>← Previous: <a class="prev-post" href="{{ page.previous.url }}">{{ page.previous.title }}</a></p>
     {% endif %}
     <br/>
     {% if page.next %}
-      <p>→ Next: </p><a class="next-post" href="{{ page.next.url }}">{{ page.next.title }}</a>
+      <p>→ Next: <a class="next-post" href="{{ page.next.url }}">{{ page.next.title }}</a></p>
     {% endif %}
+    <br/>
   </div>
 
   
