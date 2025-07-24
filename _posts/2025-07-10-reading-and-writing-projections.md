@@ -11,6 +11,8 @@ Transformers store, retrieve, and modify data along different **feature directio
 
 I'm finding that building some better intuition around what this actually means can be a powerful tool for reasoning about LLM architecture.
 
+<!--more-->
+
 Probably the most intriguing quality of 'feature directions' is that a model with an embedding size of 4,096 is able to stuff more than 4K features into that space. 
 
 To explore this notion, let's see if we can use this same Transformer math to store three settings from your speakers–bass, volume, and treble–into 2 dimensions.
