@@ -9,6 +9,7 @@ tags: Machine Learning, Natural Language Processing, NLP, LLMs, Reasoning Models
 
 I was curious to dig in to these DeepSeek models that have been making waves and breaking the stock market these past couple weeks (since DeepSeek-R1 was announced in late January '25).
 
+<!--more-->
 
 ### i. Architecture of a Reasoning Model
 
