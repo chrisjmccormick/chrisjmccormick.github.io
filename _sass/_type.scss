@@ -107,6 +107,23 @@ a[href^="#fnref:"] {
   font-size: 85%;
 }
 
+.excerpt-fadeout {
+  position: relative;
+  max-height: 5em; /* 5 lines */
+  overflow: hidden;
+}
+
+.excerpt-fadeout::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2em;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
+}
+
+
 // Custom type
 //
 // Extend paragraphs with `.lead` for larger introductory text.
