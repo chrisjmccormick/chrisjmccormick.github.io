@@ -33,3 +33,13 @@ layout: default
   {% endif %}
   
 </article>
+
+<div class="post-nav">
+  {% if page.previous %}
+    <a class="prev-post" href="{{ page.previous.url }}">← Previous: {{ page.previous.title }}</a>
+  {% endif %}
+  {% if page.next %}
+    <a class="next-post" href="{{ page.next.url }}">Next: {{ page.next.title }} →</a>
+  {% endif %}
+</div>
+
