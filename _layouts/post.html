@@ -8,6 +8,17 @@ layout: default
   {{ content }}
 
   
+  <div class="post-nav">
+    {% if page.previous %}
+      <p>← Previous: </p><a class="prev-post" href="{{ page.previous.url }}">{{ page.previous.title }}</a>
+    {% endif %}
+    <br/>
+    {% if page.next %}
+      <p>→ Next: </p><a class="next-post" href="{{ page.next.url }}">{{ page.next.title }}</a>
+    {% endif %}
+  </div>
+
+  
   {% if page.comments %}
   <div id="disqus_thread"></div>
   <script>
@@ -34,12 +45,4 @@ layout: default
   
 </article>
 
-<div class="post-nav">
-  {% if page.previous %}
-    <a class="prev-post" href="{{ page.previous.url }}">← Previous: {{ page.previous.title }}</a>
-  {% endif %}
-  {% if page.next %}
-    <a class="next-post" href="{{ page.next.url }}">Next: {{ page.next.title }} →</a>
-  {% endif %}
-</div>
 
