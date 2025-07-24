@@ -23,7 +23,9 @@ title: Home
     {% endif %}
     
     <!-- Show an excerpt from the article -->
-    {{ post.excerpt }}
+    <div class="excerpt-fadeout">
+      {{ post.excerpt }}
+    </div>
     
     <!-- Comment count -->
     <!-- <a href="{{ site.baseurl }}{{ post.url }}#disqus_thread"></a> -->
