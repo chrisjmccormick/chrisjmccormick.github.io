@@ -9,14 +9,13 @@ tags: Transformers, Linear Algebra, Projections, Subspaces, Weight Tying, Parame
 
 Recent models like DeepSeek-V3 and Moonshot’s Kimi-K2, built using Multihead Latent Attention (MLA), have shown that constraining the input spaces of attention heads can be both effective and efficient. They project the input token vector--size 7,168--down to just 512 dimensions for keys and values, and to 1,536 for queries. Despite this aggressive compression, performance holds up well enough to support these frontier-scale models.
 
-Low-rank matrix decompositions are a common efficiency technique, often used to reduce parameter count and FLOPs in large networks. When applied to an FFN, this has the effect of creating shared input and output subspaces across the neurons. 
+This shared subspace concept appears in the context of MLPs as well. Low-rank matrix decompositions are a common efficiency technique, often used to reduce parameter count and FLOPs in large networks. When applied to an FFN, this has the effect of creating shared input and output subspaces across the neurons. 
 
-There's also been success applying similar constraints in Mixture-of-Experts (MoE) models, by defining shared subspaces across groups of experts. For example, [MoLAE](https://arxiv.org/abs/2503.23100v2) ("Mixture of Latent Experts") uses SVD analysis to create shared down projections for gates and inputs, and shared up projections for outputs.
+There's also been success defining shared subspaces across groups of experts in Mixture-of-Experts (MoE) models. For example, [MoLAE](https://arxiv.org/abs/2503.23100v2) ("Mixture of Latent Experts") uses SVD analysis to create shared down projections for gates and inputs, and shared up projections for outputs.
 
 There's one place, though, where this approach seems to be conspicuously missing: the output of the attention layer. 
 
-I'm curious whether it might be possible, or even beneficial, to add a shared **output latent space** to attention. In this post, I'll walk through the motivations, potential tradeoffs, and some early results from SVD-based analysis of DeepSeek-V3.
-
+I'm curious whether it might be possible, or even beneficial, to add a shared **output latent space** to attention. In this post, I'll walk through the motivations, potential tradeoffs, and some observations from SVD-based analysis of DeepSeek-V3.
 
 ## Contents
 
