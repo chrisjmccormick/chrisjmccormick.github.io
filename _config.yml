@@ -29,7 +29,7 @@ github:
 
 # This is the list of pages to include in the header of the website.
 pages_list:       
-  Patterns & Messages: 'https://mccormickml.com/2025/02/18/patterns-and-messages-intro/'
+  Research: 'https://www.innerworkings.ai'
   Archive: '/archive/'
 
 # Gems
