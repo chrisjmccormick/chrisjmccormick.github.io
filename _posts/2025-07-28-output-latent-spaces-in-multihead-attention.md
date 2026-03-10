@@ -359,22 +359,31 @@ For pre-training a **new model**:
 
 **Next Steps**
 
-* To explore the impact on pre-training, I've started with training a small Vision Transformer (ViT) from scratch on the CIFAR-10 dataset, and plan to train a small text encoder model next. 
-    * Note: I'd love help from someone more experienced with experiment design, and the ability to help run them!
-    * The one preliminary result I'll share is that--in terms of parameter choice--output latent sizes similar to the query latent size appear to work well.
-* I'm also running experiments clustering the output heads of DS-V3 to see if the effective rank within the groups is low enough to consider creating a factorized version of the model.
-
-
-
-
-
-
+* To explore the impact on pre-training,
+    * I started with training a small Vision Transformer (ViT) from scratch on the CIFAR-10 dataset, which seemed to work well.
+    * I moved on to training some tiny-scale Encoder models and benmarking on SST-2, you can see the code and preliminary results [here](https://github.com/chrisjmccormick/shared-subspaces/tree/main/subspace_encoder).
+* I also explored clustering the output heads of DS-V3 to see if the effective rank within the groups is low enough to consider creating a factorized version of the model, but nothing to share there yet.
 
 # Appendix
 
 ## Code
 
-You can find all of the code for the SVD analysis on DeepSeek-V3 and Kimi-K2 in my Notebook [here](https://colab.research.google.com/drive/1ftRxzDH2KztWEGry83BRZoM2Ao57SQJ_?usp=drive_link) (the notebook currently shows results for Kimi-K2).
+You can find all of the code for the SVD analysis, along with a deeper dive into the overall technique, [here](https://github.com/chrisjmccormick/shared-subspaces/tree/main/fused_attn_svd).
+
+## Results on Kimi-K2
+
+The more recent Kimi-K2 model from Moonshot AI uses the same architecture as DeepSeek-V3 but with:
+* 64 heads instead of 128
+* 384 experts vs. 256
+* One dense layer instead of 3
+
+The below plot shows the effective rank of the stacked $W^O$ matrices in every layer of Kimi-K2 at 1% and .1% error. Comparing this to the same analysis on DS-V3 earlier in this post, the effective rank is consistently lower.
+
+<img src='https://lh3.googleusercontent.com/d/1d7ohGvkOonAaq9NCGso9W8Se4wOrQU_a' alt='Plot showing the effective rank of the stacked W_O matrices in every layer of kimi-k2' width='900' />
+
+As a result, the reconstruction error of the stacked $W^VO$ matrices at rank 4096 is also consistently lower.
+
+<img src='https://lh3.googleusercontent.com/d/1EBYoqEwLc0-AJplcL_HRUGTUe6Z_0I-m' alt='Plot showing the reconstruction error on W_VO in all layers of Kimi-K2 if using a size 4096 shared subspace.' width='900' />
 
 ## Equations
 
@@ -481,17 +490,4 @@ Example dimensions are taken from DeepSeek-V3 (except for the output latent dime
 Note: Kimi-K2 uses the same model, head, and latent sizes, but with only 64 heads instead of 128.
 
 
-## Results on Kimi-K2
 
-The more recent Kimi-K2 model from Moonshot AI uses the same architecture as DeepSeek-V3 but with:
-* 64 heads instead of 128
-* 384 experts vs. 256
-* One dense layer instead of 3
-
-The below plot shows the effective rank of the stacked $W^O$ matrices in every layer of Kimi-K2 at 1% and .1% error. Comparing this to the same analysis on DS-V3 earlier in this post, the effective rank is consistently lower.
-
-<img src='https://lh3.googleusercontent.com/d/1d7ohGvkOonAaq9NCGso9W8Se4wOrQU_a' alt='Plot showing the effective rank of the stacked W_O matrices in every layer of kimi-k2' width='900' />
-
-As a result, the reconstruction error of the stacked $W^VO$ matrices at rank 4096 is also consistently lower.
-
-<img src='https://lh3.googleusercontent.com/d/1EBYoqEwLc0-AJplcL_HRUGTUe6Z_0I-m' alt='Plot showing the reconstruction error on W_VO in all layers of Kimi-K2 if using a size 4096 shared subspace.' width='900' />

@@ -7,24 +7,27 @@ image: https://lh3.googleusercontent.com/d/1QD1pTMeQ3F6XwK03lbeUk45CuUZv28Py
 tags: Llama 3, Fine-Tuning, LLM, Sentence Classification, Transformers, huggingface, Natural Language Processing, NLP, AI
 ---
 
+I've been curious to see just how well today's enormous, Decoder-only models--designed for text generation--perform at traditional NLP tasks such as classifying text.
 
+These simpler tasks rely purely on the model's ability to _understand_ the input text, rather than generate a continuation, and Encoder-only architectures like BERT have a strong advantage in this.
 
-I've been curious to see just how well these enormous LLMs perform at traditional NLP tasks such as classifying text.
+In this Notebook, I've taken my original [BERT for Sequence Classification](https://mccormickml.com/2019/07/22/BERT-fine-tuning/) example and swapped out the 110M parameter BERT for the _8 billion_ parameter Llama 3.1.
 
-In this Notebook, I've taken my original "BERT for Sequence Classification" example and swapped out the 110M parameter BERT for the _8 billion_ parameter Llama 3.1.
+It's not a simple drop-in replacement, though.
 
-It's not a simple drop-in replacement, though:
+First, there are a variety of techniques we'll have to employ in order to be able to fine-tune an 8-billion parameter model on a free Colab GPU without running out of memory, and I'll cover each of these.
 
-1. There are some techniques we'll need to employ in order to be able to fine-tune an LLM on a free Colab GPU without running out of memory.
-2. To get decent performance, you'll want to add a prompt to your dataset.
+Second--spoiler alert--the Encoder wins unless we:
+1. Do some careful prompt engineering, and modify the dataset accordingly.
+2. Make clever use of the language modeling head to perform the classification. 
 
-I'll take us through each of these changes in this tutorial.
+I'll take us through each of these modifications in this tutorial.
 
 _Seeing "Under the Hood"_
 
-One of my favorite aspects of the original Notebook was that it It implements the training loop in PyTorch rather than relying on the HuggingFace Trainer class, which I feel tends to hide too much of what's going on, so I've kept that aspect of the Notebook and updated it.
+One of my favorite aspects of the original Notebook is that it implements the training loop in PyTorch rather than relying on the HuggingFace Trainer class (which I feel tends to hide too much of what's going on), so I've kept it that way and just made some updates. 
 
-It still uses HuggingFace for the model implementation and weights, and for tokenizing.
+We'll still use HuggingFace for the model implementation and weights, and for tokenizing.
 
 _by Chris McCormick_
 
