@@ -217,13 +217,13 @@ If we are packing documents into a vector, will we need to restart the position 
 
 Batched attention (with packing) faces the same issue. It turns out that restarting the position is unnecessary because of RoPE. RoPE is fundamentally relative--attention looks at the distance between tokens rather than their absolute position.
 
-`varlen` adds another layer to this, though. We have a single long buffer, much longer than the model's maximum sequence length.  
+`varlen` adds another layer to this, though. We have a single long buffer, much longer than the model's maximum sequence length. Doesn't this mean we need some kind of context extension method (like YaRN) to handle position indices up to 32K?
 
-Fortunately, YaRN (Yet another RoPE extension method) solves this, allowing us to extend to the full 32K tokens.  
+It turns out we don't, thanks to the combination of RoPE's relativity and `varlen`'s attention boundaries. RoPE's attention score between a query at position *m* and a key at position *n* depends only on *(m - n)*, not on *m* or *n* individually. And since `varlen` restricts attention to within each document (at most 2K tokens), the relative distances that show up in the attention math are always small--regardless of where the document sits in the buffer.
 
-And the "noise" usually associated with massive context windows--where queries have to search through 32K tokens-worth of keys--doesn't apply here because `varlen` operates on each document independently.
+As a concrete example, let's say we have a 400 token document sitting at position 21,000 in the buffer. `varlen` will only include tokens `inputs[21000:21399]` in the attention math, and to the attention heads these produce **exactly the same** attention patterns as tokens at positions 0-399. The model literally cannot tell the difference.
 
-As a concrete example, let's say we have a 400 token document sitting at position 21,000 in the buffer. `varlen` will only include tokens `inputs[21000:21399]` in the attention math, and to the attention heads these may as well be at positions 0-399.
+So we just use plain RoPE and precompute enough positions to cover the full buffer--no extension method needed.
 
 ## Conclusion
 
